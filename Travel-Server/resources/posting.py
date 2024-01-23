@@ -46,8 +46,9 @@ class PostingListResource(Resource):
 
         # 1 클라이언트로부터 데이터 받아온다.
         file = request.files.get('image')
+        title = request.form.get('title')
         content = request.form.get('content')
-
+        
         user_id = get_jwt_identity()
 
         # 2. 사진을 s3에 저장한다.
@@ -96,11 +97,11 @@ class PostingListResource(Resource):
 
             # 1. posting 테이블에 데이터를 넣어준다.
             query = '''insert into posting
-                    (userId, imgUrl, content)
+                    (userId, imgUrl,title,content)
                     values
-                    (%s, %s, %s);'''
+                    (%s, %s, %s,%s);'''
             record = (user_id, 
-                      Config.S3_LOCATION+new_file_name,
+                      Config.S3_LOCATION+new_file_name,title,
                       content)
             cursor = connection.cursor()
             cursor.execute(query, record)
@@ -130,7 +131,7 @@ class PostingListResource(Resource):
                 if len(result_list) != 0 :
                     tag_name_id = result_list[0]['id']
                 else :
-                    # 태그가 테이블에 없으면, 인서트 한다.
+                    # 태그가 테이블에 없으면, insert 한다.
                     query = '''insert into tag_name
                             (name)
                             values
@@ -153,14 +154,8 @@ class PostingListResource(Resource):
                 cursor = connection.cursor()
                 cursor.execute(query, record)                            
             
-            # 트랜잭션 처리를 위해서
-            # 커밋은 테이블 처리를 다 하고나서
-            # 마지막에 한번 해준다.
-            # 이렇게 해주면, 중간에 다른 테이블에서
-            # 문제가 발생하면, 모든 테이블이 원상복구(롤백)
-            # 된다. 이 기능을 트랜잭션 이라고 한다.
+           
             connection.commit()
-
             cursor.close()
             connection.close()
 
@@ -170,8 +165,8 @@ class PostingListResource(Resource):
             connection.close()
             return {'error' : str(e)}, 500
 
-
         return {'result' : 'success'}, 200
+
     
     @jwt_required()
     def get(self):
@@ -223,7 +218,7 @@ class PostingListResource(Resource):
             result_list[i]['createdAt'] = row['createdAt'].isoformat()
             i = i+1
 
-        return {"result " : "success",
+        return {"result" : "success",
             "items" : result_list,
             "count " : len(result_list)},200
     
@@ -238,6 +233,8 @@ class PostingResource(Resource):
                         where id =%s and userId =%s;'''
             
             record = (posting_id, user_id)
+
+            print(user_id)
             
             cursor = connection.cursor()
             cursor.execute(query,record)
@@ -252,22 +249,21 @@ class PostingResource(Resource):
             connection.close()
             return{"Error" : str(e)},500
 
-        return{"Result" : "success"},200 
+        return{"result" : "success"},200 
     
     @jwt_required()
     def put(self,posting_id):
         data = request.get_json()
         user_id = get_jwt_identity()
-        print(user_id)
-        print(posting_id)
-        
+       
         try:
             connection = get_connection()
             query = ''' update posting
-                        set content = %s,
+                        set title = %s,
+                        content = %s
                         where id = %s and userId = %s;'''
             
-            record = (data['content'],
+            record = (data['title'],data['content'],
                       posting_id,user_id)
             
             cursor = connection.cursor()
@@ -283,7 +279,7 @@ class PostingResource(Resource):
             connection.close()
             return{"Error" : str(e)},500
 
-        return{"Result" : "success"},200 
+        return{"result" : "success"},200 
     
 
     @jwt_required()
@@ -350,3 +346,53 @@ class PostingResource(Resource):
         return {
             "post" : post,
             "tag " : tag},200
+
+
+
+
+
+class PostingMeResource(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = get_jwt_identity()
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+        try:
+            connection = get_connection()
+            query = '''select id,userId,title,content,createdAt
+                        from posting
+                        where userId = %s
+                        order by createdAt desc
+                        limit '''+offset+''' , '''+limit+''' ;'''
+            
+            record = (user_id,)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query,record)
+
+            result_list = cursor.fetchall()
+           
+            print(result_list)
+            
+
+            # date time 은 파이썬에서 사용하는 데이터 타입이므로
+            # JSON 형식이 아니다. 따라서,
+            # JSOON은 문자열이나 숫자만 가능하므로
+            # datetime을 문자열로 바꿔주어야 한다. 
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(Error)
+            cursor.close()
+            connection.close()
+            return{"ERROR" : str(e)},500 
+
+        # 날짜 포맷 변경 
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            i = i+1
+
+        return {"result" : "success",
+            "items" : result_list,
+            "count" : len(result_list)},200
