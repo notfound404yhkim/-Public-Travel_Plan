@@ -6,7 +6,7 @@ from mysql.connector import Error
 from email_validator import validate_email, EmailNotValidError
 from utils import check_password, hash_password
 
-
+# 회원가입
 class UserRegisterResource(Resource):
     
     def post(self):
@@ -75,8 +75,9 @@ class UserRegisterResource(Resource):
         return {'result' : 'success' , 
                 'access_token' : access_token },200
     
-
+# 로그인
 class UserLoginResource(Resource):
+    
     def post(self):
 
         #1. 클라이언트로 부터 데이터를 받아온다.
@@ -129,8 +130,8 @@ class UserLoginResource(Resource):
         #access_token = create_access_token(result_list[0]['id'], expires_delta = datetime.timedelta(minutes=2))
         return {"result" : "success", "accessToken" :access_token },205
     
+# 로그아웃    
 jwt_blocklist = set()
-
 class UserLogoutResource(Resource):
     #jwt 필수
     @jwt_required()
@@ -141,4 +142,36 @@ class UserLogoutResource(Resource):
         jwt_blocklist.add(jti)
 
 
-        return {"result" : "success"},200
+        return {"result" : "success"}, 200
+    
+# 회원탈퇴
+class UserSecedeResource(Resource) :
+
+    @jwt_required()
+    def delete(self) :
+
+        user_id = get_jwt_identity()
+        
+        try :
+            connection = get_connection()
+
+            query = '''
+                    delete from user
+                    where id = %s;
+                    '''
+            record = (user_id, )
+
+            cursor = connection.cursor()
+            cursor.execute(query, record)
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e :
+            print(e)
+            cursor.close()
+            connection.close()
+            return {"error" : str(e)}, 500
+
+        return {"result" : "success"}, 200    
