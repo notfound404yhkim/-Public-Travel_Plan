@@ -11,7 +11,7 @@ from resources.history import planResource
 
 
 #  로그 아웃 관련된 임포트문. 
-from resources.user import UserLoginResource, UserLogoutResource, UserRegisterResource, jwt_blocklist
+from resources.user import UserLoginResource, UserLogoutResource, UserRegisterResource, UserSecedeResource, jwt_blocklist
 
 
 app = Flask(__name__)
@@ -39,6 +39,7 @@ def check_if_token_is_revoked(jwt_header,jwt_payload):
 api.add_resource( UserRegisterResource ,'/user/register')
 api.add_resource( UserLoginResource,'/user/login')
 api.add_resource( UserLogoutResource ,'/user/logout')
+api.add_resource( UserSecedeResource, "/user/secede") # 회원 탈퇴
 
 api.add_resource( PostingListResource,'/posting') #포스팅 작성 , 팔로워한 포스팅 보기 
 api.add_resource( PostingResource ,'/posting/<int:posting_id>') # 포스팅 삭제 , 수정 ,상세보기
