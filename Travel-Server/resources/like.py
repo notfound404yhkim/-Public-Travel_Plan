@@ -34,7 +34,7 @@ class LikeResource(Resource):
             connection.close()
             return{"ERROR" : str(e)},500
         
-        return{"Result " : "Success" },200
+        return{"result" : "Success" },200
         
     @jwt_required()
     def delete(self,posting_id):
@@ -60,5 +60,5 @@ class LikeResource(Resource):
             connection.close()
             return{"ERROR" : str(e)},500
         
-        return{"Result " : "Success" },200
+        return{"result" : "Success" },200
     

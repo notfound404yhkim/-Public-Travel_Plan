@@ -6,6 +6,7 @@ from mysql_connection import get_connection
 from mysql.connector import Error
 import boto3
 from datetime import datetime
+import re
 
 #축제 또는 핫플 관련 
 class placeResource(Resource):
@@ -19,6 +20,10 @@ class placeResource(Resource):
         placeName = request.form.get('placeName')
         content = request.form.get('content')
         file = request.files.get('image')
+
+        #공백 안들어가게 처리
+        region = region.strip()
+        placeName = placeName.strip()
        
         user_id = get_jwt_identity()
 

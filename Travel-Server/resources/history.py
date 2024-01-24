@@ -8,11 +8,11 @@ import boto3
 import openai
 from datetime import datetime,timedelta
 import time
-
+import re
 
 openai.api_key = Config.openapi_key
 
-
+#GPT 대화 내용 생성 
 class historyResource(Resource):
 
     def generate_text(self,prompt):
@@ -52,19 +52,25 @@ class historyResource(Resource):
         keyward = days + '간의 ' + region + '여행 일정을 일별로 계획해줘, 저녁 일정 소개 후 [next]를 붙여줘'
 
         plan = self.generate_text(keyward)
-        time.sleep(0.5) #gpt의 대답 속도를 고려해서 대기 시간 추가.
-
+        
         plan = plan.split('[next]')
+      
+        #공백 안들어가게 처리
+        # 1일 선택시 0번째 항목 빼고 전부 제거,(1일인데 다수 기록 나오는 오류 방지용)
+        i = 0
+        if days == "1일":
+           for i in range(len(plan)-1, 0, -1):
+                plan.pop(i)
+        else:
+            for sentence in plan:
+                plan[i] = sentence.strip()
+                print(sentence)
+                i = i+1
 
-        for sentence in plan:
-            print(sentence)
-
-        print(strDate)
-        print(endDate)
-
+        
         try :
+            #여행 기간에 따라 변경되는 쿼리.
             connection = get_connection()
-
             if len(plan) == 1:
                 query = '''insert into history
                     (userId, region,firstDay,strDate,endDate)
@@ -94,6 +100,13 @@ class historyResource(Resource):
                         (%s, %s, %s,%s,%s,%s,%s,%s);'''
                 record = (user_id,region,plan[0],plan[1],plan[2],plan[3],strDateTime,endDateTime)
 
+            elif len(plan) == 5:
+                query = '''insert into history
+                        (userId,region, firstDay,secondDay,thirdDay,fourthDay,fifthDay,strDate,endDate)
+                        values
+                        (%s, %s, %s,%s,%s,%s,%s,%s,%s);'''
+                record = (user_id,region,plan[0],plan[1],plan[2],plan[3],plan[4],strDateTime,endDateTime)
+
             cursor = connection.cursor()
             cursor.execute(query, record)
 
@@ -109,6 +122,7 @@ class historyResource(Resource):
 
         return {'result' : 'success'}, 200
     
+#GPT 대화내역 리스트 
 class historyListResource(Resource):
     @jwt_required()
     def get(self):
@@ -142,16 +156,55 @@ class historyListResource(Resource):
         for row in result_list:
             result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
             result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
-            #result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
+            result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
             i = i+1
 
         return {"result" : "success",
             "items" : result_list,
             "count" : len(result_list)},200
 
-   
+#GPT 대화내역 상세보기 
+class historyInfoResource(Resource):
+    @jwt_required()
+    def get(self,history_id):
 
-    
-    
+        user_id = get_jwt_identity()
+       
+      
+        try:
+            connection = get_connection()
+            query = '''
+                    select id, userId, region, firstDay, secondDay, thirdDay,fourthDay,fifthDay,createdAt,strDate,endDate
+                    from history
+                    where userId = %s and id = %s;
+                    '''
+            record = (user_id,history_id)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query,record)
+
+            result_list = cursor.fetchall()
+           
+            # print(result_list)
+            
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(Error)
+            cursor.close()
+            connection.close()
+            return{"ERROR" : str(e)},500 
+
+        # 날짜 포맷 변경 
+        i = 0
+
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['strDate'] = row['strDate'].isoformat()
+            result_list[i]['endDate'] = row['endDate'].isoformat()
+            i = i+1
+
+        return {"result" : "success", "items" : result_list}, 200
+        
     
 
