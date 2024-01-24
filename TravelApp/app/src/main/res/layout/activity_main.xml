@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:id="@+id/Main_toolbar"
-        android:background="@drawable/line_bottom"
-        >
+        android:background="@drawable/line_bottom">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,13 +22,37 @@
             android:layout_centerInParent="true"/>
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Main_toolbar">
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AI 추천"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="핫플콕콕"/>
+        </com.google.android.material.tabs.TabLayout>
+
+    </RelativeLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/Main_toolbar"
+        android:layout_below="@id/Main_toolbar"
         android:layout_above="@id/divider"
-        android:id="@+id/main_frame_layout"
-        />
+        android:id="@+id/main_frame_layout"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -44,8 +68,6 @@
         android:layout_marginBottom="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:menu="@menu/bottom_navigation_menu"
-        app:labelVisibilityMode="labeled"
-        />
-
+        app:labelVisibilityMode="labeled"/>
 
 </RelativeLayout>
