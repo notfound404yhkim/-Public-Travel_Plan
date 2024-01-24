@@ -7,9 +7,8 @@ from mysql.connector import Error
 import boto3
 from datetime import datetime
 
-
+# 기록 관련
 class PostingListResource(Resource):
-
 
     def detect_labels(self, photo, bucket):
 
@@ -38,9 +37,8 @@ class PostingListResource(Resource):
             
 
         return label_list
-
-
-
+    
+    # 기록 작성
     @jwt_required()
     def post(self) :
 
@@ -167,42 +165,34 @@ class PostingListResource(Resource):
 
         return {'result' : 'success'}, 200
 
-    
+    # 나를 제외한 모든 회원 기록 리스트 보기 (좋아요 순)
     @jwt_required()
     def get(self):
+
         user_id = get_jwt_identity()
         offset = request.args.get('offset')
         limit = request.args.get('limit')
+
         try:
             connection = get_connection()
-            query = '''select p.id postId, p.imgUrl, p.content,
-                        u.id userId, u.email ,
-                        p.createdAt, count(l.id) as likeCnt, if(l2.id is null, 0,1) as isLike
-                        from follow f
-                        join posting p
-                        on f.followeeId = p.userId
-                        join user u 
-                        on p.userId = u.id
-                        left join likes l 
-                        on p.id = l.postingId
-                        left join likes l2
-                        on p.id = l2.postingId and l2.userId = %s
-                        where f.followerId = %s
-                        group by p.id
-                        order by p.createdAt desc
-                        limit '''+offset+''' , '''+limit+''' ;'''
+            query = '''
+                    select p.id, p.userId, p.imgUrl, p.title, p.content, p.createdAt, count(l.id) as likeCnt
+                    from posting p
+                    left join likes l
+                    on p.id = l.postingId
+                    where p.userId != %s
+                    group by p.id
+                    order by likeCnt desc
+                    limit ''' + offset + ''' , ''' + limit + ''';
+                    '''
             
-            record = (user_id,user_id)
+            record = (user_id, )
             cursor = connection.cursor(dictionary=True)
-            cursor.execute(query,record)
+            cursor.execute(query, record)
 
             result_list = cursor.fetchall()
-            print(result_list)
+            # print(result_list)
 
-            # date time 은 파이썬에서 사용하는 데이터 타입이므로
-            # JSON 형식이 아니다. 따라서,
-            # JSOON은 문자열이나 숫자만 가능하므로
-            # datetime을 문자열로 바꿔주어야 한다. 
             cursor.close()
             connection.close()
 
@@ -210,7 +200,7 @@ class PostingListResource(Resource):
             print(Error)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
+            return{"error" : str(e)},500 
 
         # 날짜 포맷 변경 
         i = 0
@@ -218,12 +208,12 @@ class PostingListResource(Resource):
             result_list[i]['createdAt'] = row['createdAt'].isoformat()
             i = i+1
 
-        return {"result" : "success",
-            "items" : result_list,
-            "count " : len(result_list)},200
+        return {"result" : "success", "items" : result_list, "count " : len(result_list)}, 200
     
-
+# 기록 관련
 class PostingResource(Resource):
+
+    # 기록 삭제
     @jwt_required()
     def delete(self,posting_id):
         user_id = get_jwt_identity()
@@ -251,6 +241,7 @@ class PostingResource(Resource):
 
         return{"result" : "success"},200 
     
+    #기록 수정
     @jwt_required()
     def put(self,posting_id):
         data = request.get_json()
@@ -281,43 +272,50 @@ class PostingResource(Resource):
 
         return{"result" : "success"},200 
     
-
+    # 기록 상세보기
     @jwt_required()
-    def get(self,posting_id):
+    def get(self, posting_id):
         user_id = get_jwt_identity()
+
         try:
             connection = get_connection()
-            query = '''select p.id postId, p.imgUrl, p.content,
-                        u.id userId, u.email , 
-                        p.createdAt, count(l.id) as likeCnt,if(l2.id is null, 0,1) as isLike
-                        from posting p
-                        join user u 
-                        on p.userId = u.id
-                        left join likes l 
-                        on p.id = l.postingId
-                        left join likes l2
-                        on p.id = l2.postingId and l2.userId = %s
-                        where p.id = %s;'''
-            
-            record = (user_id,posting_id)
+
+            query = '''
+                    select p.id postId, p.title, p.imgUrl, p.content,
+                    u.id userId, u.name, p.createdAt, count(l.id) as likeCnt, if(l2.id is null, 0,1) as isLike, 
+                    count(b.id) as bookmarkCnt, if(b2.id is null, 0, 1) as isBookmark
+                    from posting p
+                    join user u 
+                    on p.userId = u.id
+                    left join likes l 
+                    on p.id = l.postingId
+                    left join likes l2
+                    on p.id = l2.postingId and l2.userId = %s
+                    left join bookmark b
+                    on p.id = b.postingId
+                    left join bookmark b2
+                    on p.id = b2.postingId and b2.userId = %s
+                    where p.id = %s;
+                    '''
+            record = (user_id, user_id, posting_id)
             cursor = connection.cursor(dictionary=True)
-            cursor.execute(query,record)
+
+            cursor.execute(query, record)
 
             result_list = cursor.fetchall()
-            if result_list[0]['postId'] == None:
-                return {'error' : '데이터 없음'},400
+
+            # if result_list[0]['postId'] == None:
+            #     return {'error' : '데이터 없음'},400
             
             post = result_list[0]
-            
-           
 
-            query = '''select concat('#',name) as tag
+            query = '''select concat('# ',name) as tag
                         from tag t
                         join tag_name tn
                         on t.tagNameId = tn.id
                         where t.postingId = %s;'''
             
-            record = (posting_id,)
+            record = (posting_id, )
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query,record)
 
@@ -328,7 +326,6 @@ class PostingResource(Resource):
             for tag_dict in result_list:
                 tag.append(tag_dict['tag'])
 
-
             cursor.close()
             connection.close()
 
@@ -337,47 +334,39 @@ class PostingResource(Resource):
             cursor.close()
             connection.close()
             return{"Error" : str(e)},500
-        
     
         post['createdAt'] = post['createdAt'].isoformat()
-        print(post)
-        print(tag)
 
-        return {
-            "post" : post,
-            "tag " : tag},200
+        return {"post" : post, "tag " : tag}, 200
 
-
-
-
-
+# 내 기록 리스트 보기(최신날짜 순)
 class PostingMeResource(Resource):
+
     @jwt_required()
     def get(self):
+
         user_id = get_jwt_identity()
         offset = request.args.get('offset')
         limit = request.args.get('limit')
+
         try:
             connection = get_connection()
-            query = '''select id,userId,title,content,createdAt
-                        from posting
-                        where userId = %s
-                        order by createdAt desc
-                        limit '''+offset+''' , '''+limit+''' ;'''
-            
+
+            query = '''
+                    select id, userId, imgUrl, title, content, createdAt
+                    from posting
+                    where userId = %s
+                    order by createdAt desc
+                    limit '''+ offset + ''' , ''' + limit + ''';
+                    '''
             record = (user_id,)
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query,record)
 
             result_list = cursor.fetchall()
            
-            print(result_list)
+            # print(result_list)
             
-
-            # date time 은 파이썬에서 사용하는 데이터 타입이므로
-            # JSON 형식이 아니다. 따라서,
-            # JSOON은 문자열이나 숫자만 가능하므로
-            # datetime을 문자열로 바꿔주어야 한다. 
             cursor.close()
             connection.close()
 
@@ -393,6 +382,4 @@ class PostingMeResource(Resource):
             result_list[i]['createdAt'] = row['createdAt'].isoformat()
             i = i+1
 
-        return {"result" : "success",
-            "items" : result_list,
-            "count" : len(result_list)},200
+        return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200
