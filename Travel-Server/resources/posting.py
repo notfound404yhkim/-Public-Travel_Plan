@@ -359,7 +359,7 @@ class PostingMeResource(Resource):
         limit = request.args.get('limit')
         try:
             connection = get_connection()
-            query = '''select id,userId,title,content,createdAt
+            query = '''select id,userId,title,imgUrl,content,createdAt
                         from posting
                         where userId = %s
                         order by createdAt desc

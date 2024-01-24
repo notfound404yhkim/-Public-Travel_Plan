@@ -18,18 +18,7 @@ class placeResource(Resource):
         placeName = request.form.get('placeName')
         content = request.form.get('content')
         file = request.files.get('image')
-        strDate = request.form.get('strDate')
-        endDate = request.form.get('endDate')
-
-        strDate = datetime.strptime(strDate, "%Y-%m-%d")
-
-        print("축제 시작 날짜:", strDate)  ##날짜 형식 2023-09-15
-
-        endDate = datetime.strptime(endDate, "%Y-%m-%d")
-
-        print("축제 끝나는 날짜:", endDate)  ##날짜 형식 2023-09-17
-
-        
+       
         user_id = get_jwt_identity()
 
         # 2. 사진을 s3에 저장한다.
@@ -65,7 +54,7 @@ class placeResource(Resource):
         try :
             connection = get_connection()
 
-            if option == 0:   #핫플인경우 
+            if option == '0':   #핫플인경우 
 
                 query = '''insert into place
                         (userId, `option`,region,placeName,content,imgurl)
@@ -76,6 +65,18 @@ class placeResource(Resource):
                         Config.S3_LOCATION+new_file_name)
                 
             else :  #축제인경우 
+
+                strDate = request.form.get('strDate')
+                endDate = request.form.get('endDate')
+
+                strDate = datetime.strptime(strDate, "%Y-%m-%d")
+
+                print("축제 시작 날짜:", strDate)  ##날짜 형식 2023-09-15
+
+                endDate = datetime.strptime(endDate, "%Y-%m-%d")
+
+                print("축제 끝나는 날짜:", endDate)  ##날짜 형식 2023-09-17
+
                 query = '''insert into place
                         (userId, `option`,region,placeName,content,imgurl,strDate,endDate)
                         values
