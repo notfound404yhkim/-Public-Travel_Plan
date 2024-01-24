@@ -1,14 +1,14 @@
-package com.example.myapplication1;
+package com.example.travelapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class PasswordActivity extends AppCompatActivity {
+public class PlaceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_password);
+        setContentView(R.layout.activity_place);
     }
 }

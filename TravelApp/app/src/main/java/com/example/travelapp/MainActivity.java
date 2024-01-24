@@ -1,10 +1,12 @@
-package com.example.myapplication1;
+package com.example.travelapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.os.Bundle;
 import android.view.MenuItem;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -18,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     ProfileFragment profileFragment;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mapFragment = new MapFragment();
         communityFragment = new CommunityFragment();
         profileFragment = new ProfileFragment();
+
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 

@@ -14,21 +14,15 @@
         android:background="@drawable/line_bottom">
 
         <TextView
+            android:id="@+id/txt_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="여행 시작과 끝"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
-
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/Main_toolbar">
-
-    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -50,7 +44,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:menu="@menu/bottom_navigation_menu"
-        app:labelVisibilityMode="labeled"/>
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </RelativeLayout>
