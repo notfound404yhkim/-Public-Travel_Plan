@@ -8,7 +8,7 @@ import boto3
 import openai
 from datetime import datetime
 
-openai.api_key = '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'
+openai.api_key = Config.openapi_key
 
 
 class planResource(Resource):
