@@ -9,7 +9,7 @@ from resources.like import LikeResource
 from resources.mypage import UserInfoResource
 from resources.posting import PostingListResource, PostingResource,PostingMeResource
 from resources.history import historyResource,historyListResource
-from resources.place import placeResource,placeListResource
+from resources.place import placeResource,placeListResource,placeInfoResource
 
 
 #  로그 아웃 관련된 임포트문. 
@@ -51,7 +51,9 @@ api.add_resource( PostingMeResource, '/posting/me') # 내 기록 리스트 보�
 
 api.add_resource( historyResource,'/history') # A.I 여행 계획 기록 작성 
 api.add_resource( historyListResource,'/historylist') # A.I 히스토리 
-api.add_resource( placeResource,'/place') #축제 또는 핫플 작성 
+
+api.add_resource( placeResource,'/place') #축제 또는 핫플 작성,  축제 또는 핫플 이미지 가져오기 
+api.add_resource( placeInfoResource,'/place/<int:place_id>') #축제 또는 핫플 상세 보기 
 api.add_resource( placeListResource,'/placelist') # 축제 또는 핫플 목록 
 
 api.add_resource( FollowResource , '/follow/<int:followee_id>') #친구 추가, 삭제 
