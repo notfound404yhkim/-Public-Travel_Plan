@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:weightSum="100">
 
     <ScrollView
@@ -21,7 +22,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_margin="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -122,7 +124,7 @@
                 android:id="@+id/btn_select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_margin="10dp"
                 android:backgroundTint="@color/my_blue"
                 android:text="선택완료"
                 android:textColor="@color/white"
@@ -164,28 +166,37 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:src="@drawable/add_photo" />
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:src="@drawable/icon_paw" />
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:src="@drawable/back_icon" />
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:src="@drawable/icon_plane" />
             </ViewFlipper>
+            <RelativeLayout
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/my_secondry"
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
