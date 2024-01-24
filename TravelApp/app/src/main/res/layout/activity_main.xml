@@ -28,23 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/Main_toolbar">
 
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="AI 추천"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="핫플콕콕"/>
-        </com.google.android.material.tabs.TabLayout>
-
     </RelativeLayout>
 
     <FrameLayout
