@@ -36,7 +36,7 @@ class UserRegisterResource(Resource):
 
         #4. 비밀번호를 암호화 한다.
         password = hash_password(data['password'])
-        print(password)
+        # print(password)
 
         #5. DB의 user 테이블에 저장 
         try:
@@ -99,7 +99,7 @@ class UserLoginResource(Resource):
             cursor.execute(query,record)
             
             result_list = cursor.fetchall() #가져온 데이터
-            print(result_list)
+            # print(result_list)
 
             cursor.close()
             connection.close()
