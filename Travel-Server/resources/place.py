@@ -42,7 +42,7 @@ class placeResource(Resource):
 
         current_time = datetime.now()
 
-        new_file_name = current_time.isoformat().replace(':', '_') + placeName + '.jpg'  
+        new_file_name = current_time.isoformat().replace(':', '_') + str(user_id) + '.jpg'  
 
         # 유저가 올린 파일의 이름을, 
         # 새로운 파일 이름으로 변경한다. 
@@ -99,3 +99,63 @@ class placeResource(Resource):
             return {'error' : str(e)}, 500
 
         return {'result' : 'success'}, 200
+    
+class placeListResource(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = get_jwt_identity()
+        region = request.args.get('region')
+        option = request.args.get('option')
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+
+        print(option)
+        try:
+            connection = get_connection()
+
+            if option == '0':
+                query = '''select id,region,placeName,imgUrl,content,createdAt
+                            from place
+                            where region = %s and place.option = 0
+                            order by createdAt desc
+                            limit '''+offset+''' , '''+limit+''' ;'''
+                
+            elif option == '1':
+                query = '''select id,region,placeName,imgUrl,content,strDate,endDate,createdAt
+                            from place
+                            where region = %s and place.option = 1
+                            order by createdAt desc
+                            limit '''+offset+''' , '''+limit+''' ;'''
+            
+            record = (region,)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query,record)
+
+            result_list = cursor.fetchall()
+           
+            print(result_list)
+            
+
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(Error)
+            cursor.close()
+            connection.close()
+            return{"ERROR" : str(e)},500 
+
+        # 날짜 포맷 변경 
+
+        # 날짜를 원하는 형식으로 문자열로 변환
+   
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
+            result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
+            result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
+            i = i+1
+
+        return {"result" : "success",
+            "items" : result_list,
+            "count" : len(result_list)},200

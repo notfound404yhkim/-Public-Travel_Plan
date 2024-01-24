@@ -108,6 +108,46 @@ class historyResource(Resource):
             return {'error' : str(e)}, 500
 
         return {'result' : 'success'}, 200
+    
+class historyListResource(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = get_jwt_identity()
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+        try:
+            connection = get_connection()
+            query = '''select id,region,createdAt,strDate,endDate
+                        from history
+                        where userId = %s
+                        order by createdAt desc
+                        limit '''+offset+''' , '''+limit+''' ;'''
+            
+            record = (user_id,)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query,record)
+            result_list = cursor.fetchall()
+            print(result_list)
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(Error)
+            cursor.close()
+            connection.close()
+            return{"ERROR" : str(e)},500 
+
+        # 날짜 포맷 변경 
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
+            result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
+            #result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
+            i = i+1
+
+        return {"result" : "success",
+            "items" : result_list,
+            "count" : len(result_list)},200
 
    
 

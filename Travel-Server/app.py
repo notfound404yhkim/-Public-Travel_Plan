@@ -7,8 +7,8 @@ from config import Config
 from resources.follow import FollowResource
 from resources.like import LikeResource
 from resources.posting import PostingListResource, PostingResource,PostingMeResource
-from resources.history import historyResource
-from resources.place import placeResource
+from resources.history import historyResource,historyListResource
+from resources.place import placeResource,placeListResource
 
 
 #  로그 아웃 관련된 임포트문. 
@@ -47,10 +47,11 @@ api.add_resource( PostingResource ,'/posting/<int:posting_id>') # 포스팅 삭�
 api.add_resource( PostingMeResource ,'/posting/me') # 내 포스팅 보기 
 
 
-api.add_resource( historyResource,'/history') # A.I 여행 기록 작성 
-api.add_resource( placeResource,'/place') #축제 또는  핫플 작성 
+api.add_resource( historyResource,'/history') # A.I 여행 계획 기록 작성 
+api.add_resource( historyListResource,'/historylist') # A.I 히스토리 
 
-
+api.add_resource( placeResource,'/place') #축제 또는 핫플 작성 
+api.add_resource( placeListResource,'/placelist') # 축제 또는 핫플 목록 
 
 
 api.add_resource( FollowResource , '/follow/<int:followee_id>') #친구 추가, 삭제 
