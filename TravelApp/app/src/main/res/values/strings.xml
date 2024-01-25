@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TravelApp</string>
+
+    <string name="my_map_api_key">AIzaSyD6HsJ5h4ZifYybaQ_KimwKpd7as-B5qr0</string>
+</resources>
