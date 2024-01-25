@@ -146,7 +146,7 @@ class placeResource(Resource):
             print(Error)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
+            return{"error" : str(e)},500 
 
         return {"result" : "success",
             "items" : result_list,
@@ -191,7 +191,7 @@ class placeInfoResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"Error" : str(e)},500
+            return{"error" : str(e)},500
         #축제인 경우만 날짜 처리 
         if option == '1' :
             i = 0

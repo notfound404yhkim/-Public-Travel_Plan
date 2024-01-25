@@ -32,9 +32,9 @@ class BookmarkResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500
+            return{"error" : str(e)},500
         
-        return{"result" : "Success" },200
+        return{"result" : "success" },200
         
     @jwt_required()
     def delete(self,posting_id):
@@ -57,7 +57,7 @@ class BookmarkResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500
+            return{"error" : str(e)},500
         
-        return{"result" : "Success" },200
+        return{"result" : "success" },200
     

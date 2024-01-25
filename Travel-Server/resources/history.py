@@ -149,7 +149,7 @@ class historyListResource(Resource):
             print(Error)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
+            return{"error" : str(e)},500 
 
         # 날짜 포맷 변경 
         i = 0
@@ -193,7 +193,7 @@ class historyInfoResource(Resource):
             print(Error)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
+            return{"error" : str(e)},500 
 
         # 날짜 포맷 변경 
         i = 0

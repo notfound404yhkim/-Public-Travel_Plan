@@ -67,7 +67,7 @@ class CommentResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"Error" : str(e)},500
+            return{"error" : str(e)},500
 
         return{"result" : "success"},200 
     
@@ -99,7 +99,7 @@ class CommentResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"Error" : str(e)},500
+            return{"error" : str(e)},500
 
         return{"result" : "success"},200 
     
