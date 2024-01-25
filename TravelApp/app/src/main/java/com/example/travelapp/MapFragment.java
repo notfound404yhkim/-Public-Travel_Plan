@@ -78,7 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         // 마커 추가 및 카메라 이동
                         mMap.addMarker(new MarkerOptions().position(latLng).title("검색 위치"));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
                     } else {
                         Toast.makeText(requireContext(), "검색 결과를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
