@@ -243,7 +243,8 @@ class placeListResource(Resource):
                 i = 0
                 for row in result_list:
                     result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
-                    i = i+1 
+
+                    i = i+1
 
             elif option == '1' :
                 i = 0
@@ -251,17 +252,20 @@ class placeListResource(Resource):
                     result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
                     result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
                     result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
-                    i = i+1        
+                    i = i+1
                     
             cursor.close()
             connection.close()
 
         except Error as e:
-            print(Error)
+            print(e)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
+            
+            return{"error" : str(e)}, 500
+
 
         return {"result" : "success",
             "items" : result_list,
             "count" : len(result_list)},200
+

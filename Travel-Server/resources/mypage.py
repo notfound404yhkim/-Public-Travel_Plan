@@ -167,5 +167,204 @@ class UserInfoResource(Resource) :
 
         return {"result" : "success", "items" : result_list}, 200
     
-
+# 내 일정 추가, 리스트
+class myScheduleListResource(Resource) :
     
+    # 내 일정 추가
+    @jwt_required()
+    def post(self) :
+
+        user_id = get_jwt_identity()
+
+        place_list = request.args.getlist("place")
+        place_list = [x for x in place_list if x.strip()]
+
+        data = request.get_json()
+
+        print(place_list)
+        
+        try :
+            connection = get_connection()
+
+            query = '''
+                    insert into mySchedule
+                    (userId, region, strDate, endDate, content)
+                    values
+                    (%s, %s, %s, %s, %s);
+                    '''
+            record = (user_id, data["region"], data["strDate"], data["endDate"], data["content"])
+            cursor = connection.cursor()
+            cursor.execute(query, record)
+
+            myScheduleId = cursor.lastrowid
+
+            print("추가된 일정테이블 id : " + str(myScheduleId))
+
+            for place in place_list :
+
+                query = '''
+                        select imgUrl 
+                        from place
+                        where place.option = 0 and placeName = %s;
+                        '''
+                record = (place, )
+                cursor = connection.cursor(dictionary=True)
+                cursor.execute(query, record)
+
+                imgUrl = cursor.fetchone()
+
+                print(imgUrl)
+
+                query = '''
+                        insert into mySchedule_place
+                        (myScheduleId, name, imgUrl)
+                        values
+                        (%s, %s, %s);
+                        '''
+                record = (myScheduleId, place, imgUrl["imgUrl"])
+                cursor = connection.cursor()
+                cursor.execute(query, record)
+                
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e :
+            print(e)
+            cursor.close()
+            connection.close()
+            return {"error" : str(e)}, 500
+        
+        return {"result" : "success"}, 200    
+
+    # 내 일정 리스트     
+    @jwt_required()
+    def get(self) :
+
+        user_id = get_jwt_identity()
+
+        try :
+            connection = get_connection()
+
+            query = '''
+                    select m.*, mp.imgUrl 
+                    from mySchedule m
+                    join mySchedule_place mp
+                    on m.id = mp.myScheduleId
+                    where m.userId = %s
+                    group by m.id
+                    order by createdAt desc; 
+                    '''
+            record = (user_id, )
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e :
+            print(e)
+            cursor.close()
+            connection.close()
+            return {"error" : str(e)}, 500
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            result_list[i]['strDate'] = row['strDate'].isoformat()
+            result_list[i]['endDate'] = row['endDate'].isoformat()
+            i = i+1
+        
+        return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200
+    
+# 내 일정 상세보기
+class myScheduleResource(Resource) :
+    
+    @jwt_required()
+    def get(self, myScheduleId) :
+
+        try :
+            connection = get_connection()
+
+            query = '''
+                    select *
+                    from mySchedule
+                    where id = %s;
+                    '''
+            record = (myScheduleId, )
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result = cursor.fetchone()
+
+            query = '''
+                    select id, name, imgUrl
+                    from mySchedule_place
+                    where myScheduleId = %s;
+                    '''
+            record = (myScheduleId, )
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            place_list = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e :
+            print(e)
+            cursor.close()
+            connection.close()
+            return {"error" : str(e)}, 500
+        
+        result['createdAt'] = result['createdAt'].isoformat()
+        result['strDate'] = result['strDate'].isoformat()
+        result['endDate'] = result['endDate'].isoformat()
+
+        return {"result" : "success", "items" : result, "place_list" : place_list}, 200
+    
+# 북마크한 포스팅 리스트
+class bookmarkListResource(Resource) :
+
+    @jwt_required()
+    def get(self) :
+
+        user_id = get_jwt_identity()
+
+        try :
+            connection = get_connection()
+
+            query = '''
+                    select b.id, b.postingId, p.imgUrl, p.title, p.content, p.createdAt, u.name
+                    from bookmark b
+                    left join posting p
+                    on b.postingId = p.id
+                    left join user u 
+                    on u.id = p.userId
+                    where b.userId = %s
+                    order by p.createdAt desc;
+                    '''
+            record = (user_id, )
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            result_list = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e :
+            print(e)
+            cursor.close()
+            connection.close()
+            return {"error" : str(e)}, 500
+        
+        i = 0
+        for row in result_list:
+            result_list[i]['createdAt'] = row['createdAt'].isoformat()
+            i = i+1
+
+        return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200         

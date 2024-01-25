@@ -319,12 +319,25 @@ class PostingResource(Resource):
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query,record)
 
-            result_list  = cursor.fetchall()
+            result_list = cursor.fetchall()
             #print(result_list)
 
             tag = []
             for tag_dict in result_list:
                 tag.append(tag_dict['tag'])
+
+            query = '''
+                    select c.id, u.id, u.name, u.profileImg, c.content
+                    from comment c
+                    left join user u
+                    on c.userId = u.Id
+                    where c.postingId = %s;
+                    '''    
+            record = (posting_id, )
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+
+            comment_list = cursor.fetchall()
 
             cursor.close()
             connection.close()
@@ -333,11 +346,11 @@ class PostingResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"Error" : str(e)},500
+            return {"error" : str(e)},500
     
         post['createdAt'] = post['createdAt'].isoformat()
 
-        return {"post" : post, "tag " : tag}, 200
+        return {"result" : "success", "items" : post, "tag" : tag, "comments" : comment_list }, 200
 
 # 내 기록 리스트 보기(최신날짜 순)
 class PostingMeResource(Resource):
