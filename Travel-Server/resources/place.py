@@ -42,7 +42,7 @@ class placeResource(Resource):
 
         current_time = datetime.now()
 
-        new_file_name = current_time.isoformat().replace(':', '_') + placeName + '.jpg'  
+        new_file_name = current_time.isoformat().replace(':', '_') + str(user_id) + '.jpg'  
 
         # 유저가 올린 파일의 이름을, 
         # 새로운 파일 이름으로 변경한다. 
@@ -65,7 +65,7 @@ class placeResource(Resource):
         try :
             connection = get_connection()
 
-            if option == 0:   #핫플인경우 
+            if option == '0':   #핫플인경우 
 
                 query = '''insert into place
                         (userId, `option`,region,placeName,content,imgurl)
