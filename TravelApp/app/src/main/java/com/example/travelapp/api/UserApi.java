@@ -1,11 +1,15 @@
 package com.example.travelapp.api;
 
+import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface UserApi {
     // 회원가입 API
@@ -15,5 +19,9 @@ public interface UserApi {
     //로그인 API
     @POST("/user/login")
     Call<UserRes> login (@Body User user);
+
+    //회원탈퇴 API
+    @DELETE("/user/secede")
+    Call<Res> deleteUser(@Header("Authorization") String token);
 
 }

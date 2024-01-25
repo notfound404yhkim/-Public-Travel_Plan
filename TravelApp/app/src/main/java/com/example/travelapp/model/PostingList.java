@@ -3,10 +3,10 @@ package com.example.travelapp.model;
 import java.util.ArrayList;
 
 
-public class MemoList {
+public class PostingList {
 
     public String result;
-    public ArrayList<Memo> items;
+    public ArrayList<Posting> items;
 
     public int count;
 
