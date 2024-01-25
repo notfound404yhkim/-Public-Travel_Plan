@@ -2,6 +2,8 @@ package com.example.travelapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -29,11 +31,20 @@ import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import androidx.appcompat.widget.SearchView;
+
+import java.io.IOException;
+import java.util.List;
+
+
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
+
+
     private final int FINE_PERMISSION_CODE = 1;
     private GoogleMap mMap;
+    private SearchView mapSearchView;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -42,10 +53,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        mapSearchView = view.findViewById(R.id.MapSearch);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         getLastLocation();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        mapSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = mapSearchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if(location !=null){
+                    Geocoder geocoder = new Geocoder(requireContext());
+
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (addressList != null && !addressList.isEmpty()) {
+                        Address address = addressList.get(0);
+                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+                        // 마커 추가 및 카메라 이동
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("검색 위치"));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    } else {
+                        Toast.makeText(requireContext(), "검색 결과를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         if (mapFragment == null) {
             mapFragment = SupportMapFragment.newInstance();
@@ -113,7 +162,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
         }
     }
-
-
 }
-
