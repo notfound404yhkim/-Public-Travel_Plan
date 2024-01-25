@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/my_primary"
+    android:backgroundTint="#80FFFFFF"
     tools:context=".activity_upload">
 
     <Button
@@ -58,6 +59,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginBottom="80dp"
         android:background="@drawable/btn"
+        android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
