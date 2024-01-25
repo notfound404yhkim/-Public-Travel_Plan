@@ -6,7 +6,7 @@ from flask_restful import Api
 from config import Config
 from resources.follow import FollowResource
 from resources.like import LikeResource
-from resources.mypage import UserInfoResource
+from resources.mypage import UserInfoResource, bookmarkListResource, myScheduleListResource, myScheduleResource
 from resources.posting import PostingListResource, PostingResource,PostingMeResource
 from resources.history import historyResource,historyListResource
 from resources.place import placeResource,placeListResource
@@ -56,7 +56,11 @@ api.add_resource( placeListResource,'/placelist') # 축제 또는 핫플 목록
 
 api.add_resource( FollowResource , '/follow/<int:followee_id>') #친구 추가, 삭제 
 api.add_resource( LikeResource , '/like/<int:posting_id>') # 좋아요 ,좋아요 취소 
+
 api.add_resource( UserInfoResource, "/mypage/userInfo") # 프로필 정보, 프로필 수정
+api.add_resource( myScheduleListResource, "/mypage/mySchedule") # 일정 추가, 일정 리스트
+api.add_resource( myScheduleResource, "/mypage/mySchedule/<int:myScheduleId>") # 일정 상세보기
+api.add_resource( bookmarkListResource, "/mypage/bookmark") # 북마크한 글 리스트
 
 if __name__ == '__main__':
     app.run()
