@@ -135,27 +135,30 @@ class placeListResource(Resource):
            
             print(result_list)
             
+            if option == '0' :
+                i = 0
+                for row in result_list:
+                    result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
+                    i = i+1
+
+            elif option == '1' :
+                i = 0
+                for row in result_list:
+                    result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
+                    result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
+                    result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
+                    i = i+1
 
             cursor.close()
             connection.close()
 
         except Error as e:
-            print(Error)
+            print(e)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
-
-        # 날짜 포맷 변경 
-
-        # 날짜를 원하는 형식으로 문자열로 변환
-   
-        i = 0
-        for row in result_list:
-            result_list[i]['createdAt'] = row['createdAt'].isoformat().split("T")[0]
-            result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
-            result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
-            i = i+1
+            return{"error" : str(e)}, 500
 
         return {"result" : "success",
             "items" : result_list,
             "count" : len(result_list)},200
+
