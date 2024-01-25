@@ -37,10 +37,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
-
-
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private final int FINE_PERMISSION_CODE = 1;
     private GoogleMap mMap;
@@ -66,7 +63,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 String location = mapSearchView.getQuery().toString();
                 List<Address> addressList = null;
 
-                if(location !=null){
+                if (location != null) {
                     Geocoder geocoder = new Geocoder(requireContext());
 
                     try {
@@ -81,7 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                         // 마커 추가 및 카메라 이동
                         mMap.addMarker(new MarkerOptions().position(latLng).title("검색 위치"));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                     } else {
                         Toast.makeText(requireContext(), "검색 결과를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -136,19 +133,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         updateMap();
-
-        // OnPoiClickListener 등록
-        mMap.setOnPoiClickListener(this);
-    }
-
-    @Override
-    public void onPoiClick(PointOfInterest poi) {
-        // 클릭된 POI에 대한 처리 작업 수행
-        String poiName = poi.name;
-        LatLng poiLatLng = poi.latLng;
-
-        // 예를 들어, 클릭된 POI의 정보를 로그로 출력
-        Log.d("POI Clicked", "Name: " + poiName + ", Location: " + poiLatLng.toString());
     }
 
     @Override
