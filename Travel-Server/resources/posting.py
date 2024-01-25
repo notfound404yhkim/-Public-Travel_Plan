@@ -364,7 +364,6 @@ class PostingMeResource(Resource):
 
         try:
             connection = get_connection()
-
             query = '''
                     select id, userId, imgUrl, title, content, createdAt
                     from posting

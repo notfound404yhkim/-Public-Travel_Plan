@@ -6,7 +6,7 @@ from mysql.connector import Error
 
 
 # 좋아요, 관련 
-class LikeResource(Resource):
+class BookmarkResource(Resource):
     # 추가 
     @jwt_required()
     def post(self,posting_id):
@@ -15,7 +15,7 @@ class LikeResource(Resource):
 
         try:
             connection = get_connection()
-            query = '''insert into likes
+            query = '''insert into bookmark
                         (userId, postingId)
                         values
                         (%s,%s);'''
@@ -40,10 +40,9 @@ class LikeResource(Resource):
     def delete(self,posting_id):
         user_id = get_jwt_identity()
     
-
         try:
             connection = get_connection()
-            query = '''delete from likes
+            query = '''delete from bookmark
                        where userId = %s and postingId = %s;'''
             
             record = (user_id,posting_id)

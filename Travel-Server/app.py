@@ -6,10 +6,14 @@ from flask_restful import Api
 from config import Config
 from resources.follow import FollowResource
 from resources.like import LikeResource
+
+from resources.bookmark import BookmarkResource
 from resources.mypage import UserInfoResource, bookmarkListResource, myScheduleListResource, myScheduleResource
+
 from resources.posting import PostingListResource, PostingResource,PostingMeResource
-from resources.history import historyResource,historyListResource
-from resources.place import placeResource,placeListResource
+from resources.history import historyResource,historyListResource,historyInfoResource
+from resources.place import placeResource,placeListResource,placeInfoResource
+from resources.comment import CommentResource
 
 
 #  로그 아웃 관련된 임포트문. 
@@ -48,15 +52,22 @@ api.add_resource( PostingListResource, '/posting') # 기록 작성, 나를 제�
 api.add_resource( PostingResource, '/posting/<int:posting_id>') # 기록 수정, 기록 삭제, 기록 상세보기
 api.add_resource( PostingMeResource, '/posting/me') # 내 기록 리스트 보기 
 
+api.add_resource( CommentResource, '/comment/<int:posting_id>') # 댓글 추가, 삭제, 수정
 
-api.add_resource( historyResource,'/history') # A.I 여행 계획 기록 작성 
-api.add_resource( historyListResource,'/historylist') # A.I 히스토리 
-api.add_resource( placeResource,'/place') #축제 또는 핫플 작성 
-api.add_resource( placeListResource,'/placelist') # 축제 또는 핫플 목록 
+
+
+api.add_resource( historyResource,'/history') # GPT 대화 내용 생성
+api.add_resource( historyInfoResource,'/history/<int:history_id>') # GPT 대화 내용 상세보기
+api.add_resource( historyListResource,'/historylist') # GPT 대화 내용 리스트 가져오기
+
+api.add_resource( placeResource,'/place') #축제 또는 핫플 작성,  축제 또는 핫플 이미지 가져오기 
+api.add_resource( placeInfoResource,'/place/<int:place_id>') #축제 또는 핫플 상세 보기 
+api.add_resource( placeListResource,'/placelist') # 축제 또는 핫플 리스트 보기  
 
 api.add_resource( FollowResource , '/follow/<int:followee_id>') #친구 추가, 삭제 
 api.add_resource( LikeResource , '/like/<int:posting_id>') # 좋아요 ,좋아요 취소 
 
+api.add_resource( BookmarkResource , '/bookmark/<int:posting_id>') # 즐겨찾기 ,즐겨찾기 취소 
 api.add_resource( UserInfoResource, "/mypage/userInfo") # 프로필 정보, 프로필 수정
 api.add_resource( myScheduleListResource, "/mypage/mySchedule") # 일정 추가, 일정 리스트
 api.add_resource( myScheduleResource, "/mypage/mySchedule/<int:myScheduleId>") # 일정 상세보기

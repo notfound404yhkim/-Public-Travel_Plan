@@ -7,6 +7,7 @@ def get_connection():
         host = Config.HOST,
         database = Config.DATABASE,
         user = Config.DB_USER,
-        password = Config.DB_PASSWORD
-    )
+        password = Config.DB_PASSWORD,
+        connection_timeout=300 
+    )#타임아웃을 5분으로 설정 
     return connection
