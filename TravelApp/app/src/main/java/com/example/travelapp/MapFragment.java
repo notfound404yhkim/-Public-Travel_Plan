@@ -1,6 +1,8 @@
 package com.example.travelapp;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,11 +40,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, PlaceSelectionListener {
 
     private final int FINE_PERMISSION_CODE = 1;
     private GoogleMap mMap;
-    private AutocompleteSupportFragment autocompleteFragment;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private PlacesClient placesClient;
     private LatLng selectedPlace;
@@ -66,26 +68,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         // AutocompleteSupportFragment 설정
-        autocompleteFragment = (AutocompleteSupportFragment)
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteFragment.setHint("검색...");
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                selectedPlace = place.getLatLng();
-                mMap.clear(); // 이전 마커 제거
-                mMap.addMarker(new MarkerOptions().position(selectedPlace).title(place.getName()));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 17));
-            }
-
-            @Override
-            public void onError(@NonNull com.google.android.gms.common.api.Status status) {
-                Snackbar.make(requireView(), "Error: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        autocompleteFragment.setOnPlaceSelectedListener(this);
 
         return view;
     }
@@ -114,6 +102,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         getLastLocation();
+
+        // 마커 클릭 이벤트 설정
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                // 마커를 클릭했을 때 정보 다이얼로그 표시
+                showMarkerInfoDialog(marker);
+                return true; // true 반환 시 마커 정보 창이 표시됩니다.
+            }
+        });
     }
 
     @Override
@@ -126,5 +124,34 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void showMarkerInfoDialog(Marker marker) {
+        // 마커 클릭 시 정보 다이얼로그 표시
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(marker.getTitle())
+                .setMessage(" ")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 확인 버튼을 클릭하면 다이얼로그를 닫습니다.
+                        dialog.dismiss();
+                    }
+                });
+
+        builder.create().show();
+    }
+
+    @Override
+    public void onPlaceSelected(@NonNull Place place) {
+        selectedPlace = place.getLatLng();
+        mMap.clear(); // 이전 마커 제거
+        mMap.addMarker(new MarkerOptions().position(selectedPlace).title(place.getName()));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 17));
+    }
+
+    @Override
+    public void onError(@NonNull com.google.android.gms.common.api.Status status) {
+        Snackbar.make(requireView(), "Error: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
     }
 }
