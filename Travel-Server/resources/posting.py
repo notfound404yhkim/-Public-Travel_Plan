@@ -208,7 +208,7 @@ class PostingListResource(Resource):
             result_list[i]['createdAt'] = row['createdAt'].isoformat()
             i = i+1
 
-        return {"result" : "success", "items" : result_list, "count " : len(result_list)}, 200
+        return {"result" : "success", "items" : result_list, "count" : len(result_list)}, 200
     
 # 기록 관련
 class PostingResource(Resource):
@@ -237,7 +237,7 @@ class PostingResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"Error" : str(e)},500
+            return{"error" : str(e)},500
 
         return{"result" : "success"},200 
     
@@ -268,7 +268,7 @@ class PostingResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"Error" : str(e)},500
+            return{"error" : str(e)},500
 
         return{"result" : "success"},200 
     
@@ -320,7 +320,7 @@ class PostingResource(Resource):
             cursor.execute(query,record)
 
             result_list = cursor.fetchall()
-            #print(result_list)
+            print(result_list)
 
             tag = []
             for tag_dict in result_list:
@@ -386,7 +386,7 @@ class PostingMeResource(Resource):
             print(Error)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500 
+            return{"error" : str(e)},500 
 
         # 날짜 포맷 변경 
         i = 0
