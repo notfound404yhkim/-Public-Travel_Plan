@@ -28,8 +28,11 @@ import android.widget.Toast;
 
 import com.example.travelapp.api.HistoryApi;
 import com.example.travelapp.api.NetworkClient;
+import com.example.travelapp.api.PlaceApi;
 import com.example.travelapp.config.Config;
 import com.example.travelapp.model.History;
+import com.example.travelapp.model.Place;
+import com.example.travelapp.model.PlaceList;
 import com.example.travelapp.model.Res;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -47,7 +50,7 @@ import retrofit2.Retrofit;
 public class MainFragment extends Fragment {
 
     Button btn;
-    TextView textView;
+    TextView textView,txtRes;
     TextView txtRegion,txtDate;
     RelativeLayout RegionLayout; //지역 선택부분 레이아웃
     RelativeLayout DateLayout;
@@ -60,7 +63,9 @@ public class MainFragment extends Fragment {
     String dateString2 = null;
     String token;
 
-    ArrayList<String> memoList = new ArrayList<>();
+    ArrayList<Place> placeArrayList = new ArrayList<>();
+
+
 
 
     @Override
@@ -77,12 +82,15 @@ public class MainFragment extends Fragment {
         listRegion = view.findViewById(R.id.listRegion);
         txtRegion = view.findViewById(R.id.txtRegion);
         txtDate = view.findViewById(R.id.txtDate);
+        txtRes = view.findViewById(R.id.txt_response);
+
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         //오늘 날짜
         Long today = MaterialDatePicker.todayInUtcMilliseconds();
 
 
-
+        // 앱 첫 실행시 서울 축제 4개
+        previewfestival();
 
         //지역 선택 부분    프레그먼트이므로 getActivity()
         final String[] region = {"서울","인천","대전","대구","광주","부산","제주"};
@@ -165,21 +173,30 @@ public class MainFragment extends Fragment {
             Call<Res> call =  api.addHistory(token,history);
 
 
-            call.enqueue(new Callback<Res>() {
-                @Override
-                public void onResponse(Call<Res> call, Response<Res> response) {
+                call.enqueue(new Callback<Res>() {
+                    @Override
+                    public void onResponse(Call<Res> call, Response<Res> response) {
 
-                    if(response.isSuccessful()){
-                        dismissProgress();
-                        Res res = response.body();
+                        if(response.isSuccessful()){
+                            dismissProgress();
+                            Res res = response.body();
+                            ArrayList<String> items = res.items;
 
-                        Toast.makeText(getActivity(), "여행지 추천 완료", Toast.LENGTH_SHORT).show();
+                            StringBuilder stringBuilder = new StringBuilder();
 
-                        return;
-                    }else{
-                        //유저에게 알리고
-                        return;
-                    }
+                            for (String item : items) {
+                                stringBuilder.append(item).append("\n"); // 각 항목을 새 줄에 추가
+                            }
+                            txtRes.setText(stringBuilder.toString().trim());
+
+
+                            Toast.makeText(getActivity(), "여행지 추천 완료", Toast.LENGTH_SHORT).show();
+
+                            return;
+                        }else{
+                            //유저에게 알리고
+                            return;
+                        }
                 }
 
                 @Override
@@ -187,13 +204,6 @@ public class MainFragment extends Fragment {
 
                 }
             });
-
-
-
-
-
-
-
 
 //                Intent intent = new Intent(getActivity(), ListActivity.class);
 //                startActivity(intent);
@@ -216,6 +226,59 @@ public class MainFragment extends Fragment {
 
         return view;
     }
+
+
+    // 앱 처음 실행시 서울 축제 이미지 4개 가져오기
+
+    public void previewfestival(){
+
+        Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
+        PlaceApi api = retrofit.create(PlaceApi.class);
+        // 토큰 가져온다.
+        SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+
+
+        Call<PlaceList> call = api.getImg("인천", 1, 0,25);
+        Log.i("AAA", "테스트2 ");
+        call.enqueue(new Callback<PlaceList>() {
+            @Override
+            public void onResponse(Call<PlaceList> call, Response<PlaceList> response) {
+
+                Log.i("AAA",response.toString());
+                if(response.isSuccessful()){
+
+                    PlaceList placeList = response.body();
+
+
+                    placeArrayList.addAll(placeList.items);
+
+
+                    for (Place item : placeArrayList) {
+                        System.out.println("이미지 주소: " + item.id);
+                        System.out.println("이미지 링크: " + item.imgUrl);
+                        Log.i("AAA", String.valueOf(item.id));
+
+
+                    }
+
+
+
+//                    // 어댑터 만들어서, 리사이클러뷰에 적용
+//                    adapter = new PostingAdapter(getActivity(), postingArrayList);
+//                    recyclerView.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceList> call, Throwable t) {
+                Log.i("AAA", "에러");
+                dismissProgress();
+            }
+        });
+    }
+
+
     // 네트워크 데이터 처리할때 사용할 다이얼로그
     Dialog dialog;
     private void showProgress(){

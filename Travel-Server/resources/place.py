@@ -213,9 +213,11 @@ class placeListResource(Resource):
         offset = request.args.get('offset')
         limit = request.args.get('limit')
 
+
         print(option)
         try:
             connection = get_connection()
+            
 
             if option == '0':
                 query = '''select id,region,placeName,imgUrl,content,createdAt
