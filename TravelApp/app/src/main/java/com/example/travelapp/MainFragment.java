@@ -1,11 +1,18 @@
 package com.example.travelapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.core.util.Pair;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +21,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.travelapp.api.HistoryApi;
+import com.example.travelapp.api.NetworkClient;
+import com.example.travelapp.config.Config;
+import com.example.travelapp.model.History;
+import com.example.travelapp.model.Res;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainFragment extends Fragment {
 
@@ -33,6 +54,13 @@ public class MainFragment extends Fragment {
     LinearLayout BottomLayout; //하단 레이아웃
     ListView listRegion; //지역 리스트 뷰
     Calendar calendar;
+    //선택한날짜 멤버변수
+    //선택한날짜 멤버변수화
+    String dateString1 = null;
+    String dateString2 = null;
+    String token;
+
+    ArrayList<String> memoList = new ArrayList<>();
 
 
     @Override
@@ -52,6 +80,8 @@ public class MainFragment extends Fragment {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         //오늘 날짜
         Long today = MaterialDatePicker.todayInUtcMilliseconds();
+
+
 
 
         //지역 선택 부분    프레그먼트이므로 getActivity()
@@ -102,8 +132,8 @@ public class MainFragment extends Fragment {
                         date1.setTime(selection.first);
                         date2.setTime(selection.second);
 
-                        String dateString1 = simpleDateFormat.format(date1);
-                        String dateString2 = simpleDateFormat.format(date2);
+                        dateString1 = simpleDateFormat.format(date1);
+                        dateString2 = simpleDateFormat.format(date2);
 
                         txtDate.setText(dateString1 + " ~ " + dateString2);
                     }
@@ -117,8 +147,56 @@ public class MainFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ListActivity.class);
-                startActivity(intent);
+                if(dateString1 == null || dateString2 == null){
+                    Toast.makeText(getActivity(), "날짜를 선택하세요", Toast.LENGTH_SHORT).show();
+                    return;}
+            showProgress();
+            Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
+            HistoryApi api = retrofit.create(HistoryApi.class);
+            // 토큰 가져온다.
+            SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+            token = sp.getString("token", "");
+            token = "Bearer " + token;
+
+            String region = txtRegion.getText().toString().trim();
+            History history = new History(region,dateString1,dateString2);
+
+
+            Call<Res> call =  api.addHistory(token,history);
+
+
+            call.enqueue(new Callback<Res>() {
+                @Override
+                public void onResponse(Call<Res> call, Response<Res> response) {
+
+                    if(response.isSuccessful()){
+                        dismissProgress();
+                        Res res = response.body();
+
+                        Toast.makeText(getActivity(), "여행지 추천 완료", Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }else{
+                        //유저에게 알리고
+                        return;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Res> call, Throwable t) {
+
+                }
+            });
+
+
+
+
+
+
+
+
+//                Intent intent = new Intent(getActivity(), ListActivity.class);
+//                startActivity(intent);
 
             }
         });
@@ -138,6 +216,19 @@ public class MainFragment extends Fragment {
 
         return view;
     }
+    // 네트워크 데이터 처리할때 사용할 다이얼로그
+    Dialog dialog;
+    private void showProgress(){
+        dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(new ProgressBar(getActivity()));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 
+    private void dismissProgress(){
+        dialog.dismiss();
+    }
 }
 
