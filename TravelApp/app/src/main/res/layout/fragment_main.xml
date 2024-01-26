@@ -388,29 +388,33 @@
                 android:textStyle="bold"
                 android:textSize="22sp"/>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp"
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
                     android:src="@drawable/icon_plane" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="18sp"
-                    android:text="부산"/>
+                    android:text="부산"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="해운대"
                     android:layout_marginLeft="20dp"
-                    android:textStyle="bold"
-                    android:textSize="22sp"/>
+                    android:text="해운대"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
