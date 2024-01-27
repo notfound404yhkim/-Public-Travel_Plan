@@ -41,6 +41,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -199,8 +202,6 @@ public class MainFragment extends Fragment {
     // 앱 처음 실행시 랜덤 축제 이미지 4개 가져오기
     public void previewfestival(){
 
-
-
         Random random = new Random();
         int randomIndex = random.nextInt(region.length);
 
@@ -237,6 +238,21 @@ public class MainFragment extends Fragment {
                                Place item = placeArrayList.get(position);
                                // 예: 클릭된 장소에 대한 처리 로직 추가
                                Toast.makeText(getActivity(), "포스팅 주소" + item.id, Toast.LENGTH_SHORT).show();
+
+                               PlaceInfoFragment secondFragment = new PlaceInfoFragment();
+                               // 데이터 전달을 위한 Bundle 생성 및 설정
+                               Bundle bundle = new Bundle();
+                               bundle.putInt("id", item.id);
+                               secondFragment.setArguments(bundle);
+
+                               // Fragment 에서 다른 Fragment로 이동 .
+                               if (getActivity() != null) {
+                                   FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                   fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+                                   fragmentTransaction.addToBackStack(null);
+                                   fragmentTransaction.commit();
+                               }
+
                            }
                        });
                  }

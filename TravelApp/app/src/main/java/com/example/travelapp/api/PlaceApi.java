@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface PlaceApi {
@@ -25,6 +26,8 @@ public interface PlaceApi {
                            @Query("offset") int offset,
                            @Query("limit") int limit);
 
-
+    //지역 축제 자세히 보기
+    @GET("/place/{placeId}")
+    Call<PlaceList> getPlaceInfo(@Path("placeId") int placeId, @Query("option") int option);
 
 }
