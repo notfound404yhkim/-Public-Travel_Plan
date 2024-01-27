@@ -162,19 +162,11 @@ class placeInfoResource(Resource):
        
         try:
             connection = get_connection()
-            if option == '0':
-                query = '''
-                        select `option`,region,placeName,content,imgUrl
-                        from place
-                        where id =%s;
-                        '''
-            elif option == '1':
-                query = '''
-                        select `option`,region,placeName,content,imgUrl,strDate,endDate
-                        from place
-                        where id =%s;
-                        '''
-
+            query = '''
+                    select `option`,region,placeName,content,imgUrl
+                    from place
+                    where id =%s;
+                    '''
             record = (place_id,)
             cursor = connection.cursor(dictionary=True)
 
@@ -213,9 +205,11 @@ class placeListResource(Resource):
         offset = request.args.get('offset')
         limit = request.args.get('limit')
 
+
         print(option)
         try:
             connection = get_connection()
+            
 
             if option == '0':
                 query = '''select id,region,placeName,imgUrl,content,createdAt
