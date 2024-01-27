@@ -179,37 +179,13 @@
                 </RelativeLayout>
 
                 <ViewFlipper
+                    android:id="@+id/viewFlipper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoStart="true"
                     android:flipInterval="2000"
                     android:inAnimation="@android:anim/slide_in_left"
-                    android:outAnimation="@android:anim/slide_out_right">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/add_photo" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/icon_paw" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/back_icon" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/icon_plane" />
-                </ViewFlipper>
+                    android:outAnimation="@android:anim/slide_out_right"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

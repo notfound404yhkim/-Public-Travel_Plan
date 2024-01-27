@@ -16,6 +16,8 @@ import retrofit2.http.Query;
 public interface PostingApi {
 
     // 포스팅 생성 API
+    //이미지 는 MultpartBody로 처리
+    //form-data는 part 처리
     @Multipart
 
     @POST("/posting")

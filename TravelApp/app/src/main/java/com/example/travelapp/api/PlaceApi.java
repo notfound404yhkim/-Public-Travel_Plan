@@ -8,6 +8,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -18,10 +19,12 @@ public interface PlaceApi {
 
     // 지역 축제 이미지 가져오기
     // 파리미터는 쿼리로 처리
-    @POST("/place")
-    Call<PlaceList> getImg(
-                            @Query("region") String region,
+    @GET("/place")
+    Call<PlaceList> getImg(@Query("region") String region,
                            @Query("option") int option,
                            @Query("offset") int offset,
                            @Query("limit") int limit);
+
+
+
 }
