@@ -194,7 +194,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // 앱 첫 실행시 서울 축제 4개
+        // 앱 첫 실행시 랜덤으로 축제 리스트 출력
         previewfestival();
     }
 
@@ -217,12 +217,13 @@ public class MainFragment extends Fragment {
 
 
                 if(response.isSuccessful()){
+                    placeArrayList.clear(); // 리스트 초기화
 
                     PlaceList placeList = response.body();
                     placeArrayList.addAll(placeList.items);
 
                     imageViews = new ImageView[placeArrayList.size()];
-                    viewFlipper.removeAllViews(); //뷰이미지 전부 지워주기
+                    viewFlipper.removeAllViews();
 
                   //사이즈만큼 반복분 이미지 뷰를 생성 .
                    for (int i = 0; i < placeArrayList.size(); i++) {
@@ -237,8 +238,6 @@ public class MainFragment extends Fragment {
                                // 클릭된 이미지뷰에 대한 동작 수행
                                Place item = placeArrayList.get(position);
                                // 예: 클릭된 장소에 대한 처리 로직 추가
-                               Toast.makeText(getActivity(), "포스팅 주소" + item.id, Toast.LENGTH_SHORT).show();
-
                                PlaceInfoFragment secondFragment = new PlaceInfoFragment();
                                // 데이터 전달을 위한 Bundle 생성 및 설정
                                Bundle bundle = new Bundle();
@@ -249,7 +248,7 @@ public class MainFragment extends Fragment {
                                if (getActivity() != null) {
                                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                                    fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
-                                   fragmentTransaction.addToBackStack(null);
+//                                   fragmentTransaction.addToBackStack(null);
                                    fragmentTransaction.commit();
                                }
 
