@@ -9,9 +9,14 @@
     <LinearLayout
         android:layout_width="409dp"
         android:layout_height="729dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,8 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0sp"
-                android:layout_marginTop="60sp"
                 android:layout_marginRight="20sp"
+                android:layout_marginTop="60sp"
                 android:layout_weight="1"
                 android:backgroundTint="#F4F4F4"
                 android:text="기록 올리기 "
@@ -63,30 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:gravity="center"
-                android:text="제주도"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="2023.04.06"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/profile_background"
-                android:layout_width="355dp"
-                android:layout_height="109dp"
-                android:layout_gravity="center"
-                android:src="@drawable/add_photo" />
 
             <EditText
                 android:id="@+id/editTextText2"
@@ -113,6 +94,30 @@
                 android:ems="10"
                 android:hint="해시태그 내용"
                 android:inputType="text"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/profile_background"
+                android:layout_width="355dp"
+                android:layout_height="109dp"
+                android:layout_gravity="center"
+                android:src="@drawable/add_photo" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:gravity="center"
+                android:text="제주도"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="2023.04.06"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -204,10 +209,10 @@
             <RelativeLayout
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_rounded_corner"
                 android:elevation="5dp"
                 android:padding="10dp">

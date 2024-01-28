@@ -26,6 +26,14 @@ public interface PlaceApi {
                            @Query("offset") int offset,
                            @Query("limit") int limit);
 
+
+    //지역 축제 리스트 가져오기
+    @GET("/placelist")
+    Call<PlaceList> getPlacelist(@Header("Authorization") String token,@Query("region") String region,
+                                 @Query("option") int option,
+                                 @Query("offset") int offset,
+                                 @Query("limit") int limit);
+
     //지역 축제 자세히 보기
     @GET("/place/{placeId}")
     Call<PlaceList> getPlaceInfo(@Path("placeId") int placeId, @Query("option") int option);
