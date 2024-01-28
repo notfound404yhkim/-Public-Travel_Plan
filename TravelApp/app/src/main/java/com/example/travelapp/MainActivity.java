@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
     ProfileFragment profileFragment;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         mapFragment = new MapFragment();
         communityFragment = new CommunityFragment();
         profileFragment = new ProfileFragment();
-
 
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);

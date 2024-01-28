@@ -120,7 +120,9 @@ class historyResource(Resource):
             connection.close()
             return {'error' : str(e)}, 500
 
-        return {'result' : 'success'}, 200
+        return {"result" : "success",
+            "items" : plan,
+            "count" : len(plan)},200
     
 #GPT 대화내역 리스트 
 class historyListResource(Resource):
