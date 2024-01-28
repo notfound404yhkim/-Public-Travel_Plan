@@ -51,9 +51,10 @@ import java.util.Random;
 
 public class PlaceInfoFragment extends Fragment {
     int id;
-    TextView txtTile,txtRegion,txtContent;
+    TextView txtTile,txtRegion,txtContent,txtDate;
     ImageView imgPhoto;
     ArrayList<Place> placeArrayList = new ArrayList<>();
+    LinearLayout linearLayout; // 레이아웃
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class PlaceInfoFragment extends Fragment {
         txtRegion=view.findViewById(R.id.txtRegion);
         txtContent=view.findViewById(R.id.txtContent);
         imgPhoto=view.findViewById(R.id.imgPhoto);
+        txtDate=view.findViewById(R.id.txtDate);
+        linearLayout=view.findViewById(R.id.LinearLayout);
 
         // getArguments() 메소드를 사용하여 데이터 추출
         Bundle bundle = getArguments();
@@ -95,7 +98,11 @@ public class PlaceInfoFragment extends Fragment {
                         txtTile.setText(item.placeName);
                         txtRegion.setText(item.region);
                         txtContent.setText(item.content);
+                        if (item.option==1){
+                        txtDate.setText(item.strDate +" ~ " + item.endDate);}
                         Picasso.get().load(item.imgUrl).into(imgPhoto);
+
+                        linearLayout.setVisibility(View.VISIBLE);
                     }
                 }
             }
