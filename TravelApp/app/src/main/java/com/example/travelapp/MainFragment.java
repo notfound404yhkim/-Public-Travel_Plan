@@ -194,7 +194,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // 앱 첫 실행시 서울 축제 4개
+        // 앱 첫 실행시 랜덤으로 축제 리스트 출력
         previewfestival();
     }
 
@@ -217,12 +217,13 @@ public class MainFragment extends Fragment {
 
 
                 if(response.isSuccessful()){
+                    placeArrayList.clear(); // 리스트 초기화
 
                     PlaceList placeList = response.body();
                     placeArrayList.addAll(placeList.items);
 
                     imageViews = new ImageView[placeArrayList.size()];
-                    viewFlipper.removeAllViews(); //뷰이미지 전부 지워주기
+                    viewFlipper.removeAllViews();
 
                   //사이즈만큼 반복분 이미지 뷰를 생성 .
                    for (int i = 0; i < placeArrayList.size(); i++) {
