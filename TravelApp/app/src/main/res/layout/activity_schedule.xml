@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="79dp"
+            android:layout_height="124dp"
             android:layout_marginTop="80sp"
             app:srcCompat="@drawable/add_photo" />
 
@@ -20,7 +20,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
+            android:layout_marginTop="30sp"
             android:gravity="center"
             android:hint="이름"
             android:textSize="24sp" />
