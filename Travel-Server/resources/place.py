@@ -158,15 +158,23 @@ class placeInfoResource(Resource):
 
     def get(self, place_id):
 
-        option = request.form.get('option')
+        option = request.args.get('option')
        
         try:
             connection = get_connection()
-            query = '''
-                    select `option`,region,placeName,content,imgUrl
-                    from place
-                    where id =%s;
-                    '''
+            if option == '0':
+                query = '''
+                        select `option`,region,placeName,content,imgUrl
+                        from place
+                        where id =%s;
+                        '''
+            elif option == '1':
+                query = '''
+                        select `option`,region,placeName,content,imgUrl,strDate,endDate
+                        from place
+                        where id =%s;
+                        '''
+                
             record = (place_id,)
             cursor = connection.cursor(dictionary=True)
 
@@ -185,12 +193,11 @@ class placeInfoResource(Resource):
             connection.close()
             return{"error" : str(e)},500
         #축제인 경우만 날짜 처리 
-        if option == '1' :
+        if option == '1':
             i = 0
             for row in result_list:
-                if row['option'] == '1':
-                    result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
-                    result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
+                result_list[i]['strDate'] = row['strDate'].isoformat().split("T")[0]
+                result_list[i]['endDate'] = row['endDate'].isoformat().split("T")[0]
                 i = i+1        
         
         return {"result" : "success", "items" : result_list}
