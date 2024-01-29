@@ -15,11 +15,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         >
+
         <ImageView
+            android:id="@+id/imgView"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/icon_plane"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/icon_plane" />
     </LinearLayout>
 
     <LinearLayout

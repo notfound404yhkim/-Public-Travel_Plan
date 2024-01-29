@@ -1,53 +1,31 @@
 package com.example.travelapp;
-import static android.content.Context.MODE_PRIVATE;
 import android.app.Dialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.core.util.Pair;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
 
-import com.example.travelapp.api.HistoryApi;
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.PlaceApi;
-import com.example.travelapp.config.Config;
-import com.example.travelapp.model.History;
 import com.example.travelapp.model.Place;
 import com.example.travelapp.model.PlaceList;
-import com.example.travelapp.model.Res;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
-import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import java.util.Random;
 
 public class PlaceInfoFragment extends Fragment {
     int id;
@@ -60,7 +38,7 @@ public class PlaceInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_placeinfo, container, false);
+        View view = inflater.inflate(R.layout.activity_placeinfo, container, false);
         txtTile=view.findViewById(R.id.txtTile);
         txtRegion=view.findViewById(R.id.txtRegion);
         txtContent=view.findViewById(R.id.txtContent);
