@@ -3,7 +3,8 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,43 +28,39 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PlaceInfoFragment extends Fragment {
+public class PlaceInfoActivity extends AppCompatActivity {
     int id;
     TextView txtTile,txtRegion,txtContent,txtDate;
     ImageView imgPhoto;
     ArrayList<Place> placeArrayList = new ArrayList<>();
     LinearLayout linearLayout; // 레이아웃
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.activity_placeinfo, container, false);
-        txtTile=view.findViewById(R.id.txtTile);
-        txtRegion=view.findViewById(R.id.txtRegion);
-        txtContent=view.findViewById(R.id.txtContent);
-        imgPhoto=view.findViewById(R.id.imgPhoto);
-        txtDate=view.findViewById(R.id.txtDate);
-        linearLayout=view.findViewById(R.id.LinearLayout);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_placeinfo);
+        txtTile=findViewById(R.id.txtTile);
+        txtRegion=findViewById(R.id.txtRegion);
+        txtContent=findViewById(R.id.txtContent);
+        imgPhoto=findViewById(R.id.imgPhoto);
+        txtDate=findViewById(R.id.txtDate);
+        linearLayout=findViewById(R.id.LinearLayout);
 
-        // getArguments() 메소드를 사용하여 데이터 추출
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            id = bundle.getInt("id");
-
-        }
         Log.i("AAA","전달받은값"+id);
-        getInfo(id);
+        int id = getIntent().getIntExtra("id",0);
+        int option = getIntent().getIntExtra("option",0);
+        getInfo(id,option);
 
-        return view;
     }
 
 
+
     //행사,축제 정보 출력.
-    public void getInfo(int id){
-        Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
+    public void getInfo(int id,int option){
+        Retrofit retrofit = NetworkClient.getRetrofitClient(PlaceInfoActivity.this);
         PlaceApi api = retrofit.create(PlaceApi.class);
-        Call<PlaceList> call = api.getPlaceInfo(id,1);
+        Call<PlaceList> call = api.getPlaceInfo(id,option);
         call.enqueue(new Callback<PlaceList>() {
             @Override
             public void onResponse(Call<PlaceList> call, Response<PlaceList> response) {
@@ -101,9 +98,9 @@ public class PlaceInfoFragment extends Fragment {
     // 네트워크 데이터 처리할때 사용할 다이얼로그
     Dialog dialog;
     private void showProgress(){
-        dialog = new Dialog(getActivity());
+        dialog = new Dialog(PlaceInfoActivity.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(new ProgressBar(getActivity()));
+        dialog.setContentView(new ProgressBar(PlaceInfoActivity.this));
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
