@@ -44,7 +44,7 @@ import retrofit2.Retrofit;
 
 public class MainFragment2 extends Fragment implements View.OnClickListener {
     Button btnP1,btnP2;
-    TextView txtMore,txtRegion1,txtRegion2,txtRegion3,txtRegion4,txtRegion5,txtRegion6,txtRegion7;
+    TextView txtMore;
 
     Calendar calendar;
     //선택한날짜 멤버변수
@@ -65,7 +65,6 @@ public class MainFragment2 extends Fragment implements View.OnClickListener {
     String token;
 
     PlaceAdapter2 adapter;
-
 
 
     @Override
