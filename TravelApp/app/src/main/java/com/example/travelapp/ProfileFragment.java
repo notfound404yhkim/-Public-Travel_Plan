@@ -124,12 +124,11 @@ public class ProfileFragment extends Fragment {
                         Log.i("AAA",item.name);
                         txtName.setText(item.name);
                         profileurl = item.profileImg;
-                        Picasso.get().load(item.profileImg).into( profile_image_view);
+                        //프로필 이미지 있을때만 적용
+                        if (profileurl != null){
+                            Picasso.get().load(item.profileImg).into( profile_image_view);
+                        }
                     }
-
-
-
-
                 }else{
 
                 }

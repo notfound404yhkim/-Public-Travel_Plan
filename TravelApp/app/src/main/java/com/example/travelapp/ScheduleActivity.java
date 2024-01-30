@@ -1,5 +1,6 @@
 package com.example.travelapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.example.travelapp.model.Place;
 import com.example.travelapp.model.PlaceList;
 import com.example.travelapp.model.Schedule;
 import com.example.travelapp.model.ScheduleList;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,6 +56,8 @@ public class ScheduleActivity extends AppCompatActivity {
     ImageView imgProfile;
     TextView txtName;
 
+    FloatingActionButton btnAdd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,14 @@ public class ScheduleActivity extends AppCompatActivity {
 
         imgProfile = findViewById(R.id.imgProfile);
         txtName = findViewById(R.id.txtName);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScheduleActivity.this, ScheduleAddActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         String name = getIntent().getStringExtra("name");

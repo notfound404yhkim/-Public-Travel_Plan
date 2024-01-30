@@ -78,6 +78,7 @@ public class ScheduleInfoActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()){
                     ScheduleRes scheduleres = response.body();
+
                     item = scheduleres.items;
                     txtTile.setText(item.region);
                     txtContent.setText(item.content);

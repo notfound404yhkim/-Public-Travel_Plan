@@ -13,6 +13,14 @@ public class Schedule  {
     public String createdAt;
     public String imgUrl;
 
+
+    public Schedule(String region, String strDate, String endDate,String content) {
+        this.region = region;
+        this.strDate = strDate;
+        this.endDate = endDate;
+        this.content = content;
+    }
+
     public Schedule(int id, int userId, String region, String strDate, String endDate, String content, String createdAt, String imgUrl) {
         this.id = id;
         this.userId = userId;
@@ -33,4 +41,6 @@ public class Schedule  {
         this.content = content;
         this.createdAt = createdAt;
     }
+
+
 }
