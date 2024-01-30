@@ -98,6 +98,7 @@
             android:layout_marginLeft="10sp"
             android:layout_marginTop="20sp"
             android:layout_marginRight="10sp"
+            android:layout_marginBottom="10sp"
             android:background="@drawable/edit_text_rounded_corner"
             android:elevation="5dp"
             android:padding="10dp">
