@@ -1,64 +1,161 @@
 package com.example.travelapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.travelapp.adapter.PlaceAdapter2;
+import com.example.travelapp.api.NetworkClient;
+import com.example.travelapp.api.PlaceApi;
+import com.example.travelapp.api.UserApi;
+import com.example.travelapp.config.Config;
+import com.example.travelapp.model.Place;
+import com.example.travelapp.model.PlaceList;
+import com.example.travelapp.model.Res;
+import com.example.travelapp.model.User;
+import com.example.travelapp.model.UserRes;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    String token,profileurl;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView txtName;
+    ImageView profile_image_view;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+    Button btnMyposting, btnMyschedule;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
+
+    ArrayList<User> userArrayList = new ArrayList<>();
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);  //프레그먼트 레이아웃지정.
+
+        profile_image_view = view.findViewById(R.id.profile_image_view);
+        txtName = view.findViewById(R.id.txtName);
+
+        btnMyposting = view.findViewById(R.id.btnMyposting);
+        btnMyschedule = view.findViewById(R.id.btnMyschedule);
+
+        btnMyschedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+                intent.putExtra("name",txtName.getText());
+                intent.putExtra("imgUrl",profileurl);
+                startActivity(intent);
+            }
+        });
+
+
+        return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 프로필 로드
+        profileLoad();
+    }
+
+
+    public void profileLoad(){
+
+        Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
+        UserApi api = retrofit.create(UserApi.class);
+        SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+        token = sp.getString("token","");
+        token = "Bearer " + token;
+        Call<UserRes> call = api.getProfile(token);
+        Log.i("AAA","프로필 가져오기");
+
+
+        call.enqueue(new Callback<UserRes>() {
+            @Override
+            public void onResponse(Call<UserRes> call, Response<UserRes> response) {
+
+
+                if(response.isSuccessful()){
+
+                    Log.i("AAA",response.toString());
+
+                    UserRes userList = response.body();
+
+                    userArrayList.clear();
+                    userArrayList.addAll( userList.items );
+
+                    for (User item : userArrayList) {
+                        Log.i("AAA",item.name);
+                        txtName.setText(item.name);
+                        profileurl = item.profileImg;
+                        Picasso.get().load(item.profileImg).into( profile_image_view);
+                    }
+
+
+
+
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<UserRes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    // 네트워크 데이터 처리할때 사용할 다이얼로그
+    Dialog dialog;
+    private void showProgress(){
+        dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(new ProgressBar(getActivity()));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    private void dismissProgress(){
+        dialog.dismiss();
+    }
+
+
 }

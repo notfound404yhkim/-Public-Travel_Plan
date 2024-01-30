@@ -19,21 +19,22 @@
             android:id="@+id/profile_background"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/add_photo" />
+            android:src="@drawable/city" />
 
         <ImageView
             android:id="@+id/profile_image_view"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="bottom|center"
-            android:background="@drawable/circular_bg"
+            android:background="@drawable/icon_map"
             android:backgroundTint="@color/my_primary"
             android:scaleType="centerCrop"
             android:src="@drawable/person_icon" />
+
     </FrameLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnMyposting"
         android:layout_width="160dp"
         android:layout_height="48dp"
         android:layout_marginStart="115dp"
@@ -44,12 +45,12 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/btnMyschedule"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnMyschedule"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
@@ -97,20 +98,19 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="177dp"
-        android:layout_marginEnd="177dp"
-        android:layout_marginBottom="69dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginBottom="82dp"
         android:text="이름"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnMyposting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-        app:layout_constraintVertical_bias="0.423" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

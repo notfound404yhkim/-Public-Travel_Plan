@@ -161,7 +161,7 @@ public class MainFragment2 extends Fragment implements View.OnClickListener {
 
         PlaceApi api = retrofit.create(PlaceApi.class);
         SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
-        token = sp.getString("token", region);
+        token = sp.getString("token", "");
         token = "Bearer " + token;
         Log.i("AAA2",region);
 

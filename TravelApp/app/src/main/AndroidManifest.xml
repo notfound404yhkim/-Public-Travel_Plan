@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
+
+        <activity android:name=".ScheduleInfoActivity"
+            android:exported="false"/>
+        <activity android:name=".ScheduleActivity"
+            android:exported="false"/>
         <activity android:name=".PlaceInfoActivity"
             android:exported="false"/>
         <activity
