@@ -36,9 +36,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:clickable="false"
                     android:text="서울"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -47,7 +49,8 @@
                     android:layout_marginRight="20dp"
                     android:text="부산"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -56,7 +59,8 @@
                     android:layout_marginRight="20dp"
                     android:text="인천"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -65,7 +69,8 @@
                     android:layout_marginRight="20dp"
                     android:text="대전"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -74,7 +79,8 @@
                     android:layout_marginRight="20dp"
                     android:text="광주"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,7 +89,19 @@
                     android:layout_marginRight="20dp"
                     android:text="대구"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:text="제주"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:onClick="TextViewClick"/>
 
             </LinearLayout>
 
@@ -91,7 +109,6 @@
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="지역선택" />

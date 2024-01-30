@@ -2,12 +2,15 @@ package com.example.travelapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelapp.PlaceInfoActivity;
 import com.example.travelapp.R;
@@ -16,11 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {
+public class PlaceAdapter2 extends RecyclerView.Adapter<PlaceAdapter2.ViewHolder> {
 
     Context context;
     ArrayList<Place> placeArrayList = new ArrayList<>();
@@ -29,7 +28,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
 
 
 
-    public PlaceAdapter(Context context, ArrayList<Place> placeArrayList) {
+    public PlaceAdapter2(Context context, ArrayList<Place> placeArrayList) {
         this.context = context;
         this.placeArrayList = placeArrayList;
     }
@@ -39,7 +38,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.place_row,parent,false);
+                .inflate(R.layout.place_column,parent,false);
 
         return new ViewHolder(view);
     }
@@ -49,7 +48,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         Place place = placeArrayList.get(position);
         holder.txtRegion.setText(place.region);
         holder.txtName.setText(place.placeName);
-        holder.txtDate.setText(place.strDate +" ~ " + place.endDate);
+//        holder.txtDate.setText(place.strDate +" ~ " + place.endDate);
         Picasso.get().load(place.imgUrl).into( holder.imgPhoto);
 
     }
@@ -84,7 +83,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
                     place = placeArrayList.get(index);
                     Intent intent = new Intent(context, PlaceInfoActivity.class);
                     intent.putExtra("id",place.id);
-                    intent.putExtra("option",1);
+                    intent.putExtra("option",0);
                     context.startActivity(intent);
                 }
             });
