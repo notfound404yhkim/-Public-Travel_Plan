@@ -51,8 +51,8 @@ import retrofit2.Retrofit;
 import java.util.Random;
 
 public class MainFragment extends Fragment {
-    Button btn;
-    TextView textView,txtRes;
+    Button btn,btnP1,btnP2;
+    TextView txtMore,txtRes;
     TextView txtRegion,txtDate;
     RelativeLayout RegionLayout; //지역 선택부분 레이아웃
     RelativeLayout DateLayout;
@@ -63,12 +63,11 @@ public class MainFragment extends Fragment {
     String dateString1 = null;
     String dateString2 = null;
     String token;
-    ArrayList<Place> placeArrayList = new ArrayList<>();
-
     ImageView[] imageViews;
 
     String[] region = {"서울","인천","대전","대구","광주","부산","제주"};
     ViewFlipper viewFlipper;
+    ArrayList<Place> placeArrayList = new ArrayList<>();
 
 
     @Override
@@ -76,7 +75,7 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);  //프레그먼트 레이아웃지정.
         btn = view.findViewById(R.id.btn_select);
-        textView = view.findViewById(R.id.txt_more);
+
         RegionLayout = view.findViewById(R.id.RegionLayout);
         BottomLayout = view.findViewById(R.id.BottomLayout);
         DateLayout = view.findViewById(R.id.DateLayout);
@@ -84,8 +83,12 @@ public class MainFragment extends Fragment {
         txtRegion = view.findViewById(R.id.txtRegion);
         txtDate = view.findViewById(R.id.txtDate);
         txtRes = view.findViewById(R.id.txt_response);
+        txtMore = view.findViewById(R.id.txtMore);
+        btnP1 = view.findViewById(R.id.btnP1);
+        btnP2 = view.findViewById(R.id.btnP2);
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         viewFlipper = view.findViewById(R.id.viewFlipper);
+
 
 
         //지역 선택 부분    프레그먼트이므로 getActivity()
@@ -164,6 +167,7 @@ public class MainFragment extends Fragment {
                             for (String item : items) {
                                 stringBuilder.append(item).append("\n"); // 각 항목을 새 줄에 추가
                             }
+                            txtRes.setVisibility(View.VISIBLE);
                             txtRes.setText(stringBuilder.toString().trim());
                             Toast.makeText(getActivity(), "여행지 추천 완료", Toast.LENGTH_SHORT).show();
                             return;
@@ -176,18 +180,34 @@ public class MainFragment extends Fragment {
                     public void onFailure(Call<Res> call, Throwable t) {
                     }
                 });
-//                Intent intent = new Intent(getActivity(), ListActivity.class);
-//                startActivity(intent);
             }
         });
+
+
+        //두번째 페이지로 이동
+        btnP2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainFragment2 secondFragment = new MainFragment2();
+                //                               // Fragment 에서 다른 Fragment로 이동 .
+               if (getActivity() != null) {
+                   FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                   fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+                   fragmentTransaction.commit();
+               }
+            }
+        });
+
         // 축제 및 행사 리스트 더보기
-        textView.setOnClickListener(new View.OnClickListener() {
+        txtMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PlaceActivity.class);
                 startActivity(intent);
             }
         });
+
+
         return view;
     }
 
@@ -198,8 +218,6 @@ public class MainFragment extends Fragment {
         previewfestival();
     }
 
-
-    // 앱 처음 실행시 랜덤 축제 이미지 4개 가져오기
     public void previewfestival(){
 
         Random random = new Random();
@@ -225,36 +243,40 @@ public class MainFragment extends Fragment {
                     imageViews = new ImageView[placeArrayList.size()];
                     viewFlipper.removeAllViews();
 
-                  //사이즈만큼 반복분 이미지 뷰를 생성 .
-                   for (int i = 0; i < placeArrayList.size(); i++) {
-                       imageViews[i] = new ImageView(getActivity());
-                       viewFlipper.addView(imageViews[i]);
+                    //사이즈만큼 반복분 이미지 뷰를 생성 .
+                    for (int i = 0; i < placeArrayList.size(); i++) {
+                        imageViews[i] = new ImageView(getActivity());
+                        viewFlipper.addView(imageViews[i]);
 
-                       // 클릭 이벤트 추가
-                       final int position = i; // 클로저(Closure)에서 final 변수를 사용해야 함
-                       imageViews[i].setOnClickListener(new View.OnClickListener() {
-                           @Override
-                           public void onClick(View v) {
-                               // 클릭된 이미지뷰에 대한 동작 수행
-                               Place item = placeArrayList.get(position);
-                               // 예: 클릭된 장소에 대한 처리 로직 추가
-                               PlaceInfoFragment secondFragment = new PlaceInfoFragment();
-                               // 데이터 전달을 위한 Bundle 생성 및 설정
-                               Bundle bundle = new Bundle();
-                               bundle.putInt("id", item.id);
-                               secondFragment.setArguments(bundle);
+                        // 클릭 이벤트 추가
+                        final int position = i; // 클로저(Closure)에서 final 변수를 사용해야 함
+                        imageViews[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // 클릭된 이미지뷰에 대한 동작 수행
+                                Place item = placeArrayList.get(position);
+//                               // 예: 클릭된 장소에 대한 처리 로직 추가
+//                               PlaceInfoFragment secondFragment = new PlaceInfoFragment();
+//                               // 데이터 전달을 위한 Bundle 생성 및 설정
+//                               Bundle bundle = new Bundle();
+//                               bundle.putInt("id", item.id);
+//                               secondFragment.setArguments(bundle);
+//
+//                               // Fragment 에서 다른 Fragment로 이동 .
+//                               if (getActivity() != null) {
+//                                   FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                                   fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+////                                   fragmentTransaction.addToBackStack(null);
+//                                   fragmentTransaction.commit();
+//                               }
 
-                               // Fragment 에서 다른 Fragment로 이동 .
-                               if (getActivity() != null) {
-                                   FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                   fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
-//                                   fragmentTransaction.addToBackStack(null);
-                                   fragmentTransaction.commit();
-                               }
-
-                           }
-                       });
-                 }
+                                Intent intent = new Intent(getActivity(),PlaceInfoActivity.class);
+                                intent.putExtra("id",item.id);
+                                intent.putExtra("option",1);
+                                startActivity(intent);
+                            }
+                        });
+                    }
 
                     int i = 0;
                     for (Place item : placeArrayList) {
@@ -270,6 +292,7 @@ public class MainFragment extends Fragment {
             }
         });
     }
+
     // 네트워크 데이터 처리할때 사용할 다이얼로그
     Dialog dialog;
     private void showProgress(){
