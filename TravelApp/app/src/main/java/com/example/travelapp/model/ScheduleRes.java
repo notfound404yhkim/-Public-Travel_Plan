@@ -6,4 +6,6 @@ public class ScheduleRes {
     public Items items;
     public ArrayList<Place> place_list;
 
+    public int count;
+
 }

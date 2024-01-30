@@ -26,8 +26,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="bottom|center"
-            android:background="@drawable/icon_map"
-            android:backgroundTint="@color/my_primary"
+
             android:scaleType="centerCrop"
             android:src="@drawable/person_icon" />
 
