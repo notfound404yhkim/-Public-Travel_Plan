@@ -64,6 +64,7 @@ public class PlaceInfoActivity extends AppCompatActivity {
         call.enqueue(new Callback<PlaceList>() {
             @Override
             public void onResponse(Call<PlaceList> call, Response<PlaceList> response) {
+                Log.i("AAA", response.toString());
 
                 if(response.isSuccessful()){
                     PlaceList placeList = response.body();

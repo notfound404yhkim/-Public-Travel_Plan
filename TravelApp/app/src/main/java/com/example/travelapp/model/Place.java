@@ -10,6 +10,8 @@ public class Place implements Serializable {
     public String region;
     public String placeName;
 
+    public String name;
+
     public String content;
     public String imgUrl;
     public String strDate;
@@ -30,4 +32,9 @@ public class Place implements Serializable {
     }
 
 
+    public Place(int id, String name, String imgUrl) {
+        this.id = id;
+        this.name = name;
+        this.imgUrl = imgUrl;
+    }
 }
