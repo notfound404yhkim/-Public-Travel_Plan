@@ -1,10 +1,14 @@
 package com.example.travelapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +41,9 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
 
     String token;
     String region;
+    TextView txtSelect;
+
+    String selectRegion;
 
 
 
@@ -56,6 +63,7 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule_add_place);
 
         region = getIntent().getStringExtra("region");
+        txtSelect = findViewById(R.id.txtSelect);
 
 
 
@@ -80,6 +88,19 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
             }
         });
 
+
+        //백 버튼 눌렀을때 일정 추가 페이지로 선택한 장소들을 보냄
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                selectRegion = txtSelect.getText().toString().trim();
+
+                Intent intent = new Intent();
+                intent.putExtra("selectRegion",selectRegion);
+                setResult(100,intent);
+                finish();}
+        });
+
     }
 
     @Override
@@ -92,9 +113,7 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
 
     private void getNetworkData(String region) {
 
-        //변수 초기화
-        offset = 0;
-        count = 0;
+
 
         Retrofit retrofit = NetworkClient.getRetrofitClient(ScheduleMapSelectActivity.this);
 
@@ -112,6 +131,9 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
 
 
                 if(response.isSuccessful()){
+                    //        //변수 초기화
+                    offset = 0;
+                    count = 0;
 
                     Log.i("AAA",response.toString());
                     PlaceList placeList = response.body();
@@ -122,6 +144,23 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
 
                     // 어댑터 만들어서, 리사이클러뷰에 적용 //새로고침
                     adapter = new SchedulePlaceSelectAdapter(ScheduleMapSelectActivity.this, placeArrayList);
+                    adapter.setOnItemClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Place data = (Place)v.getTag();
+                            Log.i("AAA",data.placeName);
+                            // 현재 텍스트 가져오기
+                            String currentText = txtSelect.getText().toString();
+
+                            // 쉼표로 시작하는지 확인하고 쉼표가 있다면 첫 번째 문자 제거
+                            if (currentText.startsWith(",")) {
+                                currentText = currentText.substring(1);
+                            }
+
+                            txtSelect.setText(currentText + ","+data.placeName);
+                        }
+                    });
+
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 
@@ -138,6 +177,9 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
     }
 
 
+
+
+
     private void addNetworkData(String region) {
 
 
@@ -149,6 +191,7 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
         token = "Bearer " + token;
 
         offset = offset + count;
+        Log.i("AAA",offset+"개");
 
         Call<PlaceList> call = api.getPlacelist(token,region, 0,offset, limit);
 

@@ -24,10 +24,13 @@ public class SchedulePlaceSelectAdapter extends RecyclerView.Adapter<SchedulePla
 
     Context context;
     ArrayList<Place> placeArrayList = new ArrayList<>();
-    Schedule schedule;
-    int index;
 
+    //액티비티로 전달하기 위해서 클릭리스너 정의
+    private View.OnClickListener onClickListener;
 
+    public void setOnItemClickListener(View.OnClickListener listener) {
+        this.onClickListener = listener;
+    }
 
     public SchedulePlaceSelectAdapter(Context context, ArrayList<Place> placeArrayList) {
         this.context = context;
@@ -49,6 +52,10 @@ public class SchedulePlaceSelectAdapter extends RecyclerView.Adapter<SchedulePla
         Place place = placeArrayList.get(position);
         holder.txtPlaceName.setText(place.placeName);
         Picasso.get().load(place.imgUrl).into( holder.imgPhoto);
+        final Place item = placeArrayList.get(position);
+        //이벤트 리스너 생성
+        holder.cardView.setOnClickListener(onClickListener);
+        holder.cardView.setTag(item);
 
     }
 
@@ -73,14 +80,6 @@ public class SchedulePlaceSelectAdapter extends RecyclerView.Adapter<SchedulePla
             txtPlaceName = itemView.findViewById(R.id.txtPlaceName);
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
             cardView = itemView.findViewById(R.id.cardView);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                }
-            });
-
         }
     }
 }

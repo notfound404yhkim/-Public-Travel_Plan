@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,11 +26,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelapp.adapter.PlaceAdapter;
+import com.example.travelapp.api.HistoryApi;
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.PlaceApi;
+import com.example.travelapp.api.ScheduleApi;
 import com.example.travelapp.config.Config;
+import com.example.travelapp.model.History;
 import com.example.travelapp.model.Place;
 import com.example.travelapp.model.PlaceList;
+import com.example.travelapp.model.Res;
+import com.example.travelapp.model.Schedule;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
@@ -46,13 +53,16 @@ public class ScheduleAddActivity extends AppCompatActivity {
 
     String[] region = {"서울","인천","대전","대구","광주","부산","제주"};
     ListView listRegion; //지역 리스트 뷰
-    TextView txtRegion,txtDate;
+    TextView txtRegion,txtDate,txtPlace;
+    EditText editContent;
     RelativeLayout RegionLayout; //지역 선택부분 레이아웃
     RelativeLayout DateLayout,PlaceLayout;
     LinearLayout bottomLayout;
     String dateString1 = null;
     String dateString2 = null;
 
+    Button btnSave;
+    String token;
 
 
 
@@ -69,6 +79,9 @@ public class ScheduleAddActivity extends AppCompatActivity {
         bottomLayout = findViewById(R.id.bottomLayout);
         DateLayout = findViewById(R.id.DateLayout);
         PlaceLayout = findViewById(R.id.PlaceLayout);
+        txtPlace = findViewById(R.id.txtPlace);
+        btnSave = findViewById(R.id.btnSave);
+        editContent = findViewById(R.id.editContent);
 
         //지역 선택 부분    프레그먼트이므로 getActivity()
 
@@ -137,6 +150,65 @@ public class ScheduleAddActivity extends AppCompatActivity {
                 intent.putExtra("region",region);
                 launcher.launch(intent);}
         });
+
+        //일정 저장 이벤트
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String region = txtRegion.getText().toString().trim();
+                String date = txtDate.getText().toString().trim();
+                String place = txtPlace.getText().toString().trim();
+                String content = editContent.getText().toString().trim();
+                if (region.isEmpty() || date.isEmpty() ||  place.isEmpty() || content.isEmpty()){
+                    Toast.makeText(ScheduleAddActivity.this,"항목을 모두 입력하세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // 쉼표로 문자열을 나누어 배열로 저장
+                String[] places = place.split(",");
+                String[] placesArray = new String[4];
+
+                // 나머지 빈 공간에는 빈 문자열(" ") 할당
+                for (int i = 0; i < placesArray.length; i++) {
+                    if (i < places.length) {
+                        placesArray[i] = places[i];
+                    } else {
+                        placesArray[i] = "";  // 빈 문자열 할당
+                    }
+                }
+
+                // placesArray의 내용 출력
+                for (String value : placesArray) {
+                    Log.i("AAA", value.trim()); // trim()을 사용하여 문자열 앞뒤의 공백 제거
+                }
+                Retrofit retrofit = NetworkClient.getRetrofitClient(ScheduleAddActivity.this);
+                ScheduleApi api = retrofit.create(ScheduleApi.class);
+
+                // 토큰 가져온다.
+                SharedPreferences sp = getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+                token = sp.getString("token", "");
+                token = "Bearer " + token;
+
+                Schedule schedule = new Schedule(region,dateString1,dateString2,content);
+                Call<Res> call =  api.addSchedule(token,schedule,placesArray[0],placesArray[1],placesArray[2],placesArray[3]);  //토큰,스케줄정보,장소값들
+                call.enqueue(new Callback<Res>() {
+                    @Override
+                    public void onResponse(Call<Res> call, Response<Res> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(ScheduleAddActivity.this,"일정 저장 완료.",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Res> call, Throwable t) {
+                        Log.i("AAA","에러");
+                    }
+                });
+            }
+        });
+
+
     }
 
 
@@ -147,8 +219,8 @@ public class ScheduleAddActivity extends AppCompatActivity {
                         @Override
                         public void onActivityResult(ActivityResult o) {
                             if(o.getResultCode() == 100){
-//                                int age = o.getData().getIntExtra("age",0);
-//                                txtFuture.setText("10년 후의 나이는 : "+ age);
+                                String selectRegion = o.getData().getStringExtra("selectRegion");
+                                txtPlace.setText(selectRegion);
                             }
                         }
                     });
