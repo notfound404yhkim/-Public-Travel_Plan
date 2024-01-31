@@ -7,13 +7,11 @@
     android:layout_marginLeft="15sp"
     android:layout_marginRight="15sp"
     android:layout_marginBottom="50sp">
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/textView7"
             android:layout_width="match_parent"
@@ -22,7 +20,6 @@
             android:gravity="center"
             android:text="일정 추가"
             android:textSize="30sp" />
-
         <RelativeLayout
             android:id="@+id/RegionLayout"
             android:layout_width="match_parent"
@@ -35,28 +32,23 @@
             android:elevation="5dp"
             android:padding="10dp"
             android:visibility="visible">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/search_icon" />
-
             <TextView
                 android:id="@+id/txtRegion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="지역을 선택하세요." />
-
         </RelativeLayout>
-
         <ListView
             android:id="@+id/listRegion"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-
         <RelativeLayout
             android:id="@+id/DateLayout"
             android:layout_width="match_parent"
@@ -68,22 +60,18 @@
             android:background="@drawable/edit_text_rounded_corner"
             android:elevation="5dp"
             android:padding="10dp">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/search_icon" />
-
             <TextView
                 android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="여행 날짜를 선택하세요." />
-
         </RelativeLayout>
-
         <LinearLayout
             android:id="@+id/bottomLayout"
             android:layout_width="match_parent"
@@ -94,9 +82,9 @@
                 android:id="@+id/PlaceLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_rounded_corner"
                 android:elevation="5dp"
                 android:padding="10dp">
@@ -113,7 +101,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="장소 추가" />
-
             </RelativeLayout>
 
             <TextView
@@ -124,8 +111,8 @@
                 android:layout_marginTop="19dp"
                 android:layout_marginEnd="315dp"
                 android:layout_marginBottom="17dp"
-                android:text="메모"
-                android:textSize="16sp"
+                android:text="일정"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toTopOf="@+id/editText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -133,10 +120,9 @@
 
             <EditText
                 android:id="@+id/editContent"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="18dp"
                 android:layout_marginBottom="120dp"
                 android:ems="10"
                 android:inputType="text"
@@ -155,12 +141,10 @@
                 android:backgroundTint="#0048FF"
                 android:text="저장"
                 android:textColorLink="#2196F3"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>

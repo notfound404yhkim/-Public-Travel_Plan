@@ -3,20 +3,18 @@ package com.example.travelapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-
+import com.example.travelapp.adapter.FriendPostingAdapter;
 import com.example.travelapp.adapter.MypostingAdapter;
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.PostingApi;
@@ -32,15 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommunityFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CommunityFragment extends Fragment {
+public class CommunityTwoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -48,7 +39,7 @@ public class CommunityFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CommunityFragment() {
+    public CommunityTwoFragment() {
         // Required empty public constructor
     }
 
@@ -61,8 +52,8 @@ public class CommunityFragment extends Fragment {
      * @return A new instance of fragment CommunityFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CommunityFragment newInstance(String param1, String param2) {
-        CommunityFragment fragment = new CommunityFragment();
+    public static CommunityTwoFragment newInstance(String param1, String param2) {
+        CommunityTwoFragment fragment = new CommunityTwoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,22 +73,20 @@ public class CommunityFragment extends Fragment {
     Button btnView;
     Button btnShare;
     Button btnAdd;
+    RecyclerView recyclerView;
+    ArrayList<Posting> postingArrayList = new ArrayList<>();
+    FriendPostingAdapter adapter;
     ProgressBar progressBar;
 
-    // 리사이클러뷰 관련 변수
-    RecyclerView recyclerView;
-    MypostingAdapter adapter;
-    ArrayList<Posting> postingArrayList = new ArrayList<>();
-
     int offset = 0;
-    int limit = 15;
+    int limit = 25;
     int count = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_community, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_community_two, container, false);
 
         btnView = rootView.findViewById(R.id.btnView);
         btnShare = rootView.findViewById(R.id.btnShare);
@@ -108,27 +97,26 @@ public class CommunityFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        btnView.setBackgroundColor(getResources().getColor(R.color.black));
-        btnView.setTextColor(getResources().getColor(R.color.white));
+        btnShare.setBackgroundColor(getResources().getColor(R.color.black));
+        btnShare.setTextColor(getResources().getColor(R.color.white));
 
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNetworkData();
+                CommunityFragment communityFragment = new CommunityFragment();
 
+                if (getActivity() != null) {
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_frame_layout, communityFragment);
+                    fragmentTransaction.commit();
+                }
             }
         });
 
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommunityTwoFragment communityTwoFragment = new CommunityTwoFragment();
-
-                if (getActivity() != null) {
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_frame_layout, communityTwoFragment);
-                    fragmentTransaction.commit();
-                }
+                getNetworkData();
             }
         });
 
@@ -164,7 +152,7 @@ public class CommunityFragment extends Fragment {
 
         PostingApi api = retrofit.create(PostingApi.class);
 
-        Call<PostingList> call = api.getMyPosting("Bearer " + token, offset, limit);
+        Call<PostingList> call = api.getFriendPosting("Bearer " + token, offset, limit);
 
         call.enqueue(new Callback<PostingList>() {
             @Override
@@ -179,7 +167,7 @@ public class CommunityFragment extends Fragment {
                     postingArrayList.addAll(postingList.items);
                     count = postingList.count;
 
-                    adapter = new MypostingAdapter(getActivity(), postingArrayList);
+                    adapter = new FriendPostingAdapter(getActivity(), postingArrayList);
                     recyclerView.setAdapter(adapter);
 
                 }
@@ -194,4 +182,5 @@ public class CommunityFragment extends Fragment {
         });
 
     }
+
 }

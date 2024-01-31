@@ -2,7 +2,6 @@ package com.example.travelapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.travelapp.PlaceInfoActivity;
 import com.example.travelapp.R;
 import com.example.travelapp.ScheduleInfoActivity;
-import com.example.travelapp.model.Place;
 import com.example.travelapp.model.Schedule;
 import com.squareup.picasso.Picasso;
 

@@ -20,14 +20,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.travelapp.adapter.PlaceAdapter2;
 import com.example.travelapp.api.NetworkClient;
-import com.example.travelapp.api.PlaceApi;
 import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
-import com.example.travelapp.model.Place;
-import com.example.travelapp.model.PlaceList;
-import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
 import com.squareup.picasso.Picasso;
