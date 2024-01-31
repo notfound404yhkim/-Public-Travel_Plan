@@ -110,7 +110,8 @@
                         android:layout_margin="15dp"
                         android:text="여행지 소개"
                         android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="#172FD5"/>
                 </LinearLayout>
 
                 <HorizontalScrollView
@@ -228,7 +229,8 @@
                         android:layout_marginBottom="15dp"
                         android:text="축제 및 행사 리스트"
                         android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="#172FD5"/>
 
                     <TextView
                         android:id="@+id/txtMore"
