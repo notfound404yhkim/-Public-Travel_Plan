@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     CommunityFragment communityFragment;
     ProfileFragment profileFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         communityFragment = new CommunityFragment();
         profileFragment = new ProfileFragment();
 
-        getSupportActionBar().setTitle("여행 시작과 끝");
+//        getSupportActionBar().setTitle("여행 시작과 끝");
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -55,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.menu_main);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
 }

@@ -27,16 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="환영합니다!"
-            android:textSize="35sp"
-            android:layout_margin="5dp"
-            android:textStyle="bold"/>
-    </LinearLayout>
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
