@@ -67,20 +67,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
                 android:gravity="center|center_vertical">
 
                 <Button
                     android:id="@+id/btnP1"
                     android:layout_width="15dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:text="AI 추천" />
 
                 <Button
                     android:id="@+id/btnP2"
                     android:layout_width="15dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:text="핫플 콕콕" />
 

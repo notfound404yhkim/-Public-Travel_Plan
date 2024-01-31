@@ -36,7 +36,7 @@ class UserRegisterResource(Resource):
 
         #4. 비밀번호를 암호화 한다.
         password = hash_password(data['password'])
-        print(password)
+        # print(password)
 
         #5. DB의 user 테이블에 저장 
         try:
@@ -73,7 +73,7 @@ class UserRegisterResource(Resource):
         
         #7. 토큰을 클라이언트에게 준다. respon
         return {'result' : 'success' , 
-                'access_token' : access_token },200
+                'accessToken' : access_token },200
     
 # 로그인
 class UserLoginResource(Resource):
@@ -99,7 +99,7 @@ class UserLoginResource(Resource):
             cursor.execute(query,record)
             
             result_list = cursor.fetchall() #가져온 데이터
-            print(result_list)
+            # print(result_list)
 
             cursor.close()
             connection.close()
@@ -123,12 +123,12 @@ class UserLoginResource(Resource):
 
         # #비밀번호가 틀렸을떄
         if check == False:
-            return {"error" : "비밀번호가 맞지 않습니다."},406
+            return {"error" : "비밀번호가 맞지 않습니다."},400
         
         # jwt 토큰을 만들어서 , 클라이언트에게 응답한다.
         access_token = create_access_token(result_list[0]['id'])
         #access_token = create_access_token(result_list[0]['id'], expires_delta = datetime.timedelta(minutes=2))
-        return {"result" : "success", "accessToken" :access_token },205
+        return {"result" : "success", "accessToken" :access_token },200
     
 # 로그아웃    
 jwt_blocklist = set()

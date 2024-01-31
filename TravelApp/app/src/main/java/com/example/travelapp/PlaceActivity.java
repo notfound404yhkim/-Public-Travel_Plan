@@ -1,7 +1,7 @@
 package com.example.travelapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -128,7 +128,6 @@ public class PlaceActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
 
                     Log.i("AAA",response.toString());
-
                     PlaceList placeList = response.body();
                     count = placeList.count;
 

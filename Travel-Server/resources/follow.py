@@ -32,9 +32,9 @@ class FollowResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500
+            return{"error" : str(e)},500
         
-        return{"Result " : "Success" },200
+        return{"result" : "success" },200
     
     @jwt_required()
     def delete(self,followee_id):
@@ -58,9 +58,9 @@ class FollowResource(Resource):
             print(e)
             cursor.close()
             connection.close()
-            return{"ERROR" : str(e)},500
+            return{"error" : str(e)},500
         
-        return{"Result " : "Success" },200
+        return{"result" : "success" },200
     
 
 

@@ -255,21 +255,6 @@ public class MainFragment extends Fragment {
                             public void onClick(View v) {
                                 // 클릭된 이미지뷰에 대한 동작 수행
                                 Place item = placeArrayList.get(position);
-//                               // 예: 클릭된 장소에 대한 처리 로직 추가
-//                               PlaceInfoFragment secondFragment = new PlaceInfoFragment();
-//                               // 데이터 전달을 위한 Bundle 생성 및 설정
-//                               Bundle bundle = new Bundle();
-//                               bundle.putInt("id", item.id);
-//                               secondFragment.setArguments(bundle);
-//
-//                               // Fragment 에서 다른 Fragment로 이동 .
-//                               if (getActivity() != null) {
-//                                   FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                                   fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
-////                                   fragmentTransaction.addToBackStack(null);
-//                                   fragmentTransaction.commit();
-//                               }
-
                                 Intent intent = new Intent(getActivity(),PlaceInfoActivity.class);
                                 intent.putExtra("id",item.id);
                                 intent.putExtra("option",1);

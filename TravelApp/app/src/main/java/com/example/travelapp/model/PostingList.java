@@ -7,7 +7,6 @@ public class PostingList {
 
     public String result;
     public ArrayList<Posting> items;
-
     public int count;
 
 
