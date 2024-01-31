@@ -1,5 +1,6 @@
 package com.example.travelapp.api;
 
+import com.example.travelapp.model.PlaceList;
 import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
@@ -7,9 +8,11 @@ import com.example.travelapp.model.UserRes;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserApi {
     // 회원가입 API
@@ -23,5 +26,10 @@ public interface UserApi {
     //회원탈퇴 API
     @DELETE("/user/secede")
     Call<Res> deleteUser(@Header("Authorization") String token);
+
+    //프로필 정보 불러오기
+    @GET("/mypage/userInfo")
+    Call<UserRes> getProfile(@Header("Authorization") String token);
+
 
 }

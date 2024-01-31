@@ -55,16 +55,6 @@ public class LoginActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.GONE);
 
-        // 이미지 클릭하면 메인
-        imgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

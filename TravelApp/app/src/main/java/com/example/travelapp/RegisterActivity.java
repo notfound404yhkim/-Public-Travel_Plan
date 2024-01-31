@@ -34,11 +34,12 @@ public class RegisterActivity extends AppCompatActivity {
     ProgressBar progressBar;
     Button btn;
     ImageButton imgBtn;
+
     EditText register_username;
     EditText register_email;
     EditText register_phone;
     EditText register_password;
-    EditText register_correct_password;
+    EditText register_correct_password;;
 
 
 
@@ -71,14 +72,14 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 if (email.isEmpty() || password.isEmpty() || phone.isEmpty() || password2.isEmpty()){
-                    Toast.makeText(RegisterActivity.this,"항목을 모두 입력하세요.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"항목을 모두 입력하세요",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // 이메일 형식이 맞는지 체크
                 Pattern pattern = Patterns.EMAIL_ADDRESS;
                 if (pattern.matcher(email).matches() == false){
-                    Toast.makeText(RegisterActivity.this,"이메일 형식을 확인하세요.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"이메일 형식을 확인하세요",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
