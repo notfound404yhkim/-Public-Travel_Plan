@@ -6,9 +6,9 @@ from mysql_connection import get_connection
 from mysql.connector import Error
 import boto3
 import openai
-from datetime import datetime,timedelta
+from datetime import datetime
 import time
-import re
+
 
 openai.api_key = Config.openapi_key
 
@@ -207,6 +207,34 @@ class historyInfoResource(Resource):
             i = i+1
 
         return {"result" : "success", "items" : result_list}, 200
+    
+   # 내 AI 기록 삭제 
+    @jwt_required()
+    def delete(self,history_id):
+        user_id = get_jwt_identity()
+        print(history_id)
+        print(user_id)
+
+        try:
+            connection = get_connection()
+            query = '''delete from history
+                    where id = %s and userId = %s;'''
+            
+            record = (history_id,user_id)
+            cursor = connection.cursor()
+            cursor.execute(query,record)
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return{"error" : str(e)},500
+        
+        return{"result" : "success" },200
         
     
 
