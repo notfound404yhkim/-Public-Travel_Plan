@@ -57,7 +57,7 @@ public class BookmarkActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(BookmarkActivity.this));
 
     }
 
@@ -87,13 +87,17 @@ public class BookmarkActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()){
                     PostingList postingList = response.body();
-                    Log.i("AAA",response.body().toString());
+                    Log.i("AAA2",response.toString());
 
                     postingArrayList.clear();
 
                     postingArrayList.addAll(postingList.items);
                     count = postingList.count;
 
+                    for (Posting item : postingArrayList) {
+                       Log.i("AAA2",item.id+"아디");
+                        Log.i("AAA2",item.title);
+                    }
 
                     adapter = new MypostingAdapter(BookmarkActivity.this, postingArrayList);
                     recyclerView.setAdapter(adapter);
