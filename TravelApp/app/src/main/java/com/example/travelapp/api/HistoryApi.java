@@ -6,6 +6,7 @@ import com.example.travelapp.model.Res;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -28,5 +29,12 @@ public interface HistoryApi {
     //대화기록 자세히 보기
     @GET("/history/{historyId}")
     Call<HistoryList> getHistoryInfo(@Header("Authorization") String token, @Path("historyId") int historyId);
+
+
+    //대화기록 삭제
+
+    //내 스케줄 삭제  API
+    @DELETE("/history/{historyId}")
+    Call<Res> deleteHistory(@Path("historyId") int historyId, @Header("Authorization") String token);
 
 }
