@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CommunityFragment">
+    tools:context=".CommunityTwoFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,10 +23,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/my_lightGray"
+                android:backgroundTint="#F4F4F4"
                 android:shadowColor="#D5D5D5"
                 android:text="내 기록 보기"
-                android:textColor="@color/black"
+                android:textColor="#070707"
                 android:textColorHighlight="#B6B6B6"
                 android:textColorHint="#DDDDDD"
                 android:textColorLink="#B8B9BD"

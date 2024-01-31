@@ -41,7 +41,7 @@ public class PlaceInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_placeinfo, container, false);
         txtTile=view.findViewById(R.id.txtTile);
         txtRegion=view.findViewById(R.id.txtRegion);
-        txtContent=view.findViewById(R.id.txtContent);
+        txtContent=view.findViewById(R.id.txtTitle);
         imgPhoto=view.findViewById(R.id.imgPhoto);
         txtDate=view.findViewById(R.id.txtDate);
         linearLayout=view.findViewById(R.id.LinearLayout);

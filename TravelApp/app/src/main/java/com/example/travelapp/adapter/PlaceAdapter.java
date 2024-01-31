@@ -67,7 +67,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtRegion = itemView.findViewById(R.id.txtRegion);
-            txtName = itemView.findViewById(R.id.txtName);
+            txtName = itemView.findViewById(R.id.TextView10);
             txtDate = itemView.findViewById(R.id.txtDate);
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
             cardView = itemView.findViewById(R.id.cardView);

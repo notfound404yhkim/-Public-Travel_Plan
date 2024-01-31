@@ -13,6 +13,11 @@ public class Posting implements Serializable {
     public int isLike;
     public int likeCnt;
 
+    public int postId;
+    public String name;
+    public int bookmarkCnt;
+    public int isBookmark;
+
     public Posting(int id, int userId, String imgUrl, String title, String content, String createdAt, int isLike, int likeCnt) {
         this.id = id;
         this.userId = userId;
