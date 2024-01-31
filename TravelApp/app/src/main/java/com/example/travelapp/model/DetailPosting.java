@@ -9,7 +9,9 @@ public class DetailPosting {
     public ArrayList<Comments> comments;
 
     public class Comments {
-        public int id;
+        public int commentId;
+        public int id; // 댓글 쓴 유저 id
+        public int postid;
         public String name;
         public String profileImg;
         public String content;

@@ -2,16 +2,17 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/box01"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +27,7 @@
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="제목"
-                android:textSize="25sp" />
+                android:textSize="35sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,7 +59,7 @@
             <ImageView
                 android:id="@+id/imgPhoto"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:layout_margin="10dp"
                 android:src="@drawable/person_icon" />
 
@@ -103,14 +104,16 @@
                 android:textSize="13sp" />
 
             <LinearLayout
+                android:id="@+id/linearBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/btnUpdate"
-                    android:layout_width="65dp"
+                    android:layout_width="80dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
@@ -120,7 +123,7 @@
 
                 <Button
                     android:id="@+id/btnDelete"
-                    android:layout_width="65dp"
+                    android:layout_width="80dp"
                     android:layout_height="45dp"
                     android:layout_margin="5dp"
                     android:backgroundTint="#E41E1E"
@@ -142,7 +145,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
-                    android:src="@drawable/baseline_thumb_up_24" />
+                    android:src="@drawable/null_like" />
 
                 <ImageView
                     android:id="@+id/imgBookmark"
@@ -151,7 +154,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
-                    android:src="@drawable/baseline_grade_24" />
+                    android:src="@drawable/null_star" />
             </LinearLayout>
 
             <LinearLayout
@@ -208,7 +211,7 @@
 
                 <Button
                     android:id="@+id/btnWrite"
-                    android:layout_width="65dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="작성"
@@ -222,7 +225,6 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
