@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.activity.OnBackPressedCallback;
@@ -157,8 +158,16 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
                                 currentText = currentText.substring(1);
                             }
 
-                            txtSelect.setText(currentText + ","+data.placeName);
-                        }
+                            // 콤마로 분리된 값들을 배열로 저장
+                            String[] values = currentText.split(",");
+
+                            // 분리된 값들이 4개를 초과하면 더 이상 값을 추가하지 않음
+                            if (values.length > 3) {
+                                Toast.makeText(ScheduleMapSelectActivity.this,"장소는 최대 4군대 선택이 가능합니다.",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                txtSelect.setText(currentText + ","+data.placeName);}
+                            }
                     });
 
                     recyclerView.setAdapter(adapter);
