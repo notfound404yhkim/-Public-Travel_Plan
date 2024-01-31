@@ -329,7 +329,7 @@ class PostingResource(Resource):
                 tag.append(tag_dict['tag'])
 
             query = '''
-                    select c.id, u.id, u.name, u.profileImg, c.content, c.createdAt
+                    select c.id, c.postingId as postid, u.id, u.name, u.profileImg, c.content, c.createdAt
                     from comment c
                     left join user u
                     on c.userId = u.Id

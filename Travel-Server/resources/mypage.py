@@ -330,6 +330,34 @@ class myScheduleResource(Resource) :
 
         return {"result" : "success", "items" : result, "place_list" : place_list}, 200
     
+    # 내 일정삭제
+    @jwt_required()
+    def delete(self,myScheduleId):
+        user_id = get_jwt_identity()
+        print(myScheduleId)
+        print(user_id)
+
+        try:
+            connection = get_connection()
+            query = '''delete from mySchedule
+                    where id = %s and userId = %s;'''
+            
+            record = (myScheduleId,user_id)
+            cursor = connection.cursor()
+            cursor.execute(query,record)
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return{"error" : str(e)},500
+        
+        return{"result" : "success" },200
+    
 # 북마크한 포스팅 리스트
 class bookmarkListResource(Resource) :
 

@@ -22,7 +22,7 @@ from resources.user import UserLoginResource, UserLogoutResource, UserRegisterRe
 
 app = Flask(__name__)
 
-api = Api(app)
+api = Api(app) 
 
 # 환경변수 셋팅
 
@@ -57,7 +57,7 @@ api.add_resource( CommentResource, '/comment/<int:posting_id>') # 댓글 추가,
 
 
 api.add_resource( historyResource,'/history') # GPT 대화 내용 생성
-api.add_resource( historyInfoResource,'/history/<int:history_id>') # GPT 대화 내용 상세보기
+api.add_resource( historyInfoResource,'/history/<int:history_id>') # GPT 대화 내용 상세보기 , 삭제 
 api.add_resource( historyListResource,'/historylist') # GPT 대화 내용 리스트 가져오기
 
 api.add_resource( placeResource,'/place') #축제 또는 핫플 작성,  축제 또는 핫플 이미지 가져오기 
@@ -70,7 +70,7 @@ api.add_resource( LikeResource , '/like/<int:posting_id>') # 좋아요 ,좋아�
 api.add_resource( BookmarkResource , '/bookmark/<int:posting_id>') # 즐겨찾기 ,즐겨찾기 취소 
 api.add_resource( UserInfoResource, "/mypage/userInfo") # 프로필 정보, 프로필 수정
 api.add_resource( myScheduleListResource, "/mypage/mySchedule") # 일정 추가, 일정 리스트
-api.add_resource( myScheduleResource, "/mypage/mySchedule/<int:myScheduleId>") # 일정 상세보기
+api.add_resource( myScheduleResource, "/mypage/mySchedule/<int:myScheduleId>") # 일정 상세보기 , 일정 삭제 
 api.add_resource( bookmarkListResource, "/mypage/bookmark") # 북마크한 글 리스트
 
 if __name__ == '__main__':
