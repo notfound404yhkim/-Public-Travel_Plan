@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +67,21 @@ public class ProfileFragment extends Fragment {
         txtName = view.findViewById(R.id.txtName);
 
         btnMyposting = view.findViewById(R.id.btnMyposting);
+
+        btnMyposting = view.findViewById(R.id.btnMyposting);
+        btnMyposting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //기록 게시판으로 이동
+                CommunityFragment secondFragment = new CommunityFragment();
+                if (getActivity() != null) {
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
         btnMyschedule = view.findViewById(R.id.btnMyschedule);
 
         btnMyschedule.setOnClickListener(new View.OnClickListener() {
