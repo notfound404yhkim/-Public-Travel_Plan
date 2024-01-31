@@ -42,7 +42,7 @@ public class PlaceInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_placeinfo);
         txtTile=findViewById(R.id.txtTile);
         txtRegion=findViewById(R.id.txtRegion);
-        txtContent=findViewById(R.id.txtContent);
+        txtContent=findViewById(R.id.txtTitle);
         imgPhoto=findViewById(R.id.imgPhoto);
         txtDate=findViewById(R.id.txtDate);
         linearLayout=findViewById(R.id.LinearLayout);
@@ -75,7 +75,7 @@ public class PlaceInfoActivity extends AppCompatActivity {
                         txtRegion.setText(item.region);
                         txtContent.setText(item.content);
                         if (item.option==1){
-                        txtDate.setText(item.strDate +" ~ " + item.endDate);}
+                            txtDate.setText(item.strDate +" ~ " + item.endDate);}
                         Picasso.get().load(item.imgUrl).into(imgPhoto);
 
                         linearLayout.setVisibility(View.VISIBLE);

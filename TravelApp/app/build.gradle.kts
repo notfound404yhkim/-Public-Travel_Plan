@@ -50,4 +50,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.1.0")
     implementation("com.google.android.gms:play-services-places:17.0.0")
     implementation("com.google.android.libraries.places:places:3.3.0")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // 카메라
+    implementation("commons-io:commons-io:2.4")
 }
