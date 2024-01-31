@@ -176,10 +176,12 @@ class PostingListResource(Resource):
         try:
             connection = get_connection()
             query = '''
-                    select p.id, p.userId, p.imgUrl, p.title, p.content, p.createdAt, count(l.id) as likeCnt
+                    select p.id, p.userId, u.name, p.imgUrl, p.title, p.content, p.createdAt, count(l.id) as likeCnt
                     from posting p
                     left join likes l
                     on p.id = l.postingId
+                    left join user u
+                    on p.userId = u.id
                     where p.userId != %s
                     group by p.id
                     order by likeCnt desc
@@ -281,7 +283,7 @@ class PostingResource(Resource):
             connection = get_connection()
 
             query = '''
-                    select p.id postId, p.title, p.imgUrl, p.content,
+                    select p.id postId, u.name, p.title, p.imgUrl, p.content,
                     u.id userId, u.name, p.createdAt, count(l.id) as likeCnt, if(l2.id is null, 0,1) as isLike, 
                     count(b.id) as bookmarkCnt, if(b2.id is null, 0, 1) as isBookmark
                     from posting p
@@ -365,8 +367,10 @@ class PostingMeResource(Resource):
         try:
             connection = get_connection()
             query = '''
-                    select id, userId, imgUrl, title, content, createdAt
-                    from posting
+                    select p.id, p.userId, u.name, p.imgUrl, p.title, p.content, p.createdAt
+                    from posting p
+                    left join user u
+                    on p.userId = u.id
                     where userId = %s
                     order by createdAt desc
                     limit '''+ offset + ''' , ''' + limit + ''';

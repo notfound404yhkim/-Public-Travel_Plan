@@ -61,6 +61,31 @@
                         android:textSize="16sp"
                         android:textStyle="normal" />
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|center_vertical">
+
+                <Button
+                    android:id="@+id/btnP1"
+                    android:layout_width="15dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="AI 추천" />
+
+                <Button
+                    android:id="@+id/btnP2"
+                    android:layout_width="15dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="핫플 콕콕" />
+
             </LinearLayout>
 
             <RelativeLayout
@@ -138,10 +163,6 @@
                     android:gravity="center"
                     android:text="당신의 멋진 계획을 만들어 드릴게요\n지역과 일정을 선택하고\n선택완료 버튼을 눌러주세요"
                     android:textSize="17sp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txt_response"/>
 
                 <Button
                     android:id="@+id/btn_select"
@@ -154,23 +175,29 @@
                     android:textSize="15sp"
                     app:cornerRadius="10dp" />
 
+                <TextView
+                    android:id="@+id/txt_response"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginEnd="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="15dp"
                         android:text="축제 및 행사 리스트"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txt_more"
+                        android:id="@+id/txtMore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -185,188 +212,12 @@
                 <ViewFlipper
                     android:id="@+id/viewFlipper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:autoStart="true"
                     android:flipInterval="2000"
                     android:inAnimation="@android:anim/slide_in_left"
-                    android:outAnimation="@android:anim/slide_out_right"/>
+                    android:outAnimation="@android:anim/slide_out_right" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="50dp"
-                    android:background="@color/my_secondry" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical"
-                    tools:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:text="여행지 소개"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:visibility="visible">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="서울"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="부산"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="인천"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="대전"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="광주"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:text="대구"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-
-                </HorizontalScrollView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:src="@drawable/icon_plane" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:text="경기도 안성시"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="아쿠아필드 안성"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:src="@drawable/icon_plane" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:text="서울시"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="경복궁"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="360dp"
-                        android:src="@drawable/icon_plane" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:text="부산"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="해운대"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

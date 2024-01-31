@@ -1,11 +1,14 @@
 package com.example.travelapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.travelapp.PlaceInfoActivity;
 import com.example.travelapp.R;
 import com.example.travelapp.model.Place;
 import com.squareup.picasso.Picasso;
@@ -21,6 +24,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
     Context context;
     ArrayList<Place> placeArrayList = new ArrayList<>();
     Place place;
+    int index;
+
 
 
     public PlaceAdapter(Context context, ArrayList<Place> placeArrayList) {
@@ -67,10 +72,22 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtRegion = itemView.findViewById(R.id.txtRegion);
-            txtName = itemView.findViewById(R.id.TextView10);
+            txtName = itemView.findViewById(R.id.txtName);
             txtDate = itemView.findViewById(R.id.txtDate);
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
             cardView = itemView.findViewById(R.id.cardView);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    index = getAdapterPosition();
+                    place = placeArrayList.get(index);
+                    Intent intent = new Intent(context, PlaceInfoActivity.class);
+                    intent.putExtra("id",place.id);
+                    intent.putExtra("option",1);
+                    context.startActivity(intent);
+                }
+            });
+
         }
     }
 }
