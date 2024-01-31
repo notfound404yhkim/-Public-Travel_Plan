@@ -44,4 +44,13 @@ public interface PostingApi {
     @GET("/posting/{postId}")
     Call<DetailPosting> detailPosting(@Path("postId") int postId, @Header("Authorization") String token);
 
+
+    // 북마크한 포스팅 보기
+    @GET("/mypage/bookmark")
+    Call<PostingList> getBookmarkPosting(@Header("Authorization") String token,
+                                       @Query("offset") int offset,
+                                       @Query("limit") int limit);
+
+
+
 }

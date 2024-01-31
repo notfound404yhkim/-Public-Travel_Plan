@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
     TextView txtName;
     ImageView profile_image_view;
 
-    Button btnMyposting, btnMyschedule, btnAIHistory;
+    Button btnMyposting, btnMyschedule, btnAIHistory,btnBookmark;
 
 
 
@@ -99,6 +99,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnBookmark = view.findViewById(R.id.btnBookmark);
+        btnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), BookmarkActivity.class);
                 startActivity(intent);
             }
         });
