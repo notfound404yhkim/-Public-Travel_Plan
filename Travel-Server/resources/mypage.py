@@ -177,8 +177,14 @@ class myScheduleListResource(Resource) :
         user_id = get_jwt_identity()
 
         place_list = request.args.getlist("place")
-        place_list = [x for x in place_list if x.strip()]
-
+        print(place_list)
+        # place_list = [x for x in place_list if x.strip()]
+        place_list = [x.strip() for sublist in place_list for x in sublist.split(',') if x.strip()]
+        
+        # place_list = [item for sublist in [x.split(',') for x in place_list] for item in sublist if item.strip()]
+        # # place_list = [x.rstrip(',') for x in place_list]
+        #  place_list = list(filter(None, place_list))
+        
         data = request.get_json()
 
         print(place_list)
@@ -325,6 +331,34 @@ class myScheduleResource(Resource) :
         result['endDate'] = result['endDate'].isoformat()
 
         return {"result" : "success", "items" : result, "place_list" : place_list}, 200
+    
+    # 내 일정삭제
+    @jwt_required()
+    def delete(self,myScheduleId):
+        user_id = get_jwt_identity()
+        print(myScheduleId)
+        print(user_id)
+
+        try:
+            connection = get_connection()
+            query = '''delete from mySchedule
+                    where id = %s and userId = %s;'''
+            
+            record = (myScheduleId,user_id)
+            cursor = connection.cursor()
+            cursor.execute(query,record)
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return{"error" : str(e)},500
+        
+        return{"result" : "success" },200
     
 # 북마크한 포스팅 리스트
 class bookmarkListResource(Resource) :

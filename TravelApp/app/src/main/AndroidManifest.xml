@@ -35,6 +35,12 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
+        <activity android:name=".HistoryInfoActivity"
+            android:exported="false"/>
+
+        <activity android:name=".HistoryActivity"
+            android:exported="false"/>
+
         <activity android:name=".CommunityDetailActivity"
             android:exported="false"/>
 

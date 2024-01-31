@@ -329,7 +329,7 @@ class PostingResource(Resource):
                 tag.append(tag_dict['tag'])
 
             query = '''
-                    select c.id, u.id, u.name, u.profileImg, c.content
+                    select c.id, c.postingId as postid, u.id, u.name, u.profileImg, c.content, c.createdAt
                     from comment c
                     left join user u
                     on c.userId = u.Id
@@ -351,6 +351,11 @@ class PostingResource(Resource):
             return {"error" : str(e)},500
     
         post['createdAt'] = post['createdAt'].isoformat()
+
+        i = 0
+        for row in comment_list:
+            comment_list[i]['createdAt'] = row['createdAt'].isoformat()
+            i = i+1
 
         return {"result" : "success", "items" : post, "tag" : tag, "comments" : comment_list }, 200
 
