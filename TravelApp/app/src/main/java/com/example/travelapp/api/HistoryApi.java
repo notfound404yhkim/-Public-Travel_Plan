@@ -1,19 +1,14 @@
 package com.example.travelapp.api;
 
 import com.example.travelapp.model.History;
-import com.example.travelapp.model.PostingList;
+import com.example.travelapp.model.HistoryList;
 import com.example.travelapp.model.Res;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -24,5 +19,14 @@ public interface HistoryApi {
     @POST("/history")
     Call<Res> addHistory(@Header("Authorization") String token,@Body History history);
 
+    // 내 대화기록 조회 API
+    @GET("/historylist")
+    Call<HistoryList> getHistoryList(@Header("Authorization") String token,
+                                     @Query("offset") int offset,
+                                     @Query("limit") int limit);
+
+    //대화기록 자세히 보기
+    @GET("/history/{historyId}")
+    Call<HistoryList> getHistoryInfo(@Header("Authorization") String token, @Path("historyId") int historyId);
 
 }

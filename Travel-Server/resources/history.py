@@ -6,9 +6,9 @@ from mysql_connection import get_connection
 from mysql.connector import Error
 import boto3
 import openai
-from datetime import datetime,timedelta
+from datetime import datetime
 import time
-import re
+
 
 openai.api_key = Config.openapi_key
 

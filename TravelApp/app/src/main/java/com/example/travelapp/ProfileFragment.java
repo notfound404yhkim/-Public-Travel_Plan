@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
     TextView txtName;
     ImageView profile_image_view;
 
-    Button btnMyposting, btnMyschedule;
+    Button btnMyposting, btnMyschedule, btnAIHistory;
 
 
 
@@ -74,6 +74,15 @@ public class ProfileFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ScheduleActivity.class);
                 intent.putExtra("name",txtName.getText());
                 intent.putExtra("imgUrl",profileurl);
+                startActivity(intent);
+            }
+        });
+
+        btnAIHistory = view.findViewById(R.id.btnAIHistory);
+        btnAIHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HistoryActivity.class);
                 startActivity(intent);
             }
         });

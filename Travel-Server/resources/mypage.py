@@ -177,8 +177,12 @@ class myScheduleListResource(Resource) :
         user_id = get_jwt_identity()
 
         place_list = request.args.getlist("place")
+        print(place_list)
         place_list = [x for x in place_list if x.strip()]
-
+        # place_list = [item for sublist in [x.split(',') for x in place_list] for item in sublist if item.strip()]
+        # # place_list = [x.rstrip(',') for x in place_list]
+        #  place_list = list(filter(None, place_list))
+        
         data = request.get_json()
 
         print(place_list)
