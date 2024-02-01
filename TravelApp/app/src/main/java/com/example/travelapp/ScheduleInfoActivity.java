@@ -46,7 +46,7 @@ public class ScheduleInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_info);
         txtTile=findViewById(R.id.txtRegion);
-        txtContent=findViewById(R.id.txtContent);
+        txtContent=findViewById(R.id.editContent);
         viewFlipper=findViewById(R.id.viewFlipper);
         txtDate=findViewById(R.id.txtDate);
         linearLayout=findViewById(R.id.LinearLayout);

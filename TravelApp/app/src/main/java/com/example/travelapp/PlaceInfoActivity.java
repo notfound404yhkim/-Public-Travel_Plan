@@ -7,9 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -42,7 +40,7 @@ public class PlaceInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_placeinfo);
         txtTile=findViewById(R.id.txtTile);
         txtRegion=findViewById(R.id.txtRegion);
-        txtContent=findViewById(R.id.txtTitle);
+        txtContent=findViewById(R.id.editTitle);
         imgPhoto=findViewById(R.id.imgPhoto);
         txtDate=findViewById(R.id.txtDate);
         linearLayout=findViewById(R.id.LinearLayout);

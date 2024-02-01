@@ -3,7 +3,6 @@ package com.example.travelapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,7 +19,6 @@ import com.example.travelapp.model.HistoryList;
 
 import java.util.ArrayList;
 
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +37,7 @@ public class HistoryInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_info);
 
-        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.editTitle);
         txtInfo = findViewById(R.id.txtInfo);
         id = getIntent().getIntExtra("id", 0);
         getInfo(id);

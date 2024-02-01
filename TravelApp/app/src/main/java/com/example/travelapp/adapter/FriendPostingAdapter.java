@@ -86,8 +86,8 @@ public class FriendPostingAdapter extends RecyclerView.Adapter<FriendPostingAdap
 
             cardView = itemView.findViewById(R.id.cardView);
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
-            txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtContent = itemView.findViewById(R.id.txtContent);
+            txtTitle = itemView.findViewById(R.id.editTitle);
+            txtContent = itemView.findViewById(R.id.editContent);
             txtName = itemView.findViewById(R.id.txtName);
             txtCreatedAt = itemView.findViewById(R.id.txtCreatedAt);
 
