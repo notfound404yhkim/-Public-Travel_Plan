@@ -48,10 +48,10 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_weight="3"
-                        android:src="@drawable/person_icon" />
+                        android:src="@drawable/image_check" />
 
                 </LinearLayout>
 

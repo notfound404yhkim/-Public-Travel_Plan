@@ -4,23 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.travelapp.adapter.CommentListAdapter;
+import com.example.travelapp.api.CommentApi;
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.PostingApi;
+import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
 import com.example.travelapp.model.Comment;
 import com.example.travelapp.model.DetailPosting;
 import com.example.travelapp.model.Posting;
 import com.example.travelapp.model.Res;
+import com.example.travelapp.model.UserRes;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.ParseException;
@@ -51,6 +58,9 @@ public class CommunityDetailActivity extends AppCompatActivity {
     EditText editCommentAdd;
     Button btnWrite;
 
+    // 보였다 안보였다 할 레이아웃
+    View linearBtn;
+
     RecyclerView recyclerView;
     CommentListAdapter adapter;
     ArrayList<DetailPosting.Comments> commentsArrayList = new ArrayList<>();
@@ -58,6 +68,10 @@ public class CommunityDetailActivity extends AppCompatActivity {
     // 현재 postId
     int postId;
 
+    // 현재 로그인 유저의 이름
+    String currentUserName = "";
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +92,14 @@ public class CommunityDetailActivity extends AppCompatActivity {
         editCommentAdd = findViewById(R.id.editCommentAdd);
         btnWrite = findViewById(R.id.btnWrite);
 
+        linearBtn = findViewById(R.id.linearBtn);
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CommunityDetailActivity.this));
 
         Posting posting = (Posting) getIntent().getSerializableExtra("posting");
         postId = posting.id;
-
-        adapter = new CommentListAdapter(CommunityDetailActivity.this, commentsArrayList);
-        recyclerView.setAdapter(adapter);
 
         userInfo();
 
@@ -102,7 +115,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
                 Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
 
-                PostingApi api = retrofit.create(PostingApi.class);
+                CommentApi api = retrofit.create(CommentApi.class);
 
                 SharedPreferences sp = getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
                 String token = sp.getString("token", "");
@@ -117,6 +130,10 @@ public class CommunityDetailActivity extends AppCompatActivity {
                             Snackbar.make(btnWrite, "댓글을 작성하였습니다.", Snackbar.LENGTH_SHORT).show();
                             editCommentAdd.setText("");
                             getNetworkData();
+
+                            // 키보드 내리기
+                            InputMethodManager imm = (InputMethodManager) getSystemService(CommunityDetailActivity.this.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editCommentAdd.getWindowToken(), 0);
                             return;
                         }
                     }
@@ -135,15 +152,51 @@ public class CommunityDetailActivity extends AppCompatActivity {
     private void userInfo() {
         Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
 
+        UserApi api = retrofit.create(UserApi.class);
+
+        SharedPreferences sp = getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+        String token = sp.getString("token", "");
+
+        Call<UserRes> call = api.getProfile("Bearer " + token);
+
+        call.enqueue(new Callback<UserRes>() {
+            @Override
+            public void onResponse(Call<UserRes> call, Response<UserRes> response) {
+                if (response.isSuccessful()){
+                    UserRes res = response.body();
+
+                    if (res.items.get(0).profileImg != null){
+                        Glide.with(CommunityDetailActivity.this).load(res.items.get(0).profileImg).into(txtProfilePhoto);
+                    }
+
+                    currentUserName = res.items.get(0).name;
+
+                    adapter = new CommentListAdapter(CommunityDetailActivity.this, commentsArrayList, res.items.get(0).name);
+                    recyclerView.setAdapter(adapter);
+
+                    getNetworkData();
+
+                } else {
+                    Snackbar.make(btnWrite, "유저 정보를 불러오지 못했습니다.", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRes> call, Throwable t) {
+                Snackbar.make(btnWrite, "통신 실패", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+        });
 
     }
 
-    @Override
-    protected void onResume() {
-        getNetworkData();
-
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        getNetworkData();
+//
+//        super.onResume();
+//    }
 
     private void getNetworkData() {
         Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
@@ -160,6 +213,11 @@ public class CommunityDetailActivity extends AppCompatActivity {
             public void onResponse(Call<DetailPosting> call, Response<DetailPosting> response) {
                 if (response.isSuccessful()){
                     DetailPosting detailPosting = response.body();
+
+                    // 현재 로그인 유저만 댓글 삭제, 글 수정 삭제 가능하게
+                    if (currentUserName.equals(detailPosting.items.name)){
+                        linearBtn.setVisibility(View.VISIBLE);
+                    }
 
                     txtTitle.setText(detailPosting.items.title);
                     txtName.setText(detailPosting.items.name);
@@ -194,7 +252,12 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     commentsArrayList.clear();
 
                     commentsArrayList.addAll(detailPosting.comments);
+                    for (DetailPosting.Comments comments : commentsArrayList){
+                        Log.i("댓글 : ", comments.content+"");
+                    }
                     adapter.notifyDataSetChanged();
+
+                    Log.i("AAAAAAAAAAAAAAAA", "어뎁터 반영");
                 }
             }
 

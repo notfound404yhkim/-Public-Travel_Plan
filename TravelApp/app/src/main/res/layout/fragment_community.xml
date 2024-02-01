@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/my_lightGray"
+                android:padding="0dp"
                 android:shadowColor="#D5D5D5"
                 android:text="내 기록 보기"
                 android:textColor="@color/black"
@@ -40,6 +41,7 @@
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
                 android:backgroundTint="#F4F4F4"
+                android:padding="0dp"
                 android:text="다른 유저들의 기록"
                 android:textColor="#000000"
                 android:textSize="13sp" />
@@ -50,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="#F4F4F4"
+                android:padding="0dp"
                 android:text="기록 올리기 "
                 android:textColor="#070707"
                 android:textSize="13sp" />
