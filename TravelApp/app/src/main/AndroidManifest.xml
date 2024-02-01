@@ -39,6 +39,9 @@
         </provider>
 
         <activity
+            android:name=".BookmarkActivity"
+            android:exported="false" />
+        <activity
             android:name=".HistoryInfoActivity"
             android:exported="false" />
         <activity

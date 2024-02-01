@@ -19,7 +19,7 @@ public class Posting implements Serializable {
     public int bookmarkCnt;
     public int isBookmark;
 
-    public Posting(int id, int userId, String imgUrl, String title, String content, String createdAt, String updatedAt, int isLike, int likeCnt) {
+    public Posting(int id, int userId, String imgUrl, String title, String content, String createdAt, int isLike, int likeCnt) {
         this.id = id;
         this.userId = userId;
         this.imgUrl = imgUrl;

@@ -130,6 +130,15 @@ public class MainFragment extends Fragment {
                         Date date2 = new Date();
                         date1.setTime(selection.first);
                         date2.setTime(selection.second);
+
+                        long difference = getDateDifference(date1, date2);
+                        Log.i("AAA",difference+"차이");
+                        if (difference >= 4){
+                            Toast.makeText(getActivity(),"최대 4박 5일까지 가능하니다.",Toast.LENGTH_SHORT).show();
+                            date2 = addDaysToDate(date1, 4);
+                        }
+
+
                         dateString1 = simpleDateFormat.format(date1);
                         dateString2 = simpleDateFormat.format(date2);
                         txtDate.setText(dateString1 + " ~ " + dateString2);
@@ -178,6 +187,8 @@ public class MainFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Res> call, Throwable t) {
+                        dismissProgress();
+                        Toast.makeText(getActivity(), "잠시 후 다시 시도하십시오.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -209,6 +220,22 @@ public class MainFragment extends Fragment {
 
 
         return view;
+    }
+
+    private static long getDateDifference(Date date1, Date date2) {
+        // 두 날짜의 시간 차이를 밀리초로 계산
+        long timeDifference = date2.getTime() - date1.getTime();
+
+        // 밀리초를 일로 변환 (1초 = 1000밀리초, 1분 = 60초, 1시간 = 60분, 1일 = 24시간)
+        long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        return daysDifference;
+    }
+
+    private static Date addDaysToDate(Date date, int days) {
+        // 날짜를 복사하여 새로운 객체를 생성하고, 일 수를 더합니다.
+        Date newDate = new Date(date.getTime() + (days * 24L * 60 * 60 * 1000));
+        return newDate;
     }
 
     @Override

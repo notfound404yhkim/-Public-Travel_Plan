@@ -55,4 +55,10 @@ public interface PostingApi {
     @DELETE("/posting/{posting_id}")
     Call<Res> deletePosting(@Path("posting_id") int posting_id, @Header("Authorization") String token);
 
+    // 북마크한 포스팅 보기
+    @GET("/mypage/bookmark")
+    Call<PostingList> getBookmarkPosting(@Header("Authorization") String token,
+                                       @Query("offset") int offset,
+                                       @Query("limit") int limit);
+
 }

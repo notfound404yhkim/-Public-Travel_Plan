@@ -29,14 +29,17 @@
                 android:id="@+id/txtRegion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
                 android:layout_weight="5"
                 android:text="region"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
                 android:layout_weight="5"
                 android:text="name"
                 android:textSize="18dp" />
