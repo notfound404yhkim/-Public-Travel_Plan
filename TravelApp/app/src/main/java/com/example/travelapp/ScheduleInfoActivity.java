@@ -82,7 +82,7 @@ public class ScheduleInfoActivity extends AppCompatActivity {
                     item = scheduleres.items;
                     txtTile.setText(item.region);
                     txtContent.setText(item.content);
-                    txtDate.setText(item.strDate +" ~ " + item.endDate);
+                    txtDate.setText(item.getFormattedStartDate() + " ~ " + item.getFormattedEndDate());
                     viewFlipper.removeAllViews();
                     ScheduleArrayList.addAll(scheduleres.place_list);
                     imageViews = new ImageView[ScheduleArrayList.size()];
