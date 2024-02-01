@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
+    android:orientation="vertical"
     android:weightSum="100">
 
     <ScrollView
@@ -23,8 +22,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -161,7 +160,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
-                    android:text="당신의 멋진 계획을 만들어 드릴게요\n지역과 일정을 선택하고\n선택완료 버튼을 눌러주세요"
+                    android:text="AI가 당신의 멋진 계획을 만들어 드릴게요.\n지역과 일정을 선택하고\n선택완료 버튼을 눌러주세요!"
+                    android:textColor="#1A6E28"
                     android:textSize="17sp" />
 
                 <Button
@@ -179,6 +179,12 @@
                     android:id="@+id/txt_response"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="15dp"
+                    android:textColor="#1A6E28"
+                    android:textSize="15sp"
                     android:visibility="gone" />
 
                 <RelativeLayout
@@ -193,9 +199,9 @@
                         android:layout_marginEnd="15dp"
                         android:layout_marginBottom="15dp"
                         android:text="축제 및 행사 리스트"
+                        android:textColor="#172FD5"
                         android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="#172FD5"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtMore"
