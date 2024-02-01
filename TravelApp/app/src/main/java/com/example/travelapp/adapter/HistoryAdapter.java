@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +78,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView txtRegion,txtDate;
-        ConstraintLayout constraintLayout;
+        RelativeLayout relativeLayout;
         ImageButton imgBtn;
 
 
@@ -84,10 +86,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             super(itemView);
             txtRegion = itemView.findViewById(R.id.txtRegion);
             txtDate = itemView.findViewById(R.id.txtDate);
-            constraintLayout = itemView.findViewById(R.id.box);
+            relativeLayout = itemView.findViewById(R.id.box);
             imgBtn = itemView.findViewById(R.id.btnDelete);
 
-            constraintLayout.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     index = getAdapterPosition();

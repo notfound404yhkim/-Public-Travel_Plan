@@ -1,7 +1,13 @@
 package com.example.travelapp;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
+
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +16,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +26,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,21 +35,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import android.Manifest;
+
 import com.example.travelapp.api.NetworkClient;
-import com.example.travelapp.api.PostingApi;
+import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
 import com.example.travelapp.model.Res;
-import com.google.android.material.snackbar.Snackbar;
-import org.apache.commons.io.IOUtils;
+import com.example.travelapp.model.User;
+import com.example.travelapp.model.UserRes;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +64,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -58,55 +72,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import org.apache.commons.io.IOUtils;
 
-public class CommunityThreeFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ProfileFragment2 extends Fragment {
+    String token,profileurl;
+    TextView txtEmail;
+    ImageView profile_image_view;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Button btnCancel, btnSave;
 
-    public CommunityThreeFragment() {
-        // Required empty public constructor
-    }
+    EditText EditName;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CommunityFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CommunityThreeFragment newInstance(String param1, String param2) {
-        CommunityThreeFragment fragment = new CommunityThreeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    Button btnView;
-    Button btnShare;
-    Button btnAdd;
-    ProgressBar progressBar;
-
-    ImageView imgPhoto;
-    EditText editTitle;
-    EditText editContent;
-    Button btnPosting;
+    ArrayList<User> userArrayList = new ArrayList<>();
 
     // 사진 파일
     File photoFile;
@@ -114,71 +91,53 @@ public class CommunityThreeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_community_three, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_two, container, false);  //프레그먼트 레이아웃지정.
 
-        btnView = rootView.findViewById(R.id.btnView);
-        btnShare = rootView.findViewById(R.id.btnShare);
-        btnAdd = rootView.findViewById(R.id.btnAdd);
-        progressBar = rootView.findViewById(R.id.progressBar);
+        profile_image_view = view.findViewById(R.id.profile_image_view);
 
-        imgPhoto = rootView.findViewById(R.id.imgPhoto);
-        editTitle = rootView.findViewById(R.id.editTitle);
-        editContent = rootView.findViewById(R.id.editContent);
-        btnPosting = rootView.findViewById(R.id.btnPosting);
+        profileLoad();//사용자 정보 로드
+        EditName = view.findViewById(R.id.EditName);
+        txtEmail = view.findViewById(R.id.txtEmail);
 
-        btnAdd.setBackgroundColor(getResources().getColor(R.color.black));
-        btnAdd.setTextColor(getResources().getColor(R.color.white));
-
-        btnView.setOnClickListener(new View.OnClickListener() {
+        btnCancel = view.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommunityFragment communityFragment = new CommunityFragment();
-
+                ProfileFragment secondFragment = new ProfileFragment();
+                //                               // Fragment 에서 다른 Fragment로 이동 .
                 if (getActivity() != null) {
                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_frame_layout, communityFragment);
+                    fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
                     fragmentTransaction.commit();
                 }
             }
         });
 
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommunityTwoFragment communityTwoFragment = new CommunityTwoFragment();
 
-                if (getActivity() != null) {
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_frame_layout, communityTwoFragment);
-                    fragmentTransaction.commit();
-                }
-            }
-        });
-
-        imgPhoto.setOnClickListener(new View.OnClickListener() {
+        profile_image_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
             }
         });
 
-        btnPosting.setOnClickListener(new View.OnClickListener() {
+        btnSave = view.findViewById(R.id.btnSave);
+        // 프로필 변경
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = editTitle.getText().toString().trim();
-                String content = editContent.getText().toString().trim();
+                String name = EditName.getText().toString().trim();
 
-                if (photoFile == null || title.isEmpty() || content.isEmpty()){
-                    Snackbar.make(btnView, "사진과 내용 모두 입력하세요.", Snackbar.LENGTH_SHORT).show();
+                if (photoFile == null || name.isEmpty()){
+                    Toast.makeText(getActivity(),"프로필 사진과 이름을 확인하세요.",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
 
                 Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
 
-                PostingApi api = retrofit.create(PostingApi.class);
+                UserApi api = retrofit.create(UserApi.class);
 
                 SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, Context.MODE_PRIVATE);
                 String token = sp.getString("token", "");
@@ -188,30 +147,26 @@ public class CommunityThreeFragment extends Fragment {
                 MultipartBody.Part photo = MultipartBody.Part.createFormData("image", photoFile.getName(), fileBody);
 
                 // 보낼 텍스트
-                RequestBody textBody = RequestBody.create(title, MediaType.parse("text/plain"));
-                RequestBody textBody2 = RequestBody.create(content, MediaType.parse("text/plain"));
+                RequestBody textBody = RequestBody.create(name, MediaType.parse("text/plain"));
 
-                Call<Res> call = api.addPosting("Bearer " + token, photo, textBody, textBody2);
+
+                Call<Res> call = api.EditProfile("Bearer " + token, photo, textBody);
 
                 call.enqueue(new Callback<Res>() {
                     @Override
                     public void onResponse(Call<Res> call, Response<Res> response) {
-                        progressBar.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.GONE);
 
                         if (response.isSuccessful()){
-                            Snackbar.make(btnView, "포스팅이 생성되었습니다.", Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),"프로필 정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
 
-                            imgPhoto.setImageResource(R.drawable.add_photo);
-                            editTitle.setText("");
-                            editContent.setText("");
-                            return;
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Res> call, Throwable t) {
-                        progressBar.setVisibility(View.GONE);
-                        Snackbar.make(btnView, "통신 실패", Snackbar.LENGTH_SHORT).show();
+//                        progressBar.setVisibility(View.GONE);
+                       Toast.makeText(getActivity(),"에러발생",Toast.LENGTH_SHORT).show();
                         return;
                     }
                 });
@@ -219,7 +174,73 @@ public class CommunityThreeFragment extends Fragment {
             }
         });
 
-        return rootView;
+        return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+    // 네트워크 데이터 처리할때 사용할 다이얼로그
+    Dialog dialog;
+    private void showProgress(){
+        dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(new ProgressBar(getActivity()));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    private void dismissProgress(){
+        dialog.dismiss();
+    }
+
+    public void profileLoad(){
+
+        Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
+        UserApi api = retrofit.create(UserApi.class);
+        SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+        token = sp.getString("token","");
+        token = "Bearer " + token;
+        Call<UserRes> call = api.getProfile(token);
+        Log.i("AAA","프로필 가져오기");
+
+
+        call.enqueue(new Callback<UserRes>() {
+            @Override
+            public void onResponse(Call<UserRes> call, Response<UserRes> response) {
+
+
+                if(response.isSuccessful()){
+
+                    UserRes userList = response.body();
+
+                    userArrayList.clear();
+                    userArrayList.addAll( userList.items );
+
+                    for (User item : userArrayList) {
+                        EditName.setText(item.name);
+                        txtEmail.setText(item.email);
+                        profileurl = item.profileImg;
+                        //프로필 이미지 있을때만 적용
+                        if (profileurl != null){
+                            Picasso.get().load(item.profileImg).into( profile_image_view);
+                        }
+                    }
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<UserRes> call, Throwable t) {
+                //오류 처리
+            }
+        });
     }
 
     private void showDialog() {
@@ -342,8 +363,9 @@ public class CommunityThreeFragment extends Fragment {
 
             photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
-            imgPhoto.setImageBitmap(photo);
-            imgPhoto.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            profile_image_view.setImageBitmap(photo);
+            Log.i("AAA2",photo.toString());
+            profile_image_view.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             // 네트워크로 데이터 보낸다.
 
@@ -380,8 +402,8 @@ public class CommunityThreeFragment extends Fragment {
                     Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
                 }
 
-                imgPhoto.setImageBitmap(photo);
-                imgPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                profile_image_view.setImageBitmap(photo);
+                profile_image_view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
 //                imageView.setImageBitmap( getBitmapAlbum( imageView, albumUri ) );
 

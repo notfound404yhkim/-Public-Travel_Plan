@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.travelapp.adapter.MybookmarkAdapter;
 import com.example.travelapp.adapter.MypostingAdapter;
 import com.example.travelapp.adapter.PlaceAdapter;
 import com.example.travelapp.api.NetworkClient;
@@ -36,18 +37,15 @@ import retrofit2.Retrofit;
 
 public class BookmarkActivity extends AppCompatActivity {
 
-
-
     int offset = 0;
     int limit = 15;
     int count = 0;
-    MypostingAdapter adapter;
+    MybookmarkAdapter adapter;
 
     RecyclerView recyclerView;
     ArrayList<Posting> postingArrayList = new ArrayList<>();
 
     ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +93,11 @@ public class BookmarkActivity extends AppCompatActivity {
                     count = postingList.count;
 
                     for (Posting item : postingArrayList) {
-                       Log.i("AAA2",item.id+"아디");
+                       Log.i("AAA2",item.postingId+"아디");
                         Log.i("AAA2",item.title);
                     }
 
-                    adapter = new MypostingAdapter(BookmarkActivity.this, postingArrayList);
+                    adapter = new MybookmarkAdapter(BookmarkActivity.this, postingArrayList);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 

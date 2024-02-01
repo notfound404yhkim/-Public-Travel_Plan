@@ -5,12 +5,17 @@ import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -31,5 +36,11 @@ public interface UserApi {
     @GET("/mypage/userInfo")
     Call<UserRes> getProfile(@Header("Authorization") String token);
 
+    //프로필 정보 변경
 
+    @Multipart
+    @PUT("mypage/userInfo")
+    Call<Res> EditProfile(@Header("Authorization") String token,
+                         @Part MultipartBody.Part profileImg,
+                         @Part("name") RequestBody name);
 }

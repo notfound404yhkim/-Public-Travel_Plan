@@ -2,7 +2,9 @@ package com.example.travelapp;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -21,9 +23,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.travelapp.api.HistoryApi;
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
+import com.example.travelapp.model.History;
+import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
 import com.squareup.picasso.Picasso;
@@ -112,6 +117,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profile_image_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog();
+            }
+        });
+
 
         return view;
     }
@@ -167,6 +179,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<UserRes> call, Throwable t) {
 
+
             }
         });
     }
@@ -184,6 +197,36 @@ public class ProfileFragment extends Fragment {
     private void dismissProgress(){
         dialog.dismiss();
     }
+
+
+    private void showAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+// 이 다이얼 로그의 외곽부분을 눌렀을때, 사라지지 않도록 하는 코드.
+        builder.setCancelable(false);
+        builder.setTitle("프로필 변경");
+        builder.setMessage("프로필 변경 화면으로 이동할까요?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                ProfileFragment2 secondFragment = new ProfileFragment2();
+                //                               // Fragment 에서 다른 Fragment로 이동 .
+                if (getActivity() != null) {
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+                    fragmentTransaction.commit();
+                }
+
+            }
+        });
+
+        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+            }
+        });
+        builder.show(); //다이얼로그 출력
+    }
+
 
 
 }

@@ -15,10 +15,10 @@ class UserInfoResource(Resource) :
     def put(self) :
         
         user_id = get_jwt_identity()
-        profileImg = request.files.get("profileImg")
+        profileImg = request.files.get("image")
         name = request.form.get("name")
-
-        # 프로필 사진만 변경할 때
+        
+        # # 프로필 사진만 변경할 때
         if profileImg is not None and profileImg.filename != '' and name == "" :
             current_time = datetime.now()
 
@@ -179,8 +179,8 @@ class myScheduleListResource(Resource) :
         place_list = request.args.getlist("place")
         print(place_list)
         # place_list = [x for x in place_list if x.strip()]
+
         place_list = [x.strip() for sublist in place_list for x in sublist.split(',') if x.strip()]
-        
         # place_list = [item for sublist in [x.split(',') for x in place_list] for item in sublist if item.strip()]
         # # place_list = [x.rstrip(',') for x in place_list]
         #  place_list = list(filter(None, place_list))

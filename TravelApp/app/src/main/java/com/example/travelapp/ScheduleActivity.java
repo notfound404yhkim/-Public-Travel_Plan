@@ -2,6 +2,7 @@ package com.example.travelapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +49,7 @@ public class ScheduleActivity extends AppCompatActivity {
     ScheduleAdapter adapter;
     ArrayList<Schedule> ScheduleArrayList = new ArrayList<>(); //스케줄 목록
 
-    ImageView imgProfile;
+    ImageView imgProfile,imgError;
     TextView txtName;
 
     FloatingActionButton btnAdd;
@@ -59,11 +61,13 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
         imgProfile = findViewById(R.id.imgProfile);
+        imgError = findViewById(R.id.imgError);
         txtName = findViewById(R.id.txtName);
         btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                imgError.setVisibility(View.GONE);
                 Intent intent = new Intent(ScheduleActivity.this, ScheduleAddActivity.class);
                 startActivity(intent);
             }
@@ -74,7 +78,14 @@ public class ScheduleActivity extends AppCompatActivity {
         String imgurl = getIntent().getStringExtra("imgUrl");
 
         txtName.setText(name);
-        Picasso.get().load(imgurl).into( imgProfile);
+        Log.i("AAA","전달받은 프사 주소:" + imgurl);
+        if(imgurl == null)  //이미지가 있을때만 표시
+        {
+            imgProfile.setImageResource(R.drawable.person_icon);
+        }
+        else{
+            Picasso.get().load(imgurl).into( imgProfile);
+        }
 
 
 
@@ -140,6 +151,10 @@ public class ScheduleActivity extends AppCompatActivity {
 
                     ScheduleArrayList.clear();
                     ScheduleArrayList.addAll(scheduleList.items);
+                    if(ScheduleArrayList.size() == 0)
+                    {
+                        imgError.setVisibility(View.VISIBLE);
+                    }
 
                     // 어댑터 만들어서, 리사이클러뷰에 적용 //새로고침
                     adapter = new ScheduleAdapter(ScheduleActivity.this, ScheduleArrayList);

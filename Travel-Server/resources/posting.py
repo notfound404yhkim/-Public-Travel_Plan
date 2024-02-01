@@ -284,8 +284,8 @@ class PostingResource(Resource):
 
             query = '''
                     select p.id postId, u.name, p.title, p.imgUrl, p.content,
-                    u.id userId, u.name, p.createdAt, count(l.id) as likeCnt, if(l2.id is null, 0,1) as isLike, 
-                    count(b.id) as bookmarkCnt, if(b2.id is null, 0, 1) as isBookmark
+                    u.id userId, u.name, p.createdAt, p.updatedAt, count(distinct l.id) as likeCnt, if(l2.id is null, 0,1) as isLike, 
+                    count(distinct b.id) as bookmarkCnt, if(b2.id is null, 0, 1) as isBookmark
                     from posting p
                     join user u 
                     on p.userId = u.id
@@ -329,7 +329,7 @@ class PostingResource(Resource):
                 tag.append(tag_dict['tag'])
 
             query = '''
-                    select c.id, c.postingId as postid, u.id, u.name, u.profileImg, c.content, c.createdAt
+                    select c.id commentId, c.postingId as postid, u.id, u.name, u.profileImg, c.content, c.createdAt
                     from comment c
                     left join user u
                     on c.userId = u.Id
@@ -351,6 +351,7 @@ class PostingResource(Resource):
             return {"error" : str(e)},500
     
         post['createdAt'] = post['createdAt'].isoformat()
+        post['updatedAt'] = post['updatedAt'].isoformat()
 
         i = 0
         for row in comment_list:
