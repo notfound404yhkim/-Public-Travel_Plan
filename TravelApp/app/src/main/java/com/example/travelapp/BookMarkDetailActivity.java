@@ -1,9 +1,5 @@
 package com.example.travelapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.travelapp.adapter.CommentListAdapter;
@@ -45,7 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class CommunityDetailActivity extends AppCompatActivity {
+public class BookMarkDetailActivity extends AppCompatActivity {
 
     TextView txtTitle;
     TextView txtName;
@@ -110,16 +110,16 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(CommunityDetailActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(BookMarkDetailActivity.this));
 
         Posting posting = (Posting) getIntent().getSerializableExtra("posting");
-        postId = posting.id;
+        postId = posting.postingId;
 
         // 글 수정
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CommunityDetailActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BookMarkDetailActivity.this);
                 builder.setCancelable(false);
                 builder.setTitle("게시글 수정");
                 builder.setMessage("게시글을 수정하시겠습니까?");
@@ -129,7 +129,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(CommunityDetailActivity.this, CommunityDetailUpdateActivity.class);
+                        Intent intent = new Intent(BookMarkDetailActivity.this, CommunityDetailUpdateActivity.class);
                         intent.putExtra("postId", postId);
                         startActivity(intent);
                     }
@@ -151,7 +151,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         imgLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
+                Retrofit retrofit = NetworkClient.getRetrofitClient(BookMarkDetailActivity.this);
 
                 LikeApi api = retrofit.create(LikeApi.class);
 
@@ -203,7 +203,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         imgBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
+                Retrofit retrofit = NetworkClient.getRetrofitClient(BookMarkDetailActivity.this);
 
                 BookmarkApi api = retrofit.create(BookmarkApi.class);
 
@@ -262,7 +262,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     return;
                 }
 
-                Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
+                Retrofit retrofit = NetworkClient.getRetrofitClient(BookMarkDetailActivity.this);
 
                 CommentApi api = retrofit.create(CommentApi.class);
 
@@ -281,7 +281,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                             getNetworkData();
 
                             // 키보드 내리기
-                            InputMethodManager imm = (InputMethodManager) getSystemService(CommunityDetailActivity.this.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(BookMarkDetailActivity.this.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(editCommentAdd.getWindowToken(), 0);
                             return;
                         }
@@ -307,7 +307,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     // 현재 유저 정보
     private void userInfo() {
-        Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
+        Retrofit retrofit = NetworkClient.getRetrofitClient(BookMarkDetailActivity.this);
 
         UserApi api = retrofit.create(UserApi.class);
 
@@ -323,12 +323,12 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     UserRes res = response.body();
 
                     if (res.items.get(0).profileImg != null){
-                        Glide.with(CommunityDetailActivity.this).load(res.items.get(0).profileImg).into(txtProfilePhoto);
+                        Glide.with(BookMarkDetailActivity.this).load(res.items.get(0).profileImg).into(txtProfilePhoto);
                     }
 
                     currentUserName = res.items.get(0).name;
 
-                    adapter = new CommentListAdapter(CommunityDetailActivity.this, commentsArrayList, res.items.get(0).name);
+                    adapter = new CommentListAdapter(BookMarkDetailActivity.this, commentsArrayList, res.items.get(0).name);
                     recyclerView.setAdapter(adapter);
 
                     getNetworkData();
@@ -350,7 +350,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
     // 게시글 상세정보
     private void getNetworkData() {
-        Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
+        Retrofit retrofit = NetworkClient.getRetrofitClient(BookMarkDetailActivity.this);
 
         PostingApi api = retrofit.create(PostingApi.class);
 
@@ -378,7 +378,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     txtTitle.setText(detailPosting.items.title);
 
                     txtName.setText(detailPosting.items.name);
-                    Glide.with(CommunityDetailActivity.this).load(detailPosting.items.imgUrl).into(imgPhoto);
+                    Glide.with(BookMarkDetailActivity.this).load(detailPosting.items.imgUrl).into(imgPhoto);
                     txtContent.setText(detailPosting.items.content);
 
                     StringBuilder tags = new StringBuilder();
@@ -446,7 +446,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
     }
 
     private void ShowAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(CommunityDetailActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(BookMarkDetailActivity.this);
         builder.setCancelable(false);
         builder.setTitle("게시글 삭제");
         builder.setMessage("게시글을 삭제하시겠습니까?");
@@ -456,7 +456,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Retrofit retrofit = NetworkClient.getRetrofitClient(CommunityDetailActivity.this);
+                Retrofit retrofit = NetworkClient.getRetrofitClient(BookMarkDetailActivity.this);
 
                 PostingApi api = retrofit.create(PostingApi.class);
 
@@ -470,7 +470,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     public void onResponse(Call<Res> call, Response<Res> response) {
                         if (response.isSuccessful()){
                             finish();
-                            Toast.makeText(CommunityDetailActivity.this, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookMarkDetailActivity.this, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }

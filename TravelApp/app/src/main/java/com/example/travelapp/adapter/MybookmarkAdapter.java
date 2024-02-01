@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.travelapp.BookMarkDetailActivity;
 import com.example.travelapp.CommunityDetailActivity;
 import com.example.travelapp.R;
 import com.example.travelapp.model.Posting;
@@ -23,13 +24,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class FriendPostingAdapter extends RecyclerView.Adapter<FriendPostingAdapter.ViewHolder> {
+public class MybookmarkAdapter extends RecyclerView.Adapter<MybookmarkAdapter.ViewHolder> {
     Context context;
     ArrayList<Posting> postingArrayList;
     SimpleDateFormat sf;
     SimpleDateFormat df;
 
-    public FriendPostingAdapter(Context context, ArrayList<Posting> postingArrayList) {
+    public MybookmarkAdapter(Context context, ArrayList<Posting> postingArrayList){
         this.context = context;
         this.postingArrayList = postingArrayList;
 
@@ -42,10 +43,10 @@ public class FriendPostingAdapter extends RecyclerView.Adapter<FriendPostingAdap
 
     @NonNull
     @Override
-    public FriendPostingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MybookmarkAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.my_posting_row, parent, false);
 
-        return new FriendPostingAdapter.ViewHolder(view);
+        return new MybookmarkAdapter.ViewHolder(view);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class FriendPostingAdapter extends RecyclerView.Adapter<FriendPostingAdap
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -74,6 +76,7 @@ public class FriendPostingAdapter extends RecyclerView.Adapter<FriendPostingAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         CardView cardView;
         ImageView imgPhoto;
         TextView txtTitle;
@@ -97,7 +100,7 @@ public class FriendPostingAdapter extends RecyclerView.Adapter<FriendPostingAdap
                     int index = getAdapterPosition();
                     Posting posting = postingArrayList.get(index);
 
-                    Intent intent = new Intent(context, CommunityDetailActivity.class);
+                    Intent intent = new Intent(context, BookMarkDetailActivity.class);
                     intent.putExtra("posting", posting);
                     context.startActivity(intent);
                 }
