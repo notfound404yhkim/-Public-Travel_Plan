@@ -66,19 +66,20 @@ public class HistoryInfoActivity extends AppCompatActivity {
 
                     for (History item : historyArrayList) {
                         if (item.firstDay != null && !item.firstDay.isEmpty()) {
-                            contentBuilder.append(item.firstDay).append("\n");
+                            contentBuilder.append(item.firstDay).append("\n\n");
+
                         }
                         if (item.secondDay != null && !item.secondDay.isEmpty()) {
-                            contentBuilder.append(item.secondDay).append("\n");
+                            contentBuilder.append(item.secondDay).append("\n\n");
                         }
                         if (item.thirdDay != null && !item.thirdDay.isEmpty()) {
-                            contentBuilder.append(item.thirdDay).append("\n");
+                            contentBuilder.append(item.thirdDay).append("\n\n");
                         }
                         if (item.fourthDay != null && !item.fourthDay.isEmpty()) {
-                            contentBuilder.append(item.fourthDay).append("\n");
+                            contentBuilder.append(item.fourthDay).append("\n\n");
                         }
                         if (item.fifthDay != null && !item.fifthDay.isEmpty()) {
-                            contentBuilder.append(item.fifthDay).append("\n");
+                            contentBuilder.append(item.fifthDay).append("\n\n");
                         }
                     }
                     txtInfo.setText(contentBuilder.toString());

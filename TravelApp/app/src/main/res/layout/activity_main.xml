@@ -9,19 +9,27 @@
     <RelativeLayout
         android:id="@+id/Main_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:padding="10dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:background="@drawable/banner">
 
-        <TextView
-            android:id="@+id/txt_main"
+        <ImageView
+            android:id="@+id/imgLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="여행 시작과 끝"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/baseline_logout_24" />
+
     </RelativeLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignBottom="@id/Main_toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"

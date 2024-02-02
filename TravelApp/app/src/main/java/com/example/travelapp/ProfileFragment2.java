@@ -169,7 +169,7 @@ public class ProfileFragment2 extends Fragment {
                     @Override
                     public void onFailure(Call<Res> call, Throwable t) {
 //                        progressBar.setVisibility(View.GONE);
-                       Toast.makeText(getActivity(),"에러발생",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"에러발생",Toast.LENGTH_SHORT).show();
                         return;
                     }
                 });

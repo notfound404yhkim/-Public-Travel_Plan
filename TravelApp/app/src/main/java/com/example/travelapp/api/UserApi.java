@@ -43,4 +43,8 @@ public interface UserApi {
     Call<Res> EditProfile(@Header("Authorization") String token,
                          @Part MultipartBody.Part profileImg,
                          @Part("name") RequestBody name);
+
+    //로그아웃
+    @DELETE("user/logout")
+    Call<Res> LogOut(@Header("Authorization") String token);
 }

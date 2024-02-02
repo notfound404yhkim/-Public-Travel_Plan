@@ -54,6 +54,12 @@ class historyResource(Resource):
         plan = self.generate_text(keyward)
         
         plan = plan.split('[next]')
+
+        print(plan)
+
+        # 빈 배열 공간이 나올 경우 지우기 
+        if not plan[-1].strip():
+            plan.pop()
       
         #공백 안들어가게 처리
         # 1일 선택시 0번째 항목 빼고 전부 제거,(1일인데 다수 기록 나오는 오류 방지용)

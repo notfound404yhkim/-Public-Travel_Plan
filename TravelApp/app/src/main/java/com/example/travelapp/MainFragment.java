@@ -8,6 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.core.util.Pair;
+
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -273,6 +275,7 @@ public class MainFragment extends Fragment {
                     //사이즈만큼 반복분 이미지 뷰를 생성 .
                     for (int i = 0; i < placeArrayList.size(); i++) {
                         imageViews[i] = new ImageView(getActivity());
+                        // 레이아웃 파라미터 설정
                         viewFlipper.addView(imageViews[i]);
 
                         // 클릭 이벤트 추가
@@ -314,6 +317,14 @@ public class MainFragment extends Fragment {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
+        // 1분 딜레이
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismissProgress();
+            }
+        }, 60000);
     }
     private void dismissProgress(){
         dialog.dismiss();
