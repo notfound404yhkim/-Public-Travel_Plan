@@ -265,6 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="작성"
+                    android:backgroundTint="#FF0874E8"
                     android:textSize="15sp" />
 
             </LinearLayout>

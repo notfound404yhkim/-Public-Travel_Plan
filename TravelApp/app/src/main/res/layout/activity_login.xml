@@ -53,8 +53,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/btn_rounded_corner"
         android:text="로그인"
+        android:backgroundTint="@color/my_blue3"
+
+
         android:textSize="18dp" />
 
     <ProgressBar
