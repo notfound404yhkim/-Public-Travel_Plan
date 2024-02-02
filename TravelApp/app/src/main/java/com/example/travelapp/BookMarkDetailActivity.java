@@ -88,7 +88,7 @@ public class BookMarkDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_posting);
 
-        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtContext);
         txtName = findViewById(R.id.txtName);
         imgPhoto = findViewById(R.id.imgPhoto);
         txtContent = findViewById(R.id.txtContent);

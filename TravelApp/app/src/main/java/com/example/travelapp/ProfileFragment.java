@@ -137,6 +137,7 @@ public class ProfileFragment extends Fragment {
 
 
     public void profileLoad(){
+        showProgress();
 
         Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
         UserApi api = retrofit.create(UserApi.class);
@@ -154,6 +155,7 @@ public class ProfileFragment extends Fragment {
 
                 if(response.isSuccessful()){
 
+
                     Log.i("AAA",response.toString());
 
                     UserRes userList = response.body();
@@ -170,6 +172,7 @@ public class ProfileFragment extends Fragment {
                             Picasso.get().load(item.profileImg).into( profile_image_view);
                         }
                     }
+                    dismissProgress();
                 }else{
 
                 }
@@ -178,7 +181,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<UserRes> call, Throwable t) {
-
+                dismissProgress();
 
             }
         });
