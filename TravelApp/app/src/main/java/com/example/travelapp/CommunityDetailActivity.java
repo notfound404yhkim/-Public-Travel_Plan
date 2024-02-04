@@ -111,6 +111,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CommunityDetailActivity.this));
+        recyclerView.setNestedScrollingEnabled(false);
 
         Posting posting = (Posting) getIntent().getSerializableExtra("posting");
         postId = posting.id;

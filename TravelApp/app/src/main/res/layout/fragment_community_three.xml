@@ -87,7 +87,7 @@
                 android:layout_marginTop="15sp"
                 android:gravity="center"
                 android:hint="제목 입력.."
-                android:textSize="23sp" />
+                android:textSize="23sp"/>
 
             <EditText
                 android:id="@+id/editContent"
@@ -98,7 +98,8 @@
                 android:gravity="left"
                 android:hint="내용 입력.."
                 android:padding="10dp"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:background="@null"/>
 
             <Button
                 android:id="@+id/btnPosting"

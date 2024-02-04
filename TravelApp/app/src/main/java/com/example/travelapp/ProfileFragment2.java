@@ -1,15 +1,11 @@
 package com.example.travelapp;
 
-import static android.app.Activity.RESULT_OK;
+
 import static android.content.Context.MODE_PRIVATE;
-
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,10 +35,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -223,6 +216,11 @@ public class ProfileFragment2 extends Fragment {
 
                     userArrayList.clear();
                     userArrayList.addAll( userList.items );
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
                     for (User item : userArrayList) {
                         EditName.setText(item.name);
