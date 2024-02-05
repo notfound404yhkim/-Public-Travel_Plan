@@ -1,7 +1,7 @@
 package com.example.travelapp.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,7 @@ public class SchedulePlaceSelectAdapter extends RecyclerView.Adapter<SchedulePla
 
     Context context;
     ArrayList<Place> placeArrayList = new ArrayList<>();
+
 
     //액티비티로 전달하기 위해서 클릭리스너 정의
     private View.OnClickListener onClickListener;
@@ -56,7 +57,6 @@ public class SchedulePlaceSelectAdapter extends RecyclerView.Adapter<SchedulePla
         //이벤트 리스너 생성
         holder.cardView.setOnClickListener(onClickListener);
         holder.cardView.setTag(item);
-
     }
 
     @Override
@@ -74,12 +74,15 @@ public class SchedulePlaceSelectAdapter extends RecyclerView.Adapter<SchedulePla
 
         CardView cardView;
 
+        ImageView imageView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             txtPlaceName = itemView.findViewById(R.id.txtPlaceName);
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
             cardView = itemView.findViewById(R.id.cardView);
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }

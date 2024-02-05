@@ -24,6 +24,7 @@ import com.example.travelapp.model.Place;
 import com.example.travelapp.model.PlaceList;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -45,6 +46,8 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
     TextView txtSelect;
 
     String selectRegion;
+    String selectRegionId;
+
 
 
 
@@ -98,6 +101,7 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent.putExtra("selectRegion",selectRegion);
+                intent.putExtra("selectRegionId",selectRegionId);
                 setResult(100,intent);
                 finish();}
         });
@@ -148,6 +152,7 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
                     adapter.setOnItemClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             Place data = (Place)v.getTag();
                             Log.i("AAA",data.placeName);
                             // 현재 텍스트 가져오기
@@ -157,17 +162,30 @@ public class ScheduleMapSelectActivity extends AppCompatActivity {
                             if (currentText.startsWith(",")) {
                                 currentText = currentText.substring(1);
                             }
-
-                            // 콤마로 분리된 값들을 배열로 저장
-                            String[] values = currentText.split(",");
-
-                            // 분리된 값들이 4개를 초과하면 더 이상 값을 추가하지 않음
-                            if (values.length > 3) {
-                                Toast.makeText(ScheduleMapSelectActivity.this,"장소는 최대 4군대 선택이 가능합니다.",Toast.LENGTH_SHORT).show();
+                            if (selectRegionId != null){
+                                if (selectRegionId.startsWith(",")) {
+                                    selectRegionId = selectRegionId.substring(1);
+                                }
                             }
-                            else{
-                                txtSelect.setText(currentText + ","+data.placeName);}
-                            }
+                                txtSelect.setText(currentText + ","+data.placeName);
+
+                                selectRegionId = (selectRegionId + ","+data.id);
+                                // 문자열을 배열로 분리
+                                String[] array = selectRegionId.split(",");
+
+                                // 배열에서 null 제거
+                                List<String> resultList = new ArrayList<>();
+                                for (String name : array) {
+                                    if (name != null && !name.trim().equalsIgnoreCase("null")) {
+                                        resultList.add(name);
+                                    }
+                                }
+
+                            // 결과를 다시 문자열로 변환
+                                selectRegionId = String.join(",", resultList);
+                                Log.i("AAA",selectRegionId);
+//                            }
+                        }
                     });
 
                     recyclerView.setAdapter(adapter);
