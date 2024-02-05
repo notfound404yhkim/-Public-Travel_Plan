@@ -226,7 +226,7 @@ public class ScheduleMapSelectActivity extends AppCompatActivity implements Sche
             String check = data.placeName;
             selectRegion = selectRegion.replace(check + ",", "").replace("," + check, "").replace(check, "").replaceAll(",{2,}", ",").trim();
             txtSelect.setText(selectRegion);
-            clickedPositions.clear();
+            clickedPositions.remove(Integer.valueOf(position));
             return;
         }
         // 현재 position 값을 배열에 추가
