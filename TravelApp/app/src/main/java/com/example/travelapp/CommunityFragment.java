@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.travelapp.adapter.MypostingAdapter;
@@ -89,6 +90,8 @@ public class CommunityFragment extends Fragment {
     MypostingAdapter adapter;
     ArrayList<Posting> postingArrayList = new ArrayList<>();
 
+    ImageView imgError;
+
     int offset = 0;
     int limit = 15;
     int count = 0;
@@ -103,6 +106,7 @@ public class CommunityFragment extends Fragment {
         btnShare = rootView.findViewById(R.id.btnShare);
         btnAdd = rootView.findViewById(R.id.btnAdd);
         progressBar = rootView.findViewById(R.id.progressBar);
+        imgError = rootView.findViewById(R.id.imgError);
 
         recyclerView = rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -110,6 +114,7 @@ public class CommunityFragment extends Fragment {
 
         btnView.setBackgroundColor(getResources().getColor(R.color.black));
         btnView.setTextColor(getResources().getColor(R.color.white));
+
 
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,6 +183,10 @@ public class CommunityFragment extends Fragment {
 
                     postingArrayList.addAll(postingList.items);
                     count = postingList.count;
+                    if(postingArrayList.size() == 0)
+                    {
+                        imgError.setVisibility(View.VISIBLE);
+                    }
 
                     adapter = new MypostingAdapter(getActivity(), postingArrayList);
                     recyclerView.setAdapter(adapter);
