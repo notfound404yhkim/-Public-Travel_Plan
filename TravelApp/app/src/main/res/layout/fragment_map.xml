@@ -34,22 +34,25 @@
                 android:layout_marginTop="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:id="@+id/my_locationBtn"/>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_rounded_corner_stroke_blue"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_rounded_corner_stroke_blue">
+
                 <EditText
                     android:id="@+id/autoComplete"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:singleLine="true"/>
+                    android:singleLine="true" />
+
                 <Button
                     android:id="@+id/mapBtn"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/search_icon"/>
+                    android:background="@drawable/search_icon" />
 
             </LinearLayout>
 
