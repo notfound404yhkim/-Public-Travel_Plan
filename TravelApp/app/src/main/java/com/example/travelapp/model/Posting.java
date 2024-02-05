@@ -10,10 +10,11 @@ public class Posting implements Serializable {
     public String title;
     public String content;
     public String createdAt;
+    public String updatedAt;
     public int isLike;
     public int likeCnt;
 
-    public int postId;
+    public int postingId;
     public String name;
     public int bookmarkCnt;
     public int isBookmark;

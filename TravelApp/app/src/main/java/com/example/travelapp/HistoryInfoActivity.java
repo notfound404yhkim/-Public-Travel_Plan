@@ -3,7 +3,6 @@ package com.example.travelapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,7 +19,6 @@ import com.example.travelapp.model.HistoryList;
 
 import java.util.ArrayList;
 
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +37,7 @@ public class HistoryInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_info);
 
-        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.editTitle);
         txtInfo = findViewById(R.id.txtInfo);
         id = getIntent().getIntExtra("id", 0);
         getInfo(id);
@@ -68,19 +66,20 @@ public class HistoryInfoActivity extends AppCompatActivity {
 
                     for (History item : historyArrayList) {
                         if (item.firstDay != null && !item.firstDay.isEmpty()) {
-                            contentBuilder.append(item.firstDay).append("\n");
+                            contentBuilder.append(item.firstDay).append("\n\n");
+
                         }
                         if (item.secondDay != null && !item.secondDay.isEmpty()) {
-                            contentBuilder.append(item.secondDay).append("\n");
+                            contentBuilder.append(item.secondDay).append("\n\n");
                         }
                         if (item.thirdDay != null && !item.thirdDay.isEmpty()) {
-                            contentBuilder.append(item.thirdDay).append("\n");
+                            contentBuilder.append(item.thirdDay).append("\n\n");
                         }
                         if (item.fourthDay != null && !item.fourthDay.isEmpty()) {
-                            contentBuilder.append(item.fourthDay).append("\n");
+                            contentBuilder.append(item.fourthDay).append("\n\n");
                         }
                         if (item.fifthDay != null && !item.fifthDay.isEmpty()) {
-                            contentBuilder.append(item.fifthDay).append("\n");
+                            contentBuilder.append(item.fifthDay).append("\n\n");
                         }
                     }
                     txtInfo.setText(contentBuilder.toString());

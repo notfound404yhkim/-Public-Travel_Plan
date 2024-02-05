@@ -62,8 +62,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Schedule schedule = ScheduleArrayList.get(position);
         holder.txtRegion.setText(schedule.region);
-        holder.txtName.setText(schedule.region + " 코스 ");
-        holder.txtDate.setText(schedule.strDate +" ~ " + schedule.endDate);
+        holder.txtName.setText(schedule.content);
+        holder.txtDate.setText(schedule.getFormattedStartDate() + " ~ " + schedule.getFormattedEndDate());
         Picasso.get().load(schedule.imgUrl).into( holder.imgPhoto);
 
     }

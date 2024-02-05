@@ -5,56 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/box"
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:backgroundTint="@color/my_primary"
-        android:background="@drawable/rounded_corner">
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/my_blue3">
 
         <TextView
             android:id="@+id/txtRegion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="47dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="12dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="43dp"
             android:text="지역"
-            android:textSize="22dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="#FDFDFD"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="55dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="20dp"
             android:text="2000-00-00"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.423"
-            app:layout_constraintStart_toEndOf="@+id/txtRegion"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="#FFFFFF"
+            android:textSize="13dp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="1dp"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/clear_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/clear_icon" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </LinearLayout>

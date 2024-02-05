@@ -112,7 +112,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             txtProfilePhoto = itemView.findViewById(R.id.txtProfilePhoto);
             txtName = itemView.findViewById(R.id.txtName);
             txtDate = itemView.findViewById(R.id.txtDate);
-            txtContent = itemView.findViewById(R.id.txtContent);
+            txtContent = itemView.findViewById(R.id.editContent);
             btnDelete = itemView.findViewById(R.id.btnDelete);
 
             btnDelete.setOnClickListener(new View.OnClickListener() {

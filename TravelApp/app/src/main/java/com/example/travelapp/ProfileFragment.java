@@ -2,16 +2,16 @@ package com.example.travelapp;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +20,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -112,6 +109,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profile_image_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog();
+            }
+        });
+
 
         return view;
     }
@@ -125,6 +129,7 @@ public class ProfileFragment extends Fragment {
 
 
     public void profileLoad(){
+        showProgress();
 
         Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
         UserApi api = retrofit.create(UserApi.class);
@@ -142,12 +147,18 @@ public class ProfileFragment extends Fragment {
 
                 if(response.isSuccessful()){
 
+
                     Log.i("AAA",response.toString());
 
                     UserRes userList = response.body();
 
                     userArrayList.clear();
                     userArrayList.addAll( userList.items );
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
                     for (User item : userArrayList) {
                         Log.i("AAA",item.name);
@@ -158,6 +169,7 @@ public class ProfileFragment extends Fragment {
                             Picasso.get().load(item.profileImg).into( profile_image_view);
                         }
                     }
+                    dismissProgress();
                 }else{
 
                 }
@@ -166,6 +178,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<UserRes> call, Throwable t) {
+                dismissProgress();
 
             }
         });
@@ -184,6 +197,36 @@ public class ProfileFragment extends Fragment {
     private void dismissProgress(){
         dialog.dismiss();
     }
+
+
+    private void showAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+// 이 다이얼 로그의 외곽부분을 눌렀을때, 사라지지 않도록 하는 코드.
+        builder.setCancelable(false);
+        builder.setTitle("프로필 변경");
+        builder.setMessage("프로필 변경 화면으로 이동할까요?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                ProfileFragment2 secondFragment = new ProfileFragment2();
+                //                               // Fragment 에서 다른 Fragment로 이동 .
+                if (getActivity() != null) {
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+                    fragmentTransaction.commit();
+                }
+
+            }
+        });
+
+        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+            }
+        });
+        builder.show(); //다이얼로그 출력
+    }
+
 
 
 }

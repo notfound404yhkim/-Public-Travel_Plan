@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtContext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -104,6 +104,34 @@
                 android:textSize="13sp" />
 
             <LinearLayout
+                android:id="@+id/linearDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수정 된 시간 : "
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/txtUpdateDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="수정시간"
+                    android:textColor="#4861ED"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -152,9 +180,18 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
                     android:src="@drawable/null_star" />
+
+                <TextView
+                    android:id="@+id/txtBookmarkCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="개수"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -163,7 +200,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -171,16 +208,29 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
                     android:text="좋아요"
-                    android:textSize="15sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtLikeCount"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:text="개수"
-                    android:textSize="15sp" />
+                    android:textColor="#EC0E0E"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="개"
+                    android:textSize="17sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -215,14 +265,20 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="작성"
+                    android:backgroundTint="#FF0874E8"
                     android:textSize="15sp" />
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
         </LinearLayout>
 

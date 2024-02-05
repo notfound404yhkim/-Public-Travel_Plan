@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="50sp"
-            android:backgroundTint="#0048FF"
+            android:backgroundTint="#0874E8"
             android:text="올리기"
             android:textColorLink="#2196F3" />
 

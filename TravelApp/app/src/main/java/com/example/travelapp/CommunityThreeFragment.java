@@ -34,20 +34,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
-
-import com.example.travelapp.adapter.FriendPostingAdapter;
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.PostingApi;
 import com.example.travelapp.config.Config;
-import com.example.travelapp.model.Posting;
-import com.example.travelapp.model.PostingList;
 import com.example.travelapp.model.Res;
 import com.google.android.material.snackbar.Snackbar;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -323,6 +315,46 @@ public class CommunityThreeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 20 && resultCode == getActivity().RESULT_OK) {
+
+            Uri albumUri = data.getData();
+            String fileName = getFileName(albumUri);
+            try {
+
+                ParcelFileDescriptor parcelFileDescriptor = getActivity().getContentResolver().openFileDescriptor(albumUri, "r");
+                if (parcelFileDescriptor == null) return;
+                FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+                photoFile = new File(getActivity().getCacheDir(), fileName);
+                FileOutputStream outputStream = new FileOutputStream(photoFile);
+                IOUtils.copy(inputStream, outputStream);
+
+                // 압축시킨다. 해상도 낮춰서
+                Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                OutputStream os;
+                try {
+                    os = new FileOutputStream(photoFile);
+                    photo.compress(Bitmap.CompressFormat.JPEG, 60, os);
+                    os.flush();
+                    os.close();
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+                }
+
+                imgPhoto.setImageBitmap(photo);
+                imgPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+//                imageView.setImageBitmap( getBitmapAlbum( imageView, albumUri ) );
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // 네트워크로 보낸다.
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+
         if(requestCode == 100 && resultCode == getActivity().RESULT_OK){
 
             Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
@@ -450,6 +482,10 @@ public class CommunityThreeFragment extends Fragment {
         if(checkPermission()){
             displayFileChoose();
         }else{
+            requestPermission();
+            Intent intent= new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent,20);
             requestPermission();
         }
     }
