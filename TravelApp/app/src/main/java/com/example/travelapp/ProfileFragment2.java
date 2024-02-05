@@ -1,9 +1,7 @@
 package com.example.travelapp;
 
-import static android.app.Activity.RESULT_OK;
+
 import static android.content.Context.MODE_PRIVATE;
-
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -37,10 +35,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -87,6 +82,7 @@ public class ProfileFragment2 extends Fragment {
 
     // 사진 파일
     File photoFile;
+    Uri imgUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -166,7 +162,7 @@ public class ProfileFragment2 extends Fragment {
                     @Override
                     public void onFailure(Call<Res> call, Throwable t) {
 //                        progressBar.setVisibility(View.GONE);
-                       Toast.makeText(getActivity(),"에러발생",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"에러발생",Toast.LENGTH_SHORT).show();
                         return;
                     }
                 });
@@ -220,6 +216,11 @@ public class ProfileFragment2 extends Fragment {
 
                     userArrayList.clear();
                     userArrayList.addAll( userList.items );
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
                     for (User item : userArrayList) {
                         EditName.setText(item.name);
@@ -336,6 +337,46 @@ public class ProfileFragment2 extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 20 && resultCode == getActivity().RESULT_OK) {
+
+            Uri albumUri = data.getData();
+            String fileName = getFileName(albumUri);
+            try {
+
+                ParcelFileDescriptor parcelFileDescriptor = getActivity().getContentResolver().openFileDescriptor(albumUri, "r");
+                if (parcelFileDescriptor == null) return;
+                FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+                photoFile = new File(getActivity().getCacheDir(), fileName);
+                FileOutputStream outputStream = new FileOutputStream(photoFile);
+                IOUtils.copy(inputStream, outputStream);
+
+                // 압축시킨다. 해상도 낮춰서
+                Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                OutputStream os;
+                try {
+                    os = new FileOutputStream(photoFile);
+                    photo.compress(Bitmap.CompressFormat.JPEG, 60, os);
+                    os.flush();
+                    os.close();
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+                }
+
+                profile_image_view.setImageBitmap(photo);
+                profile_image_view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+//                imageView.setImageBitmap( getBitmapAlbum( imageView, albumUri ) );
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // 네트워크로 보낸다.
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+
         if(requestCode == 100 && resultCode == getActivity().RESULT_OK){
 
             Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
@@ -465,6 +506,9 @@ public class ProfileFragment2 extends Fragment {
             displayFileChoose();
         }else{
             requestPermission();
+            Intent intent= new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent,20);
         }
     }
 
@@ -477,8 +521,8 @@ public class ProfileFragment2 extends Fragment {
             return true;
         }
     }
-
     private void requestPermission() {
+
         if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             Log.i("DEBUGGING5", "true");
@@ -489,7 +533,23 @@ public class ProfileFragment2 extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 500);
         }
+
     }
+
+
+    //24.02.01 체크
+//    private void requestPermission() {
+//        if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+//            Log.i("DEBUGGING5", "true");
+//            Toast.makeText(getActivity(), "권한 수락이 필요합니다.",
+//                    Toast.LENGTH_SHORT).show();
+//        }else{
+//            Log.i("DEBUGGING6", "false");
+//            ActivityCompat.requestPermissions(getActivity(),
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 500);
+//        }
+//    }
 
     private void displayFileChoose() {
         Intent i = new Intent();

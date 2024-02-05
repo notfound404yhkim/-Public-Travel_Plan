@@ -5,9 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -24,7 +22,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 public class PlaceInfoActivity extends AppCompatActivity {
     int id;
-    TextView txtTile,txtRegion,txtContent,txtDate;
+    TextView txtTitle,txtRegion,txtContent,txtDate;
     ImageView imgPhoto;
     ArrayList<Place> placeArrayList = new ArrayList<>();
     LinearLayout linearLayout; // 레이아웃
@@ -32,9 +30,9 @@ public class PlaceInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placeinfo);
-        txtTile=findViewById(R.id.txtTile);
+        txtTitle=findViewById(R.id.txtTitle);
         txtRegion=findViewById(R.id.txtRegion);
-        txtContent=findViewById(R.id.txtTitle);
+        txtContent=findViewById(R.id.txtContext);
         imgPhoto=findViewById(R.id.imgPhoto);
         txtDate=findViewById(R.id.txtDate);
         linearLayout=findViewById(R.id.LinearLayout);
@@ -56,7 +54,7 @@ public class PlaceInfoActivity extends AppCompatActivity {
                     PlaceList placeList = response.body();
                     placeArrayList.addAll(placeList.items);
                     for (Place item : placeArrayList) {
-                        txtTile.setText(item.placeName);
+                        txtTitle.setText(item.placeName);
                         txtRegion.setText(item.region);
                         txtContent.setText(item.content);
                         if (item.option==1){

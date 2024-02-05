@@ -88,7 +88,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_posting);
 
-        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtContext);
         txtName = findViewById(R.id.txtName);
         imgPhoto = findViewById(R.id.imgPhoto);
         txtContent = findViewById(R.id.txtContent);
@@ -111,6 +111,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CommunityDetailActivity.this));
+        recyclerView.setNestedScrollingEnabled(false);
 
         Posting posting = (Posting) getIntent().getSerializableExtra("posting");
         postId = posting.id;

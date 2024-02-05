@@ -12,6 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
         android:orientation="vertical">
 
         <ImageView
@@ -33,9 +35,9 @@
         <ImageView
             android:id="@+id/imgError"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="350dp"
             android:visibility="gone"
-            app:srcCompat="@drawable/error" />
+            app:srcCompat="@drawable/no_schedule" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -47,6 +49,7 @@
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FF0874E8"
 
 
         android:layout_alignParentEnd="true"

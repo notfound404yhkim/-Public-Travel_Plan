@@ -14,7 +14,7 @@ public class Posting implements Serializable {
     public int isLike;
     public int likeCnt;
 
-    public int postId;
+    public int postingId;
     public String name;
     public int bookmarkCnt;
     public int isBookmark;
