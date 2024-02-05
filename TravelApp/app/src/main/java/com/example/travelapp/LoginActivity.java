@@ -1,5 +1,6 @@
 package com.example.travelapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -23,6 +24,16 @@ import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.regex.Pattern;
 
@@ -38,8 +49,13 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     EditText login_email;
     EditText login_password;
-
     ImageView imgView;
+
+    // 구글 로그인
+    SignInButton googleLoginBtn;
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
+    Button btnLog; // 이미지 원래 하이트 300
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +68,49 @@ public class LoginActivity extends AppCompatActivity {
         login_password = findViewById(R.id.login_password);
 
         imgView = findViewById(R.id.imgView);
+        googleLoginBtn = findViewById(R.id.googleLoginBtn);
+
+        btnLog = findViewById(R.id.btnLog);
 
         progressBar.setVisibility(View.GONE);
+
+        // GoogleSignInOptions 설정
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
+        // GoogleSignInClient 설정
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        googleLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                googleLogin();
+            }
+        });
+
+        btnLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGoogleSignInClient == null) return;
+                mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.i("AAAAAAAAAAAAA", "로그아웃 성공");
+                            }
+                        });
+                        task.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("AAAAAAAAAAAAA", "로그아웃 실패");
+
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +194,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void googleLogin() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            getGoogleInfo(task);
+        }
+    }
+
+    private void getGoogleInfo(Task<GoogleSignInAccount> completedTask) {
+        try {
+            String TAG = "구글 로그인 결과";
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.d(TAG, account.getId());
+            Log.d(TAG, account.getFamilyName());
+            Log.d(TAG, account.getGivenName()); // 이름
+            Log.d(TAG, account.getEmail()); // 이메일
+        } catch (ApiException e) {
+            String TAG = "구글 로그인 결과";
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
     private long time= 0;
     @Override
     public void onBackPressed() {
@@ -147,7 +233,6 @@ public class LoginActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
 
     // 네트워크 데이터 처리할때 사용할 다이얼로그
     Dialog dialog;

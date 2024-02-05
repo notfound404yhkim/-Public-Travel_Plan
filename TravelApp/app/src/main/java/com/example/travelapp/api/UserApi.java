@@ -24,6 +24,9 @@ public interface UserApi {
     @POST("/user/register")
     Call<UserRes> register(@Body User user); //받는 것 return , 보내는 것 : 파라미터
 
+    // 구글 로그인 유저용 회원가입
+
+
     //로그인 API
     @POST("/user/login")
     Call<UserRes> login (@Body User user);
