@@ -55,4 +55,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // 카메라
     implementation("commons-io:commons-io:2.4")
+
+    // Google 로그인
+    implementation("com.google.gms:google-services:4.3.15")
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
 }
