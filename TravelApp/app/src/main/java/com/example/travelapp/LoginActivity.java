@@ -3,7 +3,9 @@ package com.example.travelapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -20,8 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelapp.api.NetworkClient;
+import com.example.travelapp.api.PostingApi;
 import com.example.travelapp.api.UserApi;
 import com.example.travelapp.config.Config;
+import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -34,6 +38,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.regex.Pattern;
 
@@ -53,9 +58,11 @@ public class LoginActivity extends AppCompatActivity {
 
     // 구글 로그인
     SignInButton googleLoginBtn;
-    private GoogleSignInClient mGoogleSignInClient;
+    public static GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
-    Button btnLog; // 이미지 원래 하이트 300
+    String lastName = "";
+    String firstName = "";
+    String googleEmail = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         imgView = findViewById(R.id.imgView);
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
 
-        btnLog = findViewById(R.id.btnLog);
-
         progressBar.setVisibility(View.GONE);
 
         // GoogleSignInOptions 설정
@@ -84,31 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 googleLogin();
-            }
-        });
-
-        btnLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mGoogleSignInClient == null) return;
-                mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        task.addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.i("AAAAAAAAAAAAA", "로그아웃 성공");
-                            }
-                        });
-                        task.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.i("AAAAAAAAAAAAA", "로그아웃 실패");
-
-                            }
-                        });
-                    }
-                });
             }
         });
 
@@ -154,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                                     getSharedPreferences(Config.PREFERENCE_NAME,MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("token",userRes.accessToken);
+                            editor.putInt("type", 0);
                             editor.apply();
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -211,15 +192,22 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getGoogleInfo(Task<GoogleSignInAccount> completedTask) {
         try {
-            String TAG = "구글 로그인 결과";
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d(TAG, account.getId());
-            Log.d(TAG, account.getFamilyName());
-            Log.d(TAG, account.getGivenName()); // 이름
-            Log.d(TAG, account.getEmail()); // 이메일
+
+            Log.d("로그인 정보 : ", account.getId());
+            Log.d("로그인 정보 : ", account.getFamilyName()); // 성
+            Log.d("로그인 정보 : ", account.getGivenName()); // 이름
+            Log.d("로그인 정보 : ", account.getEmail()); // 이메일
+
+            lastName = account.getFamilyName();
+            firstName = account.getGivenName();
+            googleEmail = account.getEmail();
+
+            ShowAlertDialog();
+
         } catch (ApiException e) {
-            String TAG = "구글 로그인 결과";
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Snackbar.make(btnLogin, "구글 로그인에 실패하셨습니다.", Snackbar.LENGTH_SHORT).show();
+            Log.w("구글 로그인 실패 ", "실패 코드 = " + e.getStatusCode());
         }
     }
 
@@ -247,4 +235,55 @@ public class LoginActivity extends AppCompatActivity {
     private void dismissProgress(){
         dialog.dismiss();
     }
+
+    // 구글 정보로 회원가입하기 위한 메소드
+    private void ShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setCancelable(false);
+        builder.setTitle("구글 로그인 성공!");
+        builder.setMessage("구글 로그인 정보로 회원가입 하시겠습니까?\n이미 가입되어 있다면 메인페이지로 이동됩니다.");
+
+        builder.setNegativeButton("No", null);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Retrofit retrofit = NetworkClient.getRetrofitClient(LoginActivity.this);
+
+                UserApi api = retrofit.create(UserApi.class);
+
+                User user = new User(lastName+firstName, googleEmail, 1);
+                Call<UserRes> call = api.googleRegister(user);
+
+                call.enqueue(new Callback<UserRes>() {
+                    @Override
+                    public void onResponse(Call<UserRes> call, Response<UserRes> response) {
+                        if (response.isSuccessful()){
+                            UserRes userRes = response.body();
+
+                            SharedPreferences sp = getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("token", userRes.accessToken);
+                            editor.putInt("type", 1);
+                            editor.apply();
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserRes> call, Throwable t) {
+                        Snackbar.make(btnLogin, "통신 실패", Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+                });
+            }
+        });
+
+        builder.show();
+    }
+
 }
