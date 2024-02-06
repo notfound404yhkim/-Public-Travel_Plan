@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
+    android:orientation="vertical"
     android:weightSum="100">
 
     <ScrollView
@@ -23,8 +22,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -67,21 +66,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
                 android:gravity="center|center_vertical">
 
                 <Button
                     android:id="@+id/btnP1"
                     android:layout_width="15dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#FF0874E8"
                     android:text="AI 추천" />
 
                 <Button
                     android:id="@+id/btnP2"
                     android:layout_width="15dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#FF0874E8"
                     android:text="핫플 콕콕" />
 
             </LinearLayout>
@@ -159,7 +162,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
-                    android:text="당신의 멋진 계획을 만들어 드릴게요\n지역과 일정을 선택하고\n선택완료 버튼을 눌러주세요"
+                    android:text="AI가 당신의 멋진 계획을 만들어 드릴게요.\n지역과 일정을 선택하고\n선택완료 버튼을 눌러주세요!"
+                    android:textColor="#1A6E28"
                     android:textSize="17sp" />
 
                 <Button
@@ -167,30 +171,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:backgroundTint="@color/my_blue"
                     android:text="선택완료"
                     android:textColor="@color/white"
                     android:textSize="15sp"
+                    android:backgroundTint="#FF0874E8"
                     app:cornerRadius="10dp" />
 
                 <TextView
                     android:id="@+id/txt_response"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="15dp"
+                    android:textColor="#1A6E28"
+                    android:textSize="15sp"
                     android:visibility="gone" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginBottom="15dp"
                         android:text="축제 및 행사 리스트"
+                        android:textColor="#020202"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
@@ -210,9 +221,11 @@
                 <ViewFlipper
                     android:id="@+id/viewFlipper"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="260dp"
+                    android:layout_gravity="center"
                     android:autoStart="true"
                     android:flipInterval="2000"
+                    android:scaleType="centerCrop"
                     android:inAnimation="@android:anim/slide_in_left"
                     android:outAnimation="@android:anim/slide_out_right" />
 

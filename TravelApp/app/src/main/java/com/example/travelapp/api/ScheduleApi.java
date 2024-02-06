@@ -11,6 +11,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -26,11 +27,7 @@ public interface ScheduleApi {
     //Body값은 class
 
     @POST("mypage/mySchedule")
-    Call<Res> addSchedule(@Header("Authorization") String token, @Body Schedule schedule,
-                          @Query("place") String place0,
-                          @Query("place") String place1,
-                          @Query("place") String place2,
-                          @Query("place") String place3);
+    Call<Res> addSchedule(@Header("Authorization") String token, @Body Schedule schedule);
 
 
 
@@ -43,6 +40,10 @@ public interface ScheduleApi {
     //내 스케줄 상세 조회
     @GET("mypage/mySchedule/{scheduleId}")
     Call<ScheduleRes> getMyScheduleInfo(@Header("Authorization") String token, @Path("scheduleId") int scheduleId);
+
+    //내 스케줄 삭제  API
+    @DELETE("mypage/mySchedule/{scheduleId}")
+    Call<Res> deleteSchedule(@Path("scheduleId") int scheduleId, @Header("Authorization") String token);
 
 
 }

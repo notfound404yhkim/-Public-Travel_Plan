@@ -8,6 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.core.util.Pair;
+
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,6 +132,15 @@ public class MainFragment extends Fragment {
                         Date date2 = new Date();
                         date1.setTime(selection.first);
                         date2.setTime(selection.second);
+
+                        long difference = getDateDifference(date1, date2);
+                        Log.i("AAA",difference+"차이");
+                        if (difference >= 4){
+                            Toast.makeText(getActivity(),"최대 4박 5일까지 가능하니다.",Toast.LENGTH_SHORT).show();
+                            date2 = addDaysToDate(date1, 4);
+                        }
+
+
                         dateString1 = simpleDateFormat.format(date1);
                         dateString2 = simpleDateFormat.format(date2);
                         txtDate.setText(dateString1 + " ~ " + dateString2);
@@ -178,6 +189,8 @@ public class MainFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Res> call, Throwable t) {
+                        dismissProgress();
+                        Toast.makeText(getActivity(), "잠시 후 다시 시도하십시오.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -211,6 +224,22 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    private static long getDateDifference(Date date1, Date date2) {
+        // 두 날짜의 시간 차이를 밀리초로 계산
+        long timeDifference = date2.getTime() - date1.getTime();
+
+        // 밀리초를 일로 변환 (1초 = 1000밀리초, 1분 = 60초, 1시간 = 60분, 1일 = 24시간)
+        long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        return daysDifference;
+    }
+
+    private static Date addDaysToDate(Date date, int days) {
+        // 날짜를 복사하여 새로운 객체를 생성하고, 일 수를 더합니다.
+        Date newDate = new Date(date.getTime() + (days * 24L * 60 * 60 * 1000));
+        return newDate;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -219,6 +248,7 @@ public class MainFragment extends Fragment {
     }
 
     public void previewfestival(){
+        showProgress();
 
         Random random = new Random();
         int randomIndex = random.nextInt(region.length);
@@ -246,6 +276,7 @@ public class MainFragment extends Fragment {
                     //사이즈만큼 반복분 이미지 뷰를 생성 .
                     for (int i = 0; i < placeArrayList.size(); i++) {
                         imageViews[i] = new ImageView(getActivity());
+                        // 레이아웃 파라미터 설정
                         viewFlipper.addView(imageViews[i]);
 
                         // 클릭 이벤트 추가
@@ -269,6 +300,7 @@ public class MainFragment extends Fragment {
                         i = i+1;
                     }
                 }
+                dismissProgress();
             }
             @Override
             public void onFailure(Call<PlaceList> call, Throwable t) {
@@ -287,6 +319,14 @@ public class MainFragment extends Fragment {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
+        // 1분 딜레이
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismissProgress();
+            }
+        }, 60000);
     }
     private void dismissProgress(){
         dialog.dismiss();
