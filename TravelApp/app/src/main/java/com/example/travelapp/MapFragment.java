@@ -10,12 +10,17 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,6 +66,7 @@ public class MapFragment extends Fragment implements MapItemClickListener {
     EditText autoCompleteTextView;
     LinearLayout linearLayout;
     Button imgBtn;
+    ImageButton locationBtn;
 
     RecyclerView recyclerView;
     ArrayList<Map> mapArrayList = new ArrayList<>();
@@ -103,29 +109,35 @@ public class MapFragment extends Fragment implements MapItemClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-
-
-
         linearLayout = view.findViewById(R.id.Map_root);
         autoCompleteTextView = view.findViewById(R.id.autoComplete);
         imgBtn = view.findViewById(R.id.mapBtn);
+        locationBtn = view.findViewById(R.id.my_locationBtn);
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                keyword = autoCompleteTextView.getText().toString().trim();
-                if(keyword.isEmpty()){
-                    Toast.makeText(getActivity(),"검색어를 입력하세요",Toast.LENGTH_SHORT).show();
-                    return;
+                performSearch();
+                // 키보드 숨기기
+                hideKeyboard();
+            }
+        });
+        autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch();
+
+                    return true;
                 }
+                return false;
+            }
+        });
 
-
-
-                recyclerView.setVisibility(View.VISIBLE);
-
-
-                getNetworkData();
-
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveToMyLocation();
             }
         });
 
@@ -379,6 +391,40 @@ public class MapFragment extends Fragment implements MapItemClickListener {
     @Override
     public void onMapItemClick(double lat, double lng) {
         moveToLocation(lat, lng);
+        clearEditText(); // EditText 초기화
         recyclerView.setVisibility(View.GONE);
     }
+
+    private void moveToMyLocation() {
+        if (googleMap != null && lat != null && lng != null) {
+            LatLng myLocation = new LatLng(lat, lng);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
+        }
+    }
+
+    private void performSearch() {
+        keyword = autoCompleteTextView.getText().toString().trim();
+        if(keyword.isEmpty()){
+            Toast.makeText(getActivity(),"검색어를 입력하세요",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        recyclerView.setVisibility(View.VISIBLE);
+        getNetworkData();
+        // 키보드 숨기기
+        hideKeyboard();
+
+
+    }
+    public void clearEditText() {
+        if (autoCompleteTextView != null) {
+            autoCompleteTextView.setText("");
+        }
+    }
+    // 키보드 숨기는 메서드
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(), 0);
+    }
+
 }
