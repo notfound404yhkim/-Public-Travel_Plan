@@ -154,11 +154,6 @@ public class ProfileFragment extends Fragment {
 
                     userArrayList.clear();
                     userArrayList.addAll( userList.items );
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
 
                     for (User item : userArrayList) {
                         Log.i("AAA",item.name);
@@ -170,10 +165,7 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                     dismissProgress();
-                }else{
-
                 }
-
             }
 
             @Override
