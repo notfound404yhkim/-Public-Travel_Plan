@@ -28,10 +28,11 @@ import com.example.travelapp.config.Config;
 import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -184,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             getGoogleInfo(task);
@@ -208,6 +211,8 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ApiException e) {
             Snackbar.make(btnLogin, "구글 로그인에 실패하셨습니다.", Snackbar.LENGTH_SHORT).show();
             Log.w("구글 로그인 실패 ", "실패 코드 = " + e.getStatusCode());
+            Log.i("AAAAAAAAAAAAAAAAAAAAAAAA", e.getMessage());
+            e.printStackTrace();
         }
     }
 
