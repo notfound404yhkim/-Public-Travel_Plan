@@ -17,7 +17,7 @@ from resources.comment import CommentResource
 
 
 #  로그 아웃 관련된 임포트문. 
-from resources.user import UserLoginResource, UserLogoutResource, UserRegisterResource, UserSecedeResource, jwt_blocklist
+from resources.user import UserLoginResource, UserLogoutResource, UserRegisterResource, UserSecedeResource,UserGoogleRegisterResource, jwt_blocklist
 
 
 app = Flask(__name__)
@@ -72,6 +72,9 @@ api.add_resource( UserInfoResource, "/mypage/userInfo") # 프로필 정보, 프�
 api.add_resource( myScheduleListResource, "/mypage/mySchedule") # 일정 추가, 일정 리스트
 api.add_resource( myScheduleResource, "/mypage/mySchedule/<int:myScheduleId>") # 일정 상세보기 , 일정 삭제 
 api.add_resource( bookmarkListResource, "/mypage/bookmark") # 북마크한 글 리스트
+
+
+api.add_resource( UserGoogleRegisterResource , '/user/googleRegister')
 
 if __name__ == '__main__':
     app.run()
