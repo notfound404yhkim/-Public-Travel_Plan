@@ -21,16 +21,18 @@
             android:layout_marginRight="0sp"
             android:layout_marginBottom="0sp"
             android:orientation="vertical">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image_view"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/person_icon"
-                tools:layout_editor_absoluteX="126dp"
-                tools:layout_editor_absoluteY="30dp" />
+                android:layout_marginStart="115dp"
+                android:layout_marginEnd="116dp"
+                android:layout_marginBottom="20dp"
+                android:scaleType="centerCrop"
+                />
             <FrameLayout
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"

@@ -175,3 +175,47 @@ class UserSecedeResource(Resource) :
             return {"error" : str(e)}, 500
 
         return {"result" : "success"}, 200    
+    
+
+
+class UserGoogleRegisterResource(Resource) :
+    def post(self) :
+        data = request.get_json()
+        try :
+            connection = get_connection()
+            query = '''
+                    select *
+                    from user
+                    where name = %s and email = %s;
+                    '''
+            record = (data["name"], data["email"])
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, record)
+            result = cursor.fetchall()
+            if len(result) == 1 :
+                result[0]['createdAt'] = result[0]['createdAt'].isoformat()
+                result[0]['updateAt'] = result[0]['updateAt'].isoformat()
+                cursor.close()
+                connection.close()
+                access_token = create_access_token(result[0]["id"])
+                return {'result' : 'success', 'accessToken' : access_token}, 200
+            query = '''
+                    insert into user
+                    (name, email, type)
+                    values
+                    (%s, %s, %s);
+                    '''
+            record = (data["name"], data["email"], data["type"])
+            cursor = connection.cursor()
+            cursor.execute(query, record)
+            connection.commit()
+            user_id = cursor.lastrowid
+            cursor.close()
+            connection.close()
+        except Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return {'error' : str(e)}, 500
+        access_token = create_access_token(user_id)
+        return {'result' : 'success', 'accessToken' : access_token}, 200
