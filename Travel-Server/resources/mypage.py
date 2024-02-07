@@ -285,7 +285,7 @@ class myScheduleResource(Resource) :
             cursor.execute(query, record)
             result = cursor.fetchone()
             query = '''
-                    select id, name, imgUrl
+                    select id,imgUrl
                     from mySchedule_place
                     where myScheduleId = %s;
                     '''

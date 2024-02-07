@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,10 +68,9 @@ public class MapFragment extends Fragment implements MapItemClickListener {
     LinearLayout linearLayout;
     Button imgBtn;
     ImageButton locationBtn;
-
+    ProgressBar progressBar;
     RecyclerView recyclerView;
     ArrayList<Map> mapArrayList = new ArrayList<>();
-
 
     String keyword = "";
     String pagetoken = "";
@@ -113,6 +113,7 @@ public class MapFragment extends Fragment implements MapItemClickListener {
         autoCompleteTextView = view.findViewById(R.id.autoComplete);
         imgBtn = view.findViewById(R.id.mapBtn);
         locationBtn = view.findViewById(R.id.my_locationBtn);
+        progressBar = view.findViewById(R.id.progressBar);
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -323,6 +324,7 @@ public class MapFragment extends Fragment implements MapItemClickListener {
                     if (isFirstLocationUpdate) {
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
                         isFirstLocationUpdate = false;
+                        progressBar.setVisibility(View.GONE);
                         Log.i("AAA","카메라 이동 성공");
                     }
                     updateCurrentLocationMarker(myLocation); // 마커 업데이트
