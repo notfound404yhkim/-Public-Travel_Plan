@@ -381,7 +381,7 @@ public class MainFragment extends Fragment {
                             }
                         }
                         // 작업 완료 후 다이얼로그 닫기
-                        dismissProgress();
+//                        dismissProgress();
                     }
                 }).start();
             }
