@@ -28,6 +28,8 @@ import com.example.travelapp.model.UserRes;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +41,8 @@ public class ProfileFragment extends Fragment {
     String token,profileurl;
 
     TextView txtName;
-    ImageView profile_image_view;
+
+    CircleImageView profile_image_view;
 
     Button btnMyposting, btnMyschedule, btnAIHistory,btnBookmark;
 
