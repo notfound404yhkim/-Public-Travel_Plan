@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment {
         call.enqueue(new Callback<UserRes>() {
             @Override
             public void onResponse(Call<UserRes> call, Response<UserRes> response) {
-
+                dismissProgress();
 
                 if(response.isSuccessful()){
 
@@ -165,7 +165,7 @@ public class ProfileFragment extends Fragment {
                             Picasso.get().load(item.profileImg).into( profile_image_view);
                         }
                     }
-                    dismissProgress();
+
                 }
             }
 
