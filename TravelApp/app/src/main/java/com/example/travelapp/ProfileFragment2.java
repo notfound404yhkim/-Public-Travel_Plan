@@ -156,6 +156,15 @@ public class ProfileFragment2 extends Fragment {
                         if (response.isSuccessful()){
                             Toast.makeText(getActivity(),"프로필 정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
 
+                            ProfileFragment secondFragment = new ProfileFragment();
+                            //                               // Fragment 에서 다른 Fragment로 이동 .
+                            if (getActivity() != null) {
+                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.main_frame_layout,secondFragment);
+                                fragmentTransaction.commit();
+                            }
+
+
                         }
                     }
 
