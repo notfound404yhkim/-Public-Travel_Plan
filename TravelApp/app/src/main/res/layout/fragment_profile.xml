@@ -53,13 +53,15 @@
 
             <Button
                 android:id="@+id/btnMyposting"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="115dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="116dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/my_blue3"
+                android:gravity="center"
                 android:text="내 기록"
                 android:textColor="@color/white"
                 android:textSize="15sp"
@@ -67,12 +69,14 @@
 
             <Button
                 android:id="@+id/btnMyschedule"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="116dp"
                 android:layout_marginEnd="116dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="#FF0874E8"
+                android:gravity="center"
                 android:text="내 일정"
                 android:textColor="@color/white"
                 android:textSize="15sp"
@@ -80,12 +84,14 @@
 
             <Button
                 android:id="@+id/btnBookmark"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="116dp"
                 android:layout_marginEnd="116dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="#FF0874E8"
+                android:gravity="center"
                 android:text="관심 등록 글"
                 android:textColor="@color/white"
                 android:textSize="15sp"
@@ -93,11 +99,13 @@
 
             <Button
                 android:id="@+id/btnAIHistory"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="115dp"
                 android:layout_marginEnd="116dp"
                 android:backgroundTint="#FF0874E8"
+                android:gravity="center"
                 android:text="AI 추천 기록"
                 android:textColor="@color/white"
                 android:textSize="15sp"
