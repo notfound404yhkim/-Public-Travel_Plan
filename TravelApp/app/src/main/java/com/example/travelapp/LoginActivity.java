@@ -51,7 +51,7 @@ import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    ProgressBar progressBar;
+//    ProgressBar progressBar;
     TextView txtView;
     Button btnLogin;
     EditText login_email;
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        progressBar = findViewById(R.id.login_progressBar);
+//        progressBar = findViewById(R.id.login_progressBar);
         txtView = findViewById(R.id.txt_register);
         btnLogin = findViewById(R.id.login_button);
         login_email = findViewById(R.id.login_email);
@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         imgView = findViewById(R.id.imgView);
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
 
-        progressBar.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.GONE);
 
         // GoogleSignInOptions 설정
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();

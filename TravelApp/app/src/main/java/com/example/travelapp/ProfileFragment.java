@@ -105,6 +105,7 @@ public class ProfileFragment extends Fragment {
         });
 
         btnBookmark = view.findViewById(R.id.btnBookmark);
+
         btnBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,12 +198,6 @@ public class ProfileFragment extends Fragment {
 
     private void showAlertDialog(){
         SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
-        int type = sp.getInt("type", -1);
-
-        if (type == 1){
-            Snackbar.make(btnMyschedule, "구글 로그인 유저는 프로필 수정할 수 없습니다.", Snackbar.LENGTH_SHORT).show();
-            return;
-        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // 이 다이얼 로그의 외곽부분을 눌렀을때, 사라지지 않도록 하는 코드.
