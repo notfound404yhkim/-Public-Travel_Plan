@@ -1,4 +1,5 @@
 package com.example.travelapp;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.util.Log;
 
@@ -42,6 +44,7 @@ public class PlaceInfoActivity extends AppCompatActivity  {
 
     int[] arr;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,7 @@ public class PlaceInfoActivity extends AppCompatActivity  {
         imgPhoto=findViewById(R.id.imgPhoto);
         txtDate=findViewById(R.id.txtDate);
         linearLayout=findViewById(R.id.LinearLayout);
+        final GestureDetector gestureDetector = new GestureDetector(this, new GestureListener());
 
         id = getIntent().getIntExtra("id",0);
         option = getIntent().getIntExtra("option",0);
@@ -60,49 +64,64 @@ public class PlaceInfoActivity extends AppCompatActivity  {
 
 
         scrollView.setOnTouchListener(new View.OnTouchListener() {
-            float startX, startY;
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = event.getX();
-                        startY = event.getY();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        float endX = event.getX();
-                        float endY = event.getY();
-                        if (isSwipeLeft(startX, endX, startY, endY)) {
-                            Toast.makeText(PlaceInfoActivity.this, "Swipe Left", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PlaceInfoActivity.this, PlaceInfoActivity.class);
-                            intent.putExtra("id",nextIndex[1]);
-                            intent.putExtra("option",option);
-                            startActivity(intent);
-                            finish();
-                        } else if (isSwipeRight(startX, endX, startY, endY)) {
-                            Toast.makeText(PlaceInfoActivity.this, "Swipe Right", Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent(PlaceInfoActivity.this, PlaceInfoActivity.class);
-                            intent.putExtra("id",nextIndex[0]);
-                            intent.putExtra("option",option);
-                            startActivity(intent);
-                            finish();
-                        }
-                        break;
-                }
-                return false;
-            }
-
-            private boolean isSwipeLeft(float startX, float endX, float startY, float endY) {
-                return startX - endX > 100 && Math.abs(startY - endY) < 100;
-            }
-
-            private boolean isSwipeRight(float startX, float endX, float startY, float endY) {
-                return endX - startX > 100 && Math.abs(startY - endY) < 100;
+                return gestureDetector.onTouchEvent(event);
             }
         });
-
     }
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY) &&
+                        Math.abs(diffX) > SWIPE_THRESHOLD &&
+                        Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        // 스와이프 우측
+                        if (id == nextIndex[0]) {
+                            Toast.makeText(PlaceInfoActivity.this, "제일 마지막 페이지 입니다.", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        Intent intent = new Intent(PlaceInfoActivity.this, PlaceInfoActivity.class);
+                        intent.putExtra("id", nextIndex[0]);
+                        intent.putExtra("option", option);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                        finish();
+                    } else {
+                        // 스와이프 좌측
+                        if (id == nextIndex[1]) {
+                            Toast.makeText(PlaceInfoActivity.this, "제일 마지막 페이지 입니다.", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        Intent intent = new Intent(PlaceInfoActivity.this, PlaceInfoActivity.class);
+                        intent.putExtra("id", nextIndex[1]);
+                        intent.putExtra("option", option);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        finish();
+                    }
+                    result = true;
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+    }
+
     //행사,축제 정보 출력.
     public void getInfo(int id,int option){
         Retrofit retrofit = NetworkClient.getRetrofitClient(PlaceInfoActivity.this);
@@ -164,8 +183,11 @@ public class PlaceInfoActivity extends AppCompatActivity  {
                     arr = new int[placeArrayList.size()];
                     int i = 0;
                     for (Place item : placeArrayList) {
-                        Log.i("AAA",item.id +"출력id");
-                        arr[i] = item.id;
+                        //0이 들어가는것을 방지
+                        if (item.id !=0 ){
+                            arr[i] = item.id;
+                            Log.i("AAA",item.id +"출력id");
+                        }
                         i=i+1;
                     }
                     nextIndex = findNearestValues(arr,id);
@@ -205,16 +227,17 @@ public class PlaceInfoActivity extends AppCompatActivity  {
             }
         }
 
-        // 인접한 값이 없는 경우에만 기본값 반환
-        if (nearestGreaterValue == -1 && nearestSmallerValue == -1) {
-            return new int[]{0, 0};
+        // nearestSmallerValue와 nearestGreaterValue가 여전히 -1이라면 배열 안에서 baseValue보다 작은 또는 큰 값이 없다는 것이므로 baseValue를 반환
+        if (nearestSmallerValue == -1) {
+            nearestSmallerValue = baseValue;
+        }
+        if (nearestGreaterValue == -1) {
+            nearestGreaterValue = baseValue;
         }
 
-        // 기준 값이 배열 내에서 제일 큰 값이나 제일 작은 값인 경우
-        if (baseValue == arr[0]) {
-            nearestSmallerValue = 0;
-        } else if (baseValue == arr[arr.length - 1]) {
-            nearestGreaterValue = arr.length - 1;
+        // 만약 nearestSmallerValue가 0인 경우 baseValue를 반환하도록 함
+        if (nearestSmallerValue == 0) {
+            nearestSmallerValue = baseValue;
         }
 
         return new int[]{nearestGreaterValue, nearestSmallerValue};
