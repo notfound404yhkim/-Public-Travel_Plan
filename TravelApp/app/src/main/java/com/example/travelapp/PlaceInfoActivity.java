@@ -1,15 +1,23 @@
 package com.example.travelapp;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.MotionEvent;
 import android.util.Log;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.travelapp.api.NetworkClient;
 import com.example.travelapp.api.PlaceApi;
 import com.example.travelapp.model.Place;
@@ -20,26 +28,80 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-public class PlaceInfoActivity extends AppCompatActivity {
-    int id;
+public class PlaceInfoActivity extends AppCompatActivity  {
+
+    private ScrollView scrollView;
+    int id,option;
+    int[] nextIndex;
     TextView txtTitle,txtRegion,txtContent,txtDate;
     ImageView imgPhoto;
     ArrayList<Place> placeArrayList = new ArrayList<>();
     LinearLayout linearLayout; // 레이아웃
+
+    String Region;
+
+    int[] arr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placeinfo);
+        scrollView = findViewById(R.id.scrollView);
         txtTitle=findViewById(R.id.txtTitle);
         txtRegion=findViewById(R.id.txtRegion);
         txtContent=findViewById(R.id.txtContext);
         imgPhoto=findViewById(R.id.imgPhoto);
         txtDate=findViewById(R.id.txtDate);
         linearLayout=findViewById(R.id.LinearLayout);
-        Log.i("AAA","전달받은값"+id);
-        int id = getIntent().getIntExtra("id",0);
-        int option = getIntent().getIntExtra("option",0);
+
+        id = getIntent().getIntExtra("id",0);
+        option = getIntent().getIntExtra("option",0);
         getInfo(id,option);
+
+
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            float startX, startY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getX();
+                        startY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        float endX = event.getX();
+                        float endY = event.getY();
+                        if (isSwipeLeft(startX, endX, startY, endY)) {
+                            Toast.makeText(PlaceInfoActivity.this, "Swipe Left", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PlaceInfoActivity.this, PlaceInfoActivity.class);
+                            intent.putExtra("id",nextIndex[1]);
+                            intent.putExtra("option",option);
+                            startActivity(intent);
+                            finish();
+                        } else if (isSwipeRight(startX, endX, startY, endY)) {
+                            Toast.makeText(PlaceInfoActivity.this, "Swipe Right", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(PlaceInfoActivity.this, PlaceInfoActivity.class);
+                            intent.putExtra("id",nextIndex[0]);
+                            intent.putExtra("option",option);
+                            startActivity(intent);
+                            finish();
+                        }
+                        break;
+                }
+                return false;
+            }
+
+            private boolean isSwipeLeft(float startX, float endX, float startY, float endY) {
+                return startX - endX > 100 && Math.abs(startY - endY) < 100;
+            }
+
+            private boolean isSwipeRight(float startX, float endX, float startY, float endY) {
+                return endX - startX > 100 && Math.abs(startY - endY) < 100;
+            }
+        });
+
     }
     //행사,축제 정보 출력.
     public void getInfo(int id,int option){
@@ -56,12 +118,14 @@ public class PlaceInfoActivity extends AppCompatActivity {
                     for (Place item : placeArrayList) {
                         txtTitle.setText(item.placeName);
                         txtRegion.setText(item.region);
+                        Region = item.region;
                         txtContent.setText(item.content);
                         if (item.option==1){
                             txtDate.setText(item.strDate +" ~ " + item.endDate);}
                         Picasso.get().load(item.imgUrl).into(imgPhoto);
                         linearLayout.setVisibility(View.VISIBLE);
                     }
+                    getList();
                 }
             }
             @Override
@@ -83,5 +147,76 @@ public class PlaceInfoActivity extends AppCompatActivity {
     }
     private void dismissProgress(){
         dialog.dismiss();
+    }
+
+    public void getList()
+    {
+        Retrofit retrofit = NetworkClient.getRetrofitClient(PlaceInfoActivity.this);
+        PlaceApi api = retrofit.create(PlaceApi.class);
+        Call<PlaceList> call = api.getImg(Region,option,0,15);
+        call.enqueue(new Callback<PlaceList>() {
+            @Override
+            public void onResponse(Call<PlaceList> call, Response<PlaceList> response) {
+                Log.i("AAA", response.toString());
+                if(response.isSuccessful()){
+                    PlaceList placeList = response.body();
+                    placeArrayList.addAll(placeList.items);
+                    arr = new int[placeArrayList.size()];
+                    int i = 0;
+                    for (Place item : placeArrayList) {
+                        Log.i("AAA",item.id +"출력id");
+                        arr[i] = item.id;
+                        i=i+1;
+                    }
+                    nextIndex = findNearestValues(arr,id);
+                    Log.i("AAA", "현재 나의 값 " + id);
+                    Log.i("AAA","제일 인접한 값" + nextIndex[0]);
+                    Log.i("AAA","제일 인접한 값" + nextIndex[1]);
+                }
+            }
+            @Override
+            public void onFailure(Call<PlaceList> call, Throwable t) {
+                Log.i("AAA", "에러");
+                dismissProgress();
+            }
+        });
+
+    }
+
+
+    public static int[] findNearestValues(int[] arr, int baseValue) {
+        if (arr == null || arr.length == 0) {
+            throw new IllegalArgumentException("배열이 비어 있습니다.");
+        }
+
+        int nearestGreaterValue = -1; // 초기값 설정
+        int nearestSmallerValue = -1; // 초기값 설정
+        int minGreaterDifference = Integer.MAX_VALUE; // 초기값 설정
+        int minSmallerDifference = Integer.MAX_VALUE; // 초기값 설정
+
+        for (int i = 0; i < arr.length; i++) {
+            int difference = arr[i] - baseValue; // 현재 값과 기준 값의 차이를 구함
+            if (difference > 0 && difference < minGreaterDifference) {
+                minGreaterDifference = difference; // 최소 차이값 업데이트
+                nearestGreaterValue = arr[i]; // 최소 차이값에 해당하는 값을 업데이트
+            } else if (difference < 0 && -difference < minSmallerDifference) {
+                minSmallerDifference = -difference; // 최소 차이값 업데이트
+                nearestSmallerValue = arr[i]; // 최소 차이값에 해당하는 값을 업데이트
+            }
+        }
+
+        // 인접한 값이 없는 경우에만 기본값 반환
+        if (nearestGreaterValue == -1 && nearestSmallerValue == -1) {
+            return new int[]{0, 0};
+        }
+
+        // 기준 값이 배열 내에서 제일 큰 값이나 제일 작은 값인 경우
+        if (baseValue == arr[0]) {
+            nearestSmallerValue = 0;
+        } else if (baseValue == arr[arr.length - 1]) {
+            nearestGreaterValue = arr.length - 1;
+        }
+
+        return new int[]{nearestGreaterValue, nearestSmallerValue};
     }
 }
