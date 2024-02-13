@@ -48,6 +48,7 @@ import com.example.travelapp.config.Config;
 import com.example.travelapp.model.Res;
 import com.example.travelapp.model.User;
 import com.example.travelapp.model.UserRes;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -96,6 +97,19 @@ public class ProfileFragment2 extends Fragment {
         txtEmail = view.findViewById(R.id.txtEmail);
 
         btnCancel = view.findViewById(R.id.btnCancel);
+
+        SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
+        int type = sp.getInt("type", -1);
+
+        if (type == 1){
+            EditName.setEnabled(false);
+            txtEmail.setEnabled(false);
+            EditName.setBackgroundColor(Color.GRAY);
+            txtEmail.setBackgroundColor(Color.GRAY);
+            EditName.setTextColor(Color.DKGRAY);
+            txtEmail.setTextColor(Color.DKGRAY);
+        }
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

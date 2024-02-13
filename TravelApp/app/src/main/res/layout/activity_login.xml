@@ -48,13 +48,11 @@
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-
-
+        android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/my_blue3"
@@ -63,25 +61,17 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleLoginBtn"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="15dp"
         tools:ignore="MissingConstraints"></com.google.android.gms.common.SignInButton>
 
-    <ProgressBar
-        android:id="@+id/login_progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="32dp"
-        android:layout_height="wrap_content" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:gravity="center">
 
         <TextView
