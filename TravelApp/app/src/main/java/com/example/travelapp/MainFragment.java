@@ -248,6 +248,7 @@ public class MainFragment extends Fragment {
     }
 
     public void previewfestival(){
+        showProgress();
 
         Random random = new Random();
         int randomIndex = random.nextInt(region.length);
@@ -271,12 +272,6 @@ public class MainFragment extends Fragment {
 
                     imageViews = new ImageView[placeArrayList.size()];
                     viewFlipper.removeAllViews();
-
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
 
                     //사이즈만큼 반복분 이미지 뷰를 생성 .
                     for (int i = 0; i < placeArrayList.size(); i++) {
@@ -305,6 +300,7 @@ public class MainFragment extends Fragment {
                         i = i+1;
                     }
                 }
+                dismissProgress();
             }
             @Override
             public void onFailure(Call<PlaceList> call, Throwable t) {
