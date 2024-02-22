@@ -163,7 +163,6 @@ public class MainFragment2 extends Fragment implements View.OnClickListener {
         SharedPreferences sp = getActivity().getSharedPreferences(Config.PREFERENCE_NAME, MODE_PRIVATE);
         token = sp.getString("token", "");
         token = "Bearer " + token;
-        Log.i("AAA2",region);
 
 
         Call<PlaceList> call = api.getPlacelist(token,region, 0,offset, limit);
