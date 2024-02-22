@@ -342,12 +342,18 @@ public class MapFragment extends Fragment implements MapItemClickListener {
     }
 
     private void requestLocationUpdates() {
-        Log.i("AAA",retryCount+"번째");
+        Log.i("AAA", retryCount + "번째");
         // 위치 권한 체크
+
+        if (getActivity() == null) {
+            return; // Activity가 null이면 메서드 종료
+        }
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return; // 권한이 없으면 메서드 종료
         }
+        // 권한이 있을 때만 위치 업데이트 요청을 진행
+        // 위치 업데이트 요청 코드 작성
 
         // 권한이 허용된 경우 위치 업데이트 요청
         locationManager.requestLocationUpdates(
