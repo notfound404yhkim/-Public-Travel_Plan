@@ -1,4 +1,5 @@
 # 여행콕콕 
+![main](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/f72bbe57-1a49-408b-9a9c-0e2848ab40d0)
 ---
 ## 📌 Project Explanation
 - 고민되는 여행 코스를 Chat Gpt에게 추천 받을 수 있습니다.
