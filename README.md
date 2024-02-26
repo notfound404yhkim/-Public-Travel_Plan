@@ -26,4 +26,4 @@
 
 
 ## 📌 프로젝트 기술서
-  [Click here to try](https://docs.google.com/presentation/d/1-mRbMcHP3XSyBuf9QpNJJzrqZZA4GnE1mKZyzqgKnag/edit#slide=id.g28ed074c25f_0_41)https://docs.google.com/presentation/d/1-mRbMcHP3XSyBuf9QpNJJzrqZZA4GnE1mKZyzqgKnag/edit#slide=id.g28ed074c25f_0_41)
+  [Click here to try] (https://docs.google.com/presentation/d/1-mRbMcHP3XSyBuf9QpNJJzrqZZA4GnE1mKZyzqgKnag/edit#slide=id.g28ed074c25f_0_41)https://docs.google.com/presentation/d/1-mRbMcHP3XSyBuf9QpNJJzrqZZA4GnE1mKZyzqgKnag/edit#slide=id.g28ed074c25f_0_41)
