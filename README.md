@@ -9,16 +9,15 @@
 
   ## 📌 Server Architecture
 
-<h3>ERD</h3>
-![erdcloud]()
-<img width="100%" height="45%" src="https://user-images.githubusercontent.com/120348500/226833912-a76908f8-be04-48cc-86d3-fdab04ae4335](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/4eaaa1b4-9b4c-44a7-a0b7-20c320abfc3c).png">
+#ERD
+![erdcloud](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/4eaaa1b4-9b4c-44a7-a0b7-20c320abfc3c)
 
 
-<h3>Server Architecture</h3>
+#Server Architecture
 ![서버-아키텍처-006 (2)](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/15ce28a8-6cf6-4bde-a423-7aacc7afcd9a)
 
 
-<h3>API specification</h3>
+#API specification
 ![api명세서](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/365724f0-3719-44de-bc32-723345d5a494)
 
 
