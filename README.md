@@ -9,13 +9,15 @@
 
   ## 📌 Server Architecture
 
-ERD
+<h3>ERD</h3>
 ![erdcloud](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/4eaaa1b4-9b4c-44a7-a0b7-20c320abfc3c)
 
-Server Architecture
+
+<h3>Server Architecture</h3>
 ![서버-아키텍처-006 (2)](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/15ce28a8-6cf6-4bde-a423-7aacc7afcd9a)
 
-API specification
+
+<h3>API specification</h3>
 ![api명세서](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/365724f0-3719-44de-bc32-723345d5a494)
 
 
