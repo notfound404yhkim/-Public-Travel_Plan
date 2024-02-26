@@ -13,7 +13,8 @@
 ## 📌 Server Architecture
 
 # ERD
-![erdcloud](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/4eaaa1b4-9b4c-44a7-a0b7-20c320abfc3c)
+![cloud erd](https://github.com/notfound404yhkim/-Public-Travel_Plan/assets/151480575/de601dfd-fe4b-4939-8985-652392db04cc)
+
 
 
 # Server Architecture
